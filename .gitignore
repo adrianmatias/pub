@@ -1,0 +1,5 @@
+# Obsidian / editor state
+.obsidian/
+.idea/
+# raw pulls (the archive keeps the distilled copy, not the scrape)
+.raw/

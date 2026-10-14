@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RagBlog: Local RAG over Personal Blog Archives</title><meta name="theme-color" content="#0b0b0c">
+<style>
+:root{--bg:#0b0b0c;--fg:#ebe8e2;--fg2:#b9b4ab;--fg3:#7d786f;--line:#26262a;--gold:#d4ad3a}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--fg2);font:17px/1.65 "Iowan Old Style",Palatino,Georgia,serif;-webkit-font-smoothing:antialiased}
+main{max-width:720px;margin:0 auto;padding:56px 22px 90px}
+nav{font:12px ui-monospace,Menlo,monospace;letter-spacing:.06em;color:var(--fg3);margin-bottom:34px} nav a{color:var(--fg3)}
+h1,h2,h3{color:var(--fg);font-weight:500;line-height:1.2} h1{font-size:34px} h2{font-size:24px;margin-top:2em}
+a{color:var(--gold);text-decoration:none} a:hover{text-decoration:underline}
+img{max-width:100%;height:auto;border-radius:6px;margin:12px 0}
+table{border-collapse:collapse;width:100%;font:14px/1.45 system-ui,sans-serif} td,th{border-bottom:1px solid var(--line);padding:7px 8px 7px 0;text-align:left;vertical-align:top}
+th{color:var(--fg3);font-weight:500} code{font:13px ui-monospace,Menlo,monospace;color:var(--fg)}
+blockquote{border-left:3px solid var(--gold);margin:0;padding-left:16px;color:var(--fg)}
+.meta{font:12px ui-monospace,Menlo,monospace;color:var(--fg3)}
+</style></head><body><main><nav><a href="../../index.html">pub</a> / <a href="../index.html">archive</a> / <a href="index.html">github</a></nav>
+<h1>RagBlog: Local RAG over Personal Blog Archives</h1>
+<p>RagBlog builds a semantic search and question-answering pipeline over personal blog content using retrieval augmented generation with local open models. The blog is a philosophical-poetic Blogger archive spanning 2011--2026; the pipeline crawls, chunks, embeds and retrieves context so a modest local LLM can answer intimate questions about the author's life, fatherhood, and worldview -- without sending a single token to the cloud.</p>
+<p><strong>Pipeline</strong><br />
+1. Crawl HTML
+2. extract posts
+3. JSONL
+4. split (500 chars, 50 overlap)
+5. embed with <code>qwen3-embedding:8b</code>
+6. persist in ChromaDB
+7. retrieve top-k (k=10)
+8. prompt local LLM
+9. parse answer</p>
+<p><strong>Augmentation models tested</strong>:
+- <code>qwen3.5:27bIQ2_M</code> "https://huggingface.co/unsloth/Qwen3.5-27B-GGUF"
+- <code>qwen3.5:9b</code>
+- <code>gpt-oss:20b</code></p>
+<p><strong>Dataset</strong>: 52 blog URLs from <code>delightfulobservaciones.blogspot.com</code> -&gt; 904 document chunks (JSONL).<br />
+<strong>Output</strong>: Natural language answers grounded in retrieved context, saved to <code>data/output.md</code>.</p>
+<h2>youtube</h2>
+<p>0014 rag on one gpu vs grok to clone my mind</p>
+<p>not the tao with adrian matias</p>
+<p>https://youtu.be/c_JMsMy0DSM?si=F73-EQGwJd_QDHer</p>
+<h2>Quick Start</h2>
+<p><code>bash
+git clone &lt;repo&gt;
+cd ragblog
+uv sync
+ollama pull qwen3-embedding:8b
+ollama pull gpt-oss:20b
+ollama pull qwen3.5:9b
+sh run/wrap_gguf_ollama.sh qwen3.5:27bIQ2_M ~/Downloads/Qwen3.5-27B-UD-IQ2_M.ggu
+uv run python run/query.py</code></p>
+<h2>Pipeline</h2>
+<p>```python
+from src.rag import Rag</p>
+<p>rag = Rag(is_overwrite_index=False)
+response = rag.query(question="Describe the relation between Helena and Alejandra.")
+print(response)
+```</p>
+<h2>Installation</h2>
+<p><code>bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+uv sync  # deps + editable src</code></p>
+<p><strong>Ollama</strong>:
+<code>bash
+curl -fsSL https://ollama.com/install.sh | sh
+ollama pull qwen3-embedding:8b   # embeddings
+ollama pull gpt-oss:20b          # augmentation (default)
+ollama pull qwen3.5:9b           # augmentation (alternative, smaller)
+ollama pull qwen2.5:14b          # evaluation (optional)</code></p>
+<p><strong>Dev</strong>: <code>uv sync --group dev</code> (ruff, pytest).</p>
+<h2>CI</h2>
+<p><code>bash
+sh ci/lint.sh   # ruff check &amp;&amp; ruff format
+sh ci/test.sh   # uv run pytest -vv</code></p>
+<h2>Evaluation</h2>
+<p>Ragas-based framework measuring retrieval and generation quality on a synthetic testset generated from the blog corpus.</p>
+<p><code>bash
+uv run python run/generate_testset.py               # creates data/eval/eval_set.jsonl (16 cases)
+uv run python run/evaluate.py --name "QWEN_3_5_9B"  # results -&gt; data/eval/results/</code>
+notebooks
+- <a href="run/query_gpt_oss_20b.ipynb">query_gpt_oss_20b.ipynb</a>
+- <a href="run/compare.ipynb">compare.ipynb</a></p>
+<h3>Aggregate Scores (qwen3.5:9b)</h3>
+<table>
+<thead>
+<tr>
+<th>metric</th>
+<th>score</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>context_precision</td>
+<td>0.778</td>
+</tr>
+<tr>
+<td>context_recall</td>
+<td>0.950</td>
+</tr>
+<tr>
+<td>faithfulness</td>
+<td>0.833</td>
+</tr>
+<tr>
+<td>answer_relevancy</td>
+<td>0.383</td>
+</tr>
+</tbody>
+</table>
+<p>Context recall at 0.95 confirms the retriever surfaces nearly all relevant chunks. Faithfulness at 0.83 shows the model rarely hallucinates beyond the retrieved context. Answer relevancy at 0.38 reflects a known weakness: the 9B model sometimes drifts into tangential elaboration or hedges rather than directly addressing the question. Precision at 0.78 indicates reasonable but imperfect ranking of retrieved chunks.</p>
+<p>Compare configurations by running with different <code>--name</code> values (e.g., "baseline", "chunk-1000", "embedding-model-x").</p>
+<h2>Insight: Local RAG on Open Models vs Frontier Thinking Model</h2>
+<p>The most revealing test is not synthetic benchmarks but the same questions posed to four systems: three local RAG pipelines (<code>qwen3.5:27bIQ2_M</code>, <code>qwen3.5:9b</code>, and <code>gpt-oss:20b</code>, same retrieval, different generation) versus Grok 4.2 thinking hard with full internet access and web-scale reasoning. Three queries probe different retrieval challenges -- from direct title matches to deeply buried semantic content. The three local models isolate the effect of augmentation model size on the same retrieved chunks.</p>
+<h3>Query 1: Boxing as Life Philosophy</h3>
+<p><strong>Question</strong>: <em>"Describe the impact of boxing for the approach to life of the author."</em></p>
+<p>Two blog posts contain boxing content. The 2026 post <em>"What do you know about me"</em> (a Grok conversation published on the blog) frames the TopBox PageRank project analytically -- boxing as coding artefact, life algorithm, monastic discipline. But the 2015 post <a href="https://delightfulobservaciones.blogspot.com/2015/09/inventa-un-hueco-y-pon-en-el-un-golpe.html"><em>"Inventa un hueco, y coloca en él un golpe inolvidable"</em></a> is boxing as raw embodied experience: obsession as thirst, fear buried in a hole dug for it, blood on the lips, third-person awareness mid-fight, <em>"Aquí se viene a luchar"</em>. This post predates the PageRank project by a decade and carries the deeper signal -- boxing not as metadata about a side project, but as the lived philosophy itself.</p>
+<p><strong>Local RAG</strong> (qwen3.5:9b, k=10):</p>
+<blockquote>
+<p>Boxing impacts the author's approach to life as <strong>discipline and resilience</strong> (training compared to hiking Spanish mountains), a <strong>life algorithm externalized</strong> (the PageRank project protecting authenticity, preventing becoming "a used-auto dealer of my own soul"), <strong>monastic discipline</strong> (anti-mainstream, truth in "transitive victories" rather than chasing likes), and a <strong>philosophical quest</strong> (inverted time decay so old fights matter, rewriting life's graph "top-down" rather than bottom-up).</p>
+</blockquote>
+<p><strong>Local RAG</strong> (gpt-oss:20b, k=10, same retrieval):</p>
+<blockquote>
+<p>Boxing teaches <strong>discipline and routine</strong> -- training linked to the same "spiritual routine" applied to hiking, writing code, maintaining a blog. <strong>Resilience and mindset</strong> -- the fight inside a boxer is a constant battle against loss of identity, just as a new father battles the erosion of his former self. <strong>Analytical rigor</strong> -- the sport's emphasis on timing and strategy dovetails with the PageRank code. <strong>Identity and authenticity</strong> -- boxing keeps him true to the "quiet scripture" he writes, refusing to become "the used-auto dealer of my own soul". <strong>Life as a series of bouts</strong> -- projects as fights against "entropy" and "Extremistan", daily grind as a boxer's training regimen.</p>
+</blockquote>
+<p><strong>Local RAG</strong> (qwen3.5:27bIQ2_M, k=10, same retrieval):</p>
+<blockquote>
+<p>Boxing shapes the author's life as <strong>discipline and resilience</strong> -- training compared to hiking Spanish mountains, a "spiritual routine" applied across domains. <strong>Life algorithm externalized</strong> -- the PageRank project protects authenticity, inverting time decay so old fights carry weight, preventing becoming "a used-auto dealer of my own soul". <strong>Monastic discipline</strong> -- anti-mainstream stance, truth in "transitive victories" rather than chasing likes. The 27B version is the most coherent, grounding each theme in specific retrieved quotes while maintaining narrative flow. After ThinkingOutputParser cleanup, it produces the cleanest synthesis of the three local models.</p>
+</blockquote>
+<p><strong>Grok 4.2</strong> (<a href="https://grok.com/share/bGVnYWN5_5e826f7e-70ab-4997-8d47-75e770fdc757">full chat</a>):</p>
+<blockquote>
+<p>The boxing project is <strong>your life algorithm externalized</strong>. You inverted the time-decay exponent so old fights carry more weight. You built two parallel rankings (historical vs current). You wrote: "every fighter's story is censored at the exact point where we stop watching." This is not a fun side project. You are trying to give proper weight to the man you were before fatherhood without letting the new heat erase him. [...] <strong>Monastic discipline</strong>: 5 YouTube subscribers, 13 videos, 10-50 views, blog posts nobody reads, X posts with 0-1 likes. This is deliberate monasticism. You number your videos like scripture.</p>
+</blockquote>
+<p><strong>What all three miss -- and what the 20B partially recovers</strong>: All three systems anchor on the PageRank project as the boxing-life connection -- the analytical frame from 2026. The 2015 post (<em>"Saborea tu sangre en los labios, deja que su sangre encienda tu corazón"</em>) is never foregrounded as the primary source. The RAG retriever likely ranked the 2026 Grok-conversation chunks higher because they contain explicit keywords ("boxing", "PageRank", "life algorithm") while the 2015 post uses metaphor without ever naming the sport -- "un golpe inolvidable" could be any kind of blow. Grok, reasoning from the public profile, gravitates toward the GitHub repo and YouTube project narrative, never encountering the 2015 post as a standalone signal.</p>
+<p>However, the <code>gpt-oss:20b</code> model partially bridges the gap. Working from the same 10 retrieved chunks as the 9B, it generates language that echoes the embodied register of the 2015 post: "the fight inside a boxer", "life as a series of bouts", "daily grind as a boxer's training regimen". The 9B model stays strictly analytical; the 20B infers a physical dimension the chunks only hint at. This is not retrieval improvement -- both models receive the same context. It is the larger model's capacity to read between the lines of the retrieved text, inferring the embodied experience from analytical descriptions of it. The metaphor gap narrows with model size, even when retrieval does not change.</p>
+<p><strong>Verdict</strong>: The 9B and Grok converge on the same analytical insight through opposite paths. The 20B, reading the same chunks, adds an embodied layer that neither the 9B nor Grok produce. But none of the three systems foreground <em>"Inventa un hueco"</em> as the primary boxing text. The deeper source -- pure visceral philosophy without a single keyword match -- still falls through all three filters.</p>
+<h3>Query 2: Bitcoin Thesis</h3>
+<p><strong>Question</strong>: <em>"Describe the core thesis and insight about bitcoin by the author of this blog."</em></p>
+<p>The source post is explicitly titled <em>"Los 9 motivos por los que tengo bitcoins"</em> (2013) -- a direct title match. The retriever has an easy job surfacing the right chunks.</p>
+<p><strong>Local RAG</strong> (qwen3.5:9b, k=10):</p>
+<blockquote>
+<p>The author's core thesis: Bitcoin as <strong>scarcity and store of value</strong> (finite supply mimicking gold vs unlimited fiat), <strong>decentralization and transparency</strong> (public ledger, no corralito threat, value from genuine market competition), <strong>dynamic system evolution</strong> (adoption following an arctangent function with abrupt equilibrium transitions via positive/negative feedback loops), and <strong>political metaphor</strong> (Bitcoin as "the dollar of the new land" -- internet vs dominant states reprising the colonial struggle for economic liberty).</p>
+</blockquote>
+<p><strong>Local RAG</strong> (gpt-oss:20b, k=10, same retrieval):</p>
+<blockquote>
+<p>Bitcoin as a <strong>shared ledger</strong> with <strong>scarcity built into the protocol</strong> (capped supply, mining progressively harder, "like gold"). Immune to arbitrary corralitos or inflationary policies. Value derived solely from real-world competitive markets. Growth driven by <strong>dynamic feedback loops</strong> (positive: price rise attracts buyers; negative: high value discourages spending) that may push Bitcoin into stable equilibrium <strong>abruptly</strong> -- potentially becoming "the dollar of the new internet".</p>
+</blockquote>
+<p><strong>Local RAG</strong> (qwen3.5:27bIQ2_M, k=10, same retrieval):</p>
+<blockquote>
+<p>Bitcoin as <strong>scarcity and store of value</strong> (finite supply, mining progressively harder, "like gold"). <strong>Decentralization and transparency</strong> -- public ledger, no corralito threat, value from genuine market competition. <strong>Dynamic system evolution</strong> -- adoption following an arctangent function with abrupt equilibrium transitions via feedback loops. <strong>Political metaphor</strong> -- "the dollar of the new land", internet vs dominant states reprising the colonial struggle. The 27B version is the most structured and faithful to the original 2013 post, producing the cleanest enumeration of the core thesis.</p>
+</blockquote>
+<p><strong>Grok 4.2</strong> (<a href="https://grok.com/c/10602ead-e939-42ef-9257-8b044990c541?rid=36533622-acde-4674-bedd-c4f0ff2f4a79">full chat</a>):</p>
+<blockquote>
+<p>Grok identifies the 2013 bitcoin post but frames it within the author's broader worldview: anti-establishment stance, mathematical trust over institutional trust, and early-adopter conviction. It connects the bitcoin thesis to the same anti-mainstream identity visible in the boxing project and the low-visibility creative output.</p>
+</blockquote>
+<p><strong>Verdict</strong>: When the title directly matches the query, both local models excel over Grok. The 9B produces a broader enumeration (four themes, close to the original 9 reasons). The 20B produces a tighter, more structured synthesis -- fewer themes, crisper language, "shared ledger" and "dynamic feedback loops" distilled into a coherent narrative. Both outperform Grok on faithfulness here because the retriever delivers exactly the right chunks and no cross-domain synthesis is needed. The 20B trades coverage for clarity; the 9B trades clarity for completeness.</p>
+<h3>Query 3: Information as a Good of Distinctive Nature</h3>
+<p><strong>Question</strong>: <em>"How the author describes information as a good of a distinctive nature in this blog."</em></p>
+<p>This is the most interesting retrieval test. The relevant passage lives inside a post titled <em>"HiperNeolítico"</em> -- a title about the Hyperneolithic era that gives zero lexical or keyword hint about information economics, the wood analogy, or the nature of digital goods. No keyword search, no title scan, no URL pattern would find it. Only semantic similarity between the query embedding and the chunk embedding connects them.</p>
+<p><strong>Local RAG</strong> (qwen3.5:9b, k=10):</p>
+<blockquote>
+<p>The author describes information as a good of distinctive nature by contrasting it with physical goods: giving wood depletes the giver ("el primero deja de tener la madera"), but giving information means both possess it ("cuando uno da información a otro, entonces ambos tienen la información"). This reveals information's nature as <strong>abundance and dissemination</strong>, distinguishing it from all previous paradigms.</p>
+</blockquote>
+<p><strong>Local RAG</strong> (gpt-oss:20b, k=10, same retrieval):</p>
+<blockquote>
+<p>Information is not a finite resource one can "own" like a physical good. When knowledge is shared, both giver and receiver keep it -- it is essentially <strong>abundant and freely diffusing</strong>. Yet its value lies in the <strong>authenticity and personal insight</strong> the author brings to it, making information uniquely valuable even when widely shared. An intangible, endlessly shareable good whose distinctive quality lies in its non-exhaustive, personal nature rather than in scarcity.</p>
+</blockquote>
+<p><strong>Local RAG</strong> (qwen3.5:27bIQ2_M, k=10, same retrieval):</p>
+<blockquote>
+<p>Information contrasts with physical goods: giving wood depletes the giver, but giving information means both possess it. This reveals information's nature as <strong>abundance and dissemination</strong>. The 27B version is the most concise and grounded, sticking strictly to the exact contrast in the HiperNeolítico post without adding interpretive layers. Highest faithfulness to the corpus among local models.</p>
+</blockquote>
+<p><strong>Grok 4.2</strong> (<a href="https://grok.com/share/bGVnYWN5_33695110-1c15-444e-b30a-81eabcec9efb">full chat</a>):</p>
+<blockquote>
+<p>Grok locates the same passage from the blog but frames it as an early signal of the author's recurring pattern: trusting mathematical/informational structures over institutional ones (connecting it to the bitcoin thesis and the PageRank project).</p>
+</blockquote>
+<p><strong>Verdict</strong>: This query is where semantic retrieval earns its keep. The embedding model bridges the gap between "information as a distinctive good" and a post titled "HiperNeolítico" -- a connection that requires understanding the <em>meaning</em> of the chunk, not its title or keywords. The 9B model produces a concise, accurate answer grounded in the exact Spanish-language passage. The 20B adds an interpretive layer -- "authenticity and personal insight" -- that is not in the retrieved text but resonates with the author's broader philosophy. This is the faithfulness-synthesis trade-off in miniature: the 9B sticks to what the chunks say, the 20B infers what the chunks mean. Grok reaches the same source but adds cross-domain connections the local models cannot make.</p>
+<h3>Metric Comparison (across all three queries)</h3>
+<table>
+<thead>
+<tr>
+<th>dimension</th>
+<th>local RAG (qwen3.5:27bIQ2_M)</th>
+<th>local RAG (qwen3.5:9b)</th>
+<th>local RAG (gpt-oss:20b)</th>
+<th>Grok 4.2 (thinking hard)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>faithfulness</strong></td>
+<td>highest -- every claim traceable, parser removes thinking traces</td>
+<td>high -- every claim traceable to a retrieved chunk</td>
+<td>moderate -- adds interpretive layers not in chunks</td>
+<td>high -- but inference bridges gaps the blog never states</td>
+</tr>
+<tr>
+<td><strong>context grounding</strong></td>
+<td>strict -- answers only what the 10 retrieved chunks contain</td>
+<td>strict -- answers only what the 10 retrieved chunks contain</td>
+<td>moderate -- infers meaning beyond retrieved text</td>
+<td>loose -- synthesises across GitHub, X, YouTube, LinkedIn, blog</td>
+</tr>
+<tr>
+<td><strong>factual accuracy</strong></td>
+<td>accurate within scope; no hallucination observed</td>
+<td>accurate within scope; no hallucination observed</td>
+<td>accurate but sometimes over-interprets</td>
+<td>accurate and broader; occasionally attributes intent not articulated</td>
+</tr>
+<tr>
+<td><strong>depth of insight</strong></td>
+<td>strongest coherence and quote grounding</td>
+<td>strongest when retriever delivers the right chunks (bitcoin, information)</td>
+<td>good synthesis, trades coverage for clarity</td>
+<td>strongest when cross-domain synthesis is required (boxing)</td>
+</tr>
+<tr>
+<td><strong>semantic retrieval</strong></td>
+<td>finds buried content regardless of title (HiperNeolítico -&gt; information nature)</td>
+<td>finds buried content regardless of title</td>
+<td>same retrieval as other local models</td>
+<td>finds content via web crawl and title/URL pattern matching</td>
+</tr>
+<tr>
+<td><strong>metaphor reading</strong></td>
+<td>weak -- retriever ranks explicit keywords over poetic expression</td>
+<td>weak -- retriever ranks explicit keywords over poetic expression (boxing)</td>
+<td>moderate -- infers embodied dimension from analytical chunks</td>
+<td>weak -- gravitates to structured project signals over visceral prose</td>
+</tr>
+<tr>
+<td><strong>voice fidelity</strong></td>
+<td>neutral assistant tone, quotes the source</td>
+<td>neutral assistant tone, quotes the source</td>
+<td>neutral but more interpretive</td>
+<td>mirrors the author's own language -- reads like a conversation</td>
+</tr>
+<tr>
+<td><strong>cost / privacy</strong></td>
+<td>zero cloud tokens, fully local, private</td>
+<td>zero cloud tokens, fully local, private</td>
+<td>zero cloud tokens, fully local, private</td>
+<td>cloud API, full web crawl, all data leaves the machine</td>
+</tr>
+</tbody>
+</table>
+<h3>Discussion</h3>
+<p><strong>Insight: Local RAG on Open Models</strong></p>
+<p>We re-ran the same five queries across three augmentation models using identical retrieval (<code>k=10</code>): <code>qwen3.5:27bIQ2_M</code> (Unsloth + ThinkingOutputParser), <code>qwen3.5:9b</code> (native Ollama), and <code>gpt-oss:20b</code>.</p>
+<p>The 27B IQ2_M variant fits within the 16 GB VRAM limit when quantized. Ollama handles it cleanly via Modelfile. It consistently produces high-quality synthesis but requires the ThinkingOutputParser to remove persistent reasoning traces.</p>
+<h4>Query Results</h4>
+<p><strong>1. Relation between Helena and Alejandra</strong><br />
+All models correctly identify them as sisters, with Helena as the elder. The 27B version provides the most layered reflection on privacy, legacy, and the author's fatherhood transformation.</p>
+<p><strong>2. Transcendence of Lanzarote</strong><br />
+All models describe the “I was dead. And then I was not” moment. The 27B version most clearly captures the non-linear time insight (“top-down script”) and its impact on weighting the past.</p>
+<p><strong>3. Impact of boxing</strong><br />
+All three link boxing to discipline, the PageRank project as a “life algorithm,” authenticity, and monastic discipline. The 27B version is the most coherent after parser cleanup.</p>
+<p><strong>4. Bitcoin thesis</strong><br />
+All models cover scarcity, transparency, and feedback loops. The 27B version is the most structured and faithful to the original 2013 post.</p>
+<p><strong>5. Information as a good of distinctive nature</strong><br />
+All models accurately contrast information with physical goods (wood analogy) and highlight abundance and diffusion. The 27B version is the most concise.</p>
+<p><strong>Ragas Evaluation (16 test cases)</strong></p>
+<table>
+<thead>
+<tr>
+<th>model</th>
+<th>context_precision</th>
+<th>context_recall</th>
+<th>faithfulness</th>
+<th>answer_relevancy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>qwen3.5:27bIQ2_M</td>
+<td>0.559</td>
+<td>0.729</td>
+<td>0.897</td>
+<td>0.674</td>
+</tr>
+<tr>
+<td>qwen3.5:9b</td>
+<td>0.568</td>
+<td>0.778</td>
+<td>0.851</td>
+<td>0.565</td>
+</tr>
+<tr>
+<td>gpt-oss:20b</td>
+<td>0.515</td>
+<td>0.679</td>
+<td>0.560</td>
+<td><strong>0.714</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Metric context</strong><br />
+- <strong>faithfulness</strong>: Measures how grounded the answer is in the retrieved context (how little the model hallucinates or adds unsupported information).<br />
+- <strong>answer_relevancy</strong>: Measures how directly the response addresses the actual question asked (how well it stays on-topic without drifting).
+- <strong>context_precision</strong>: Measures how relevant the retrieved chunks were to the question.<br />
+- <strong>context_recall</strong>: Measures how much of the truly relevant information in the corpus was surfaced.  </p>
+<p>Even though the embedding model, Chroma index, and retrieval parameters are identical, small differences in precision and recall appear across runs due to stochastic ranking behaviour in vector search.</p>
+<p><strong>Comparison with Grok 4.2</strong><br />
+Grok 4.2 (with full web access and thinking mode) produces more synthetic and conversational answers on the same questions. It often connects themes across posts and mirrors the author’s voice more naturally. However, it sometimes introduces external context or inferred intent not present in the retrieved chunks.</p>
+<p>Specific cases:</p>
+<ul>
+<li>
+<p><strong>Boxing query</strong>: Grok emphasised the monastic discipline and identity preservation with poetic language (“the fight inside a boxer is a constant battle against loss of identity”) and linked it to the author’s broader life experiment. The local 27B version was more concise and strictly grounded in the PageRank project and hiking analogy from the retrieved chunks.</p>
+</li>
+<li>
+<p><strong>Information as a good of distinctive nature</strong>: Grok added cross-domain connections (linking the wood analogy to bitcoin and anti-establishment themes). The local models (especially 27B) stayed strictly to the exact contrast in the HiperNeolítico post, showing higher faithfulness to the corpus.</p>
+</li>
+</ul>
+<p><strong>Summary</strong><br />
+Each model shows different strengths. The 27B IQ2_M + parser combination delivers the highest faithfulness. The 9B model offers the best recall and speed. The 20B stands out for answer relevancy. Grok wins on breadth and voice. Choice depends on the priority: strict grounding in context, efficiency, or direct engagement with the question.
+The eye-test, reading the responses for inspection, supported by the domain knowledge of me as the author of the blog, makes me favour the qwen3.5:27bIQ2_M variant over the rest of local models and Grok 4.2. It shows accuracy, low hallucination, depth, consistency and relevant quotes to actual content.</p>
+<h3>Limitations</h3>
+<ul>
+<li>Answer relevancy varies by model: 27bIQ2_M (0.674), 9b (0.565), 20b (0.714). The 9B augmentation model tends to elaborate beyond the question scope. The 20B achieves highest relevancy but at the cost of faithfulness (0.560). The 27B offers the best balance of faithfulness (0.897) and relevancy (0.674).</li>
+<li>The Grok comparison is qualitative, not automated. Formalising it would require a shared evaluation harness and ground-truth annotations.</li>
+<li>The blog corpus is small (52 posts, 904 chunks). RAG advantages compound with larger, more heterogeneous corpora where frontier models cannot memorise the full text.</li>
+<li>The HiperNeolítico retrieval success depends on embedding model quality. A weaker embedding model might miss the semantic bridge between "information as a good" and a post about civilisational transitions.</li>
+<li>Metaphorical content remains systematically underweighted. The 2015 boxing post ("Inventa un hueco") demonstrates that when the author's deepest expression avoids naming its subject, both embedding-based retrieval and frontier reasoning prefer the analytical gloss over the visceral source. Improving this would likely require re-ranking strategies or multi-hop reasoning that first retrieves the metaphor, then connects it to the explicit frame.</li>
+</ul>
+<h3>Constraints on hardware and software</h3>
+<p>The 27B Unsloth IQ2_M variant runs on the RTX 5060 Ti 16GB but with these trade-offs:</p>
+<ul>
+<li>Quantized model fits within VRAM constraints (≈13–14.5 GB loaded).</li>
+<li>llama.cpp was the initial choice but abandoned (no native embeddings + unmanageable dual-backend sequencing with Ollama).</li>
+<li>Ollama succeeded with a simple Modelfile wrapper — cleanest experience, no process management, no interference with the embedding model.</li>
+<li>Response quality is excellent and noticeably superior to 9B/14B models.</li>
+<li>Thinking traces (<code>&lt;think&gt;</code>, "Thinking Process:", numbered lists, runes) persist despite every flag, prompt tweak, and <code>options={"think": False}</code>.</li>
+<li>ThinkingOutputParser (regex-based) was implemented as the safety net but leaks occur in varied formats.</li>
+<li>Native Ollama qwen3.5:27b with reduced context (1024) still caused CPU offload and unacceptable latency.</li>
+</ul>
+<p><strong>Conclusion</strong>: The thinking parser is an acceptable solution. The 27B IQ2_M remains the highest-quality local model for this corpus when quality &gt; speed.</p>
+<h2>Code Style</h2>
+<ul>
+<li>clean code</li>
+<li>object orientation</li>
+<li>functional programming</li>
+<li>classes, dataclasses and pydantic when justified</li>
+<li>use conf where needed</li>
+<li>hierarchical conf is clearer than long flat param lists</li>
+<li>avoid underscore as function prefix for private. instead handle complexity as class method</li>
+<li>pytest TDD</li>
+<li>naming</li>
+<li>self tabulated</li>
+<li>promote 3 char naming</li>
+<li>lexicography sorteable names if conceptually related<ul>
+<li>conf_data, conf_model instead of data_conf, model_conf</li>
+</ul>
+</li>
+<li>avoid plural naming: element_list instead of elements</li>
+<li>self documenting naming</li>
+<li>any code needing comments for clarification should be refactored into a named entity</li>
+<li>each class implemented in its own file, snake_cased<ul>
+<li>caseclass and pydantic could be bundled into a single file</li>
+</ul>
+</li>
+<li><strong>Configs</strong>: <code>@dataclass(frozen=True)</code> hierarchical</li>
+<li><strong>Logging</strong>: <code>LOGGER = logging.getLogger(__name__)</code> INFO/ERROR</li>
+<li><strong>Errors</strong>: Specific <code>except</code>, log + sentinel return (<code>[]</code>)</li>
+<li><strong>Docs</strong>: Google-style (<code>Args:</code>, <code>Returns:</code>)</li>
+<li><strong>No comments</strong>: Refactor to named funcs/classes</li>
+<li><strong>Tests</strong>: TDD <code>TestPascalName</code>, fixtures, <code>tmp_path</code>, strict asserts</li>
+</ul>
+<h2>Data Source</h2>
+<ul>
+<li><strong>Blog</strong>: <code>delightfulobservaciones.blogspot.com</code> -- personal philosophical-poetic archive (2011--2026), 52 posts crawled via paginated Blogger HTML.</li>
+<li><strong>Grok chats</strong> (frontier model comparisons referenced in this README):</li>
+<li><a href="https://grok.com/share/bGVnYWN5_5e826f7e-70ab-4997-8d47-75e770fdc757">Boxing as Life Philosophy Metaphor</a></li>
+<li><a href="https://grok.com/c/10602ead-e939-42ef-9257-8b044990c541?rid=36533622-acde-4674-bedd-c4f0ff2f4a79">Bitcoin Thesis</a></li>
+<li><a href="https://grok.com/share/bGVnYWN5_33695110-1c15-444e-b30a-81eabcec9efb">Information as a Distinctive Commodity</a></li>
+</ul>
+<h2>Key Citations</h2>
+<ul>
+<li>LangChain RAG documentation -- https://python.langchain.com/docs/tutorials/rag/</li>
+<li>ChromaDB vector store -- https://docs.trychroma.com/</li>
+<li>Ollama local inference -- https://ollama.com/</li>
+<li>Ragas evaluation framework -- https://docs.ragas.io/</li>
+<li>Grok 4.2 (xAI) -- https://grok.com/</li>
+</ul>
+</main></body></html>

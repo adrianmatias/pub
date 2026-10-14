@@ -1,0 +1,265 @@
+---
+title: "A veces observamos (3)"
+date: "2012-09-02"
+source: "https://delightfulobservaciones.blogspot.com/2012/09/a-veces-observamos-3.html"
+labels: []
+---
+
+# A veces observamos (3)
+
+La
+ciencia: convertir en evidente lo manifiesto
+
+De
+modo similar a cómo lo ha hecho la religión, la ciencia ha
+depositado en el hombre beneficio incalculable, conocimiento que ha
+convertido a una especie animal en suceso singular en el planeta y
+sus inmediaciones. Pocas cosas le han librado de tanta esclavitud
+natural como pueden ser la búsqueda de alimento cada día, el arduo
+trabajo de ir de un lugar a otro lejano o el emplear en cada tarea
+nada más que su esfuerzo físico. Pero no sólo ha sido librado de
+sus esclavitudes inherentes, si no que le ha brindado la capacidad de
+conseguir logros maravillosos debido a los cuales se le regala a cada
+persona una vida extra porque ya no se viven treinta y cinco años,
+sino setenta; se puede escapar de un huracán devastador o de la
+erupción de un volcán días antes de ocurrir, disponer de energía
+en cantidad abrumadora que mueva casi cualquier proceso imaginable e,
+incluso, concebir máquinas capaces de procesar información, también
+llamado pensar. Pero, sobre todo, permite al hombre conocer,
+comprender, desentrañar el funcionamiento de las partes que componen
+la materia que le rodea a un nivel asombrosamente profundo, sucesos
+tan diminutos o distantes que jamás verá con sus propios ojos ni
+tocará con sus manos y, aún así, los entiende; comprender el mundo
+que habita en muchísimos aspectos relacionados con su origen y con
+los procesos y evoluciones que lo llevaron a lo que hoy es, sus
+continentes y océanos, los seres que lo habitan; comprende el cuerpo
+que mantiene su vida y muchos mecanismos del cerebro que sustenta sus
+pensamientos y emociones. Y cuántas cosas más... Todo este
+conocimiento pone en el hombre sensación de poder, capacidad de
+conseguir logros, lo hace más humano, más singular y se ve así
+agitado y lleno de ambición de hacer de él mismo más, y seguro de
+obtenerlo apoyándose en los escalones construidos, por su ciencia,
+bajo sus pies.
+
+Pero,
+como la misma ciencia hace, antes de profundizar demasiado en un
+concepto y sus implicaciones en el resto de conceptos, es
+imprescindible aclarar y acordar con precisión lo que en sí es:
+
+La
+ciencia es el sistema compuesto por leyes, o principios, y datos que
+explican la realidad en términos de procesos, entendidos como
+evolución de estados, diferenciados y clasificados atendiendo a las
+leyes que los rigen. Esas leyes y datos, agrupados comúnmente en
+teorías, se caracterizan por la capacidad de predecir la evolución
+del proceso, inferir estados anteriores al actual y explicar el
+estado actual como consecuencia de la evolución de tal proceso.
+Estas leyes y datos, concebidas como premisas dentro de un sistema
+formal, son comprobables mediante experimentación de modo continuo
+conservándose sólo mientras se obtenga el resultado que la
+verifique; además de ser todas las premisas verdaderas, han de ser
+coherentes entre sí. Todo el conocimiento expresado por la ciencia
+ha de ser irremediablemente racional, objetivo y demostrable; es
+decir, fruto de razonamientos de ideas encadenadas correctamente
+desde un punto de vista lógico que desembocan en conclusiones,
+independiente de quién lo observe y obteniendo cualquier individuo
+racional las mismas conclusiones a que el resto llegaría. Tal
+conclusión requiere, además, ser posible de comprobar
+experimentalmente para ser válida y deducir como correctas, en
+principio, las ideas en que se apoya.
+
+Así
+funciona la ciencia y el conocimiento racional, y de aquí se derivan
+sus límites: los límites de la razón, de la lógica, de la
+sustentación mediante pruebas. Y la cantidad de conocimiento que
+encierran es inmensa, vastísima, quizá infinita, pero, en cualquier
+caso, limitada, encerrada entre unas restricciones. Sin embargo, los
+avances que en ella se han producido en estos últimos milenios, la
+expectación por lo que en ella se pueda alcanzar en las próximas
+décadas y, quizá más que nada, la coherencia interna que como
+sistema adquiere con cada nuevo descubrimiento, con cada nuevo punto
+de vista, hace temblar la capacidad de asombro, insufla seguridad de
+que es todavía más justificable confiar en ella esta vez de lo que
+fue la anterior. Y esta confianza en ella es tan brillante, tan
+luminosamente cegadora que, efectivamente, ciega.
+
+Es
+por su extrema fiabilidad, por la maravilla de llegar a conocer algo,
+encerrarlo en el entendimiento para deducir qué ocurrirá, cómo,
+cuándo y, sobre todo, por qué; verlo y comprobar que,
+efectivamente, se pensó correctamente. Y, más que nada, por su
+imparable y sólido crecimiento que todo parece abarcar reafirmándose
+ella misma, interconectando sus leyes, sus premisas, como figuras de
+ajedrez defendiéndose unas a otras para constituir un todo
+infranqueable. Esta sensación de completitud, de representación
+fidedigna de la realidad y potencial desarrollo apoyado en su gran
+coherencia es causa de la identificación entre ciencia y realidad,
+entre conocimiento y existencia. Pero esta identificación se obvia,
+no se cae en la cuenta de que se plasma inconscientemente en los
+individuos y en la humanidad: esta identificación no es correcta.
+Debido a la su errónea asunción se afirma que la realidad en su
+totalidad es comprensible por la lógica y explicable mediante la
+ciencia y, al revés, lo que no es explicable mediante los
+procedimientos racionales no existe, es arbitrario, trivial. Así, se
+originan un par de situaciones y puntos de vista derivados de esta
+humilde imprecisión que limitan considerablemente la capacidad de
+conocimiento.
+
+El
+primero es el que predispone a la ciencia a partir de un origen que
+no siempre es el más apropiado: lo manifiesto, hecho debido a la
+identificación anterior en la que todo lo tangible es todo lo real o
+conocible, arrastrando así a empezar por lo tangible. Por lo
+general, en la ciencia se obtiene conocimiento utilizando el método
+inductivo-deductivo, consistente en observar varios sucesos, obtener
+la ley general que los gobierna y extrapolar esos resultados para
+conocer el curso del proceso en situaciones que en principio parecían
+diferir de las estudiadas inicialmente. Esta dirección de trabajo
+parte siempre de los aspectos manifiestos de la realidad, del mundo
+en que el hombre habita, de las cosas y procesos tangibles con que se
+encuentra: tiene como origen lo explícito y se dirige a lo
+implícito. Lo importante es señalar aquí que esta dirección, este
+sentido de avance tiene un alcance limitado porque se encuentra
+sujeto a las torpezas inherentes, al mundo de lo concreto, de lo
+palpable, porque está sometido al lastre de los razonamientos
+encadenados. En cambio, el camino inverso, el observar lo intrínseco,
+lo no palpable, las evidencias que rodean al hombre impregnándolo de
+afirmaciones innegables, en donde no se interponen a cada paso las
+restricciones de la sucesión de ideas si no que se presentan
+espontáneamente al ritmo de la intuición, permite partir de ideas
+profundas que se manifiestan en procesos concretos, obtener leyes que
+rigen aspectos de la realidad con alcance enorme. Valgan como
+ejemplos dos singulares avances que se materializaron en paradigmas
+científicos: “Principios matemáticos de la filosofía natural”
+y “Teoría general de la relatividad”, obras de Isaac Newton y
+Albert Einstein respectivamente. Ninguno de ellos tiene como origen
+la observación de aspectos concretos o manifiestos de la naturaleza,
+si no que proviene del encuentro con evidencias en la mente de un
+hombre. La obra de Newton es resultado de cuestionarse el modo en que
+se relaciona el movimiento de los cuerpos con las fuerzas que actúan
+sobre ellos. Los conceptos de movimiento y fuerza eran familiares
+para el hombre antes de publicarse la obra de los principios
+matemáticos, pero se obviaba su determinación clara porque su
+relación era evidente. Pero no es suficiente, por eso fue un hito en
+la historia manifestarlos, hacerlos matemática tangible: establecer
+el hecho innegable de que requiere el doble de fuerza variar la
+velocidad de un objeto el doble de pesado y que la misma fuerza que
+se aplica sobre él, la ejerce él sobre quien la aplica. Similar
+ocurrió con la relatividad, en la que Einstein redefinió la
+concepción del tiempo y del espacio por dos sencillas verdades que
+todos comprendemos pero que nadie se detuvo a observar tan
+profundamente como el popular físico. La primera, que desembocó en
+la “Teoría de la relatividad especial”, es la observación de
+que, no importa cuan rápido los observadores se muevan, las leyes
+que describen su movimiento son iguales para todos ellos; esto
+deforma el modo en que cada uno percibe el espacio y el tiempo porque
+la luz se mueve para todos a la misma velocidad, reduciéndolos a
+relativos al observador, mientras que las leyes son absolutas. Por su
+lado, la “Teoría de la relatividad general”, constituye todas
+las afirmaciones derivadas de caer en la cuenta de otra sencilla
+evidencia: no hay capacidad de distinguir si lo que pega a un
+observador al suelo de la habitación es la atracción de la gravedad
+o la aceleración de la habitación alejándose de la Tierra. Por
+esto y porque las leyes que gobiernan el movimiento son iguales para
+ambos casos, se deduce matemáticamente que la gravedad no es más
+que la deformación del espacio y del tiempo.
+
+Estos
+descubrimientos, hacen honor verdadero a su categoría de
+descubrimiento como pocos otros avances han merecido en la historia
+de la ciencia. Porque son precisamente, eso, descubrimiento de las
+verdades profundas de la realidad en la que el hombre está inmerso.
+Por el hecho poco frecuente de partir de lo evidente, de lo que el
+hombre encuentra ante sus ojos sin ser su observación fin de una
+cadena de razonamientos lógicos, sin necesidad de pruebas ni
+demostraciones, si no que es innegable e inmediato; es por este punto
+de partida tan elevado que el observador tiene una perspectiva tan
+favorable, un alcance tan inmenso. Y este punto de vista es tan
+accesible al hombre que casi nunca recurre a él: ha caído en la
+tendencia a distraerse en las cosas que puede tocar, que puede
+adornar con pruebas y medir con vulgares artilugios.
+
+La
+segunda de las consecuencias de la errónea identificación entre
+ciencia y realidad, o conocimiento y existencia, es la negación de
+la identidad intrínseca del hombre. Esta identidad, como se ha
+señalado anteriormente, es evidente y su verificación es inmediata
+consecuencia de su observación. Pero su subjetividad y la
+inexistencia de pruebas que la sostengan la sitúan fuera del alcance
+del conocimiento científico o racional, que se ocupa de aspectos
+demostrables y objetivos. Y como dice la errónea afirmación: “lo
+que no es conocible por la ciencia, es trivial, no existe.”
+Recúrrase a la analogía del coche, citada en la “Parte Primera”
+de este texto, en la que el cuerpo es el vehículo, el pensamiento es
+el sistema automático que controla, analiza y decide y el conductor
+o viajero es la identidad intrínseca; aquí se puede reconocer a la
+mecánica y a la electrónica como el conocimiento y explicación de
+lo que al vehículo se refiere, el conocimiento de los destinos, de
+las rutas y de los lugares reside en el ordenador del coche, pero
+nada hay referente al conductor. De él nada dicen. Él simplemente
+observa los lugares por los que pasa, incluso decide a cuáles quiere
+dirigirse y por qué camino ir. Sin embargo, debido a lo bien que
+funciona el coche y su sistema de conducción y navegación y por lo
+bien que éstos son explicados y conocidos, se obvia la función del
+conductor, se reduce a algo accesorio, innecesario e, incluso, se
+obvia su existencia. Análogo ocurre con la ciencia. Todo funciona
+tan bien y se expresa tan completo ante el observador, que éste
+queda relegado a un puesto sin importancia, sin lugar entre todas las
+sucesos y procesos objetivos de los que él es testigo. Pero la
+ciencia, por objetiva, por definición nada tiene que decir acerca
+del observador.
+
+Estas
+ideas pueden ser entendidas, sin ánimo aquí de identificar unas con
+otras cuando tal tarea corresponde al lector, en el marco de la
+lógica debido a un detalle que expresa algo parecido a lo que aquí
+se está tratando. Hace menos de un siglo, un minucioso y
+extravagante personaje de visión singularmente clarividente, el
+matemático Kurt Gödel pretendía determinar el sistema que
+explicara completamente la lógica de las matemáticas como
+finalización de la tarea que había comenzado David Hilbert.
+Caprichosamente, encontró en su trabajo que tal tarea era imposible:
+no difícil ni extremadamente largo, si no intrínsecamente
+imposible. Como resultado de ello enunció los “Teoremas de
+Incompletitud de Gödel”. Estos dos teoremas vienen a decir que los
+sistemas matemáticos consistentes siempre contienen afirmaciones que
+el propio sistema es incapaz de probar o desmentir y, además, tal
+sistema no posee la capacidad de demostrarse a sí mismo. Los
+teoremas de incompletitud formalizan el hecho de que, cuando se
+elabora una demostración matemática, un proceso lógico o un
+razonamiento, se construye un sistema, o conjunto, de premisas o
+afirmaciones en las que unas parten de otras iniciales, llamadas
+axiomas, sucedidas en relaciones lógicas hasta llegar a las que se
+especifican como conclusiones, no sabiendo nunca cuáles de esas
+afirmaciones son verdaderas ni cuales no lo son. Y ésta constituye
+la demostración formal de la limitación intrínseca de la lógica:
+la lógica gritando al hombre que no es ella quien puede afirmar su
+propia verdad. Pero el hombre, más allá de las limitaciones de
+ésta, percibe las evidencias, verdades que no necesitan demostración
+si no que son observadas y constituyen el conocimiento inmediato e
+innegable desde el cual se puede partir sin miedo al error ni a la
+posibilidad de tomar algo falso por cierto, que constituyen la base
+fiable que la lógica no se puede proveer a ella misma.
+
+No
+será tampoco en este texto dónde se diga que la ciencia va en
+contra de la humanización del hombre, de su dignificación y
+enriquecimiento, si no todo lo contrario. Pero sí pretende afirmar
+que constituye una trampa, un agujero en el que el hombre tiene
+tendencia a dejarse caer. En ella el hombre se adormece entre las
+cosas mundanas y tangibles, distraído entre lo manifiesto y lo
+explícito y es arrastrado en esa dirección si no lo contrarresta
+con el impulso de buscar lo implícito, lo evidente, lo menos
+tangible, que es donde se encierra, o desde donde se irradia, la
+verdadera verdad de la existencia del hombre: la identidad
+intrínseca. Ambas búsquedas son nobles, útiles incluso. Pero no
+puede permitir el hombre que una niegue a la otra porque tiene que
+hacer de él mismo lo más noble que en su mano esté y ser
+responsable de no caer en errores, en distracciones que le desvíen
+de lo que puede llegar a ser, porque renunciar a una de esas dos
+expediciones, que curiosamente parten con direcciones opuestas,
+representa una considerable merma del valor potencial del ser humano.
+Una hacia lo manifiesto, y la otra hacia lo evidente, tirando ambas
+fuerzas de una cuerda que el hombre no puede permitir que rompa, si
+no que ha de estirarla para llegar a ambos extremos y abarcar, ahora
+sí, toda la realidad.

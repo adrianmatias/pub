@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The NY Estimator Problem</title><meta name="theme-color" content="#0b0b0c">
+<style>
+:root{--bg:#0b0b0c;--fg:#ebe8e2;--fg2:#b9b4ab;--fg3:#7d786f;--line:#26262a;--gold:#d4ad3a}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--fg2);font:17px/1.65 "Iowan Old Style",Palatino,Georgia,serif;-webkit-font-smoothing:antialiased}
+main{max-width:720px;margin:0 auto;padding:56px 22px 90px}
+nav{font:12px ui-monospace,Menlo,monospace;letter-spacing:.06em;color:var(--fg3);margin-bottom:34px} nav a{color:var(--fg3)}
+h1,h2,h3{color:var(--fg);font-weight:500;line-height:1.2} h1{font-size:34px} h2{font-size:24px;margin-top:2em}
+a{color:var(--gold);text-decoration:none} a:hover{text-decoration:underline}
+img{max-width:100%;height:auto;border-radius:6px;margin:12px 0}
+table{border-collapse:collapse;width:100%;font:14px/1.45 system-ui,sans-serif} td,th{border-bottom:1px solid var(--line);padding:7px 8px 7px 0;text-align:left;vertical-align:top}
+th{color:var(--fg3);font-weight:500} code{font:13px ui-monospace,Menlo,monospace;color:var(--fg)}
+blockquote{border-left:3px solid var(--gold);margin:0;padding-left:16px;color:var(--fg)}
+.meta{font:12px ui-monospace,Menlo,monospace;color:var(--fg3)}
+</style></head><body><main><nav><a href="../../index.html">pub</a> / <a href="../index.html">archive</a> / <a href="index.html">github</a></nav>
+<h1>The NY Estimator Problem</h1>
+<p>In this challenge, we will explore the use of Airbnb listing data to predict the price category for new listings. We want to represent a real-case scenario where the MLE is working hand-to-hand with the Data Scientists at Intelygenz.</p>
+<p>In this case, the data scientists have handed us a set of notebooks (in <code>lab/analysis</code>) that describe the ML workflow for data preprocessing and modelling. They have also included the dataset used and the trained model.</p>
+<p>We will use these notebooks as a baseline to create more optimized functions that can be used in an ML inference pipeline.</p>
+<h1>The MLE Challenge</h1>
+<p>You have to fork this repository to complete the following challenges in your own <code>github</code> account. Feel free to solve the challenge however you want.</p>
+<p>Once completed, add a <code>SOLUTIONS.md</code> file justifying your responses and don't forget to send back the solution.</p>
+<p>If you have any doubts or questions, don't hesitate to open an issue to ask any question about any challenge.</p>
+<h2>Challenge 1 - Refactor DEV code</h2>
+<p>The code included in <code>lab</code> has been developed by Data Scientists during the development stage of the project. Now it is time to take their solution into production, and for that we need to ensure the code is up to standard and optimised. The first challenge is to refactor the code in <code>lab/analysis</code> the best possible way to operate in production.</p>
+<p>Not only optimisation is important at this stage, but also the code should be written and tested in a way that can be easily understood by other MLE and tested at different CI stages.</p>
+<h2>Challenge 2 - Build an API</h2>
+<p>The next step is to build an API that make use of the trained model to define the price category for a new listing. Here is an example of an input/output payload for the API.</p>
+<p>```json
+input = {
+    "id": 1001,
+    "accommodates": 4,
+    "room_type": "Entire home/apt",
+    "beds": 2,
+    "bedrooms": 1,
+    "bathrooms": 2,
+    "neighbourhood": "Brooklyn",
+    "tv": 1,
+    "elevator": 1,
+    "internet": 0,
+    "latitude": 40.71383,
+    "longitude": -73.9658
+}</p>
+<p>output = {
+    "id": 1001,
+    "price_category": "High"
+}
+```</p>
+<p>The key is to ensure the API is easy to use and easy to test. Feel free to architect the API in any way you like and use any framework you feel comfortable with. Just ensure it is easy to make calls to the API in a local setting.</p>
+<h2>Challenge 3 - Dockerize your solution</h2>
+<p>Nowadays, we can't think of ML solutions in production without thinking about Docker and its benefits in terms of standardisation, scalability and performance. The objective here is to dockerize your API and ensure it is easy to deploy and run in production.</p>
+</main></body></html>

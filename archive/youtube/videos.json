@@ -1,0 +1,153 @@
+[
+ {
+  "id": "zgjyRVkJTZc",
+  "kind": "video",
+  "title": "0017 llm wiki as awareness for llms and The Mirror of Uqbar",
+  "when": "",
+  "length": "",
+  "date": "2026-05-30",
+  "description": "The mirror breathes out. Uqbar breathes in. It maps a territory that lives only in the mind, but what does live anywhere else?\n\nhttps://github.com/adrianmatias/the-mirror\n\nAndrej Karpathy released the LLM-wiki method in April. One instruction file tells an LLM to walk raw documents and build structured output from them. Notes, posts, code, transcripts, old writing all feed the same process. The result is a single folder that holds the compressed shape of that material.\n\nI fed my own sources into it and named the output Uqbar. The name came from Borges. The file became a map of my thinking, my sense of who I am, and how I see what is real. When I give an LLM that file as context, the conversation changes. The model works from patterns it extracted itself instead of pulling scattered chunks from a vector store. RAG stays flat, inert. This version carries the connections the model found.\n\nThe map showed me connections I had missed. It let the notes speak back in a voice that stayed mine. No other person can run the same file and reach the same place. Uqbar stays private. The mirror is what I show.\n\nDrop your sources into a folder. Point an agent at the instruction file and the folder. Start the conversation from any session. The wiki holds the ground. The outward version is the one you decide to share.\n\n\nnot the tao\nwith adrian matias\n\n0:00 The Mirror and Uqbar\n0:40 Karpathy's LLM-wiki\n5:11 RAG stays flat\n7:29 Building Uqbar\n9:04 Map of the territory\n13:12 The coaching example\n17:28 Hermes and the agent\n50:00 New sessions, same ground\n57:42 The outward breath"
+ },
+ {
+  "id": "LLuxeFLhrXk",
+  "kind": "video",
+  "title": "0016 of course there is something beyond",
+  "when": "",
+  "length": "",
+  "date": "2026-04-07",
+  "description": "Is there anything beyond? This is the only question. and of course there is something more. It's just that there is too much more than this fine tangible surface, so much more than it is everything. All moments that exist and will exist, all possibilities exist in the same way as the causal line that we perceive, limited by the mechanism of the intellect. Faced with this intellect, intuition and consciousness transcend time and space as artifacts of perspective. It is simply that the idea of everything exists and this already all being at peace offers a terrifying void, an existence beyond any narrative that we reject as too dizzying and immense. That's why we walk in circles around the answer that there is something more, for fear that it will end.\n\nbut there is God, seeing the finished universe through each of these lives…\n\nnot the tao  \nwith adrian matias"
+ },
+ {
+  "id": "SK8647h3km8",
+  "kind": "video",
+  "title": "0015 claro que hay algo mas",
+  "when": "",
+  "length": "",
+  "date": "2026-04-06",
+  "description": "#0015 claro que hay algo mas\n\nHay algo mas? esta es la unica pregunta. y claro que hay algo mas. es solo que hay demasiado mas que esta fina superficie tangible, tanto más que es todo. todos los momentos habidos y por haber, todas las posibilidades existen del mismo modo que la linea causal que percibimos, limitados por el mecanismo del intelecto. Frente a este intelecto, la intucion y la consciencia transcienden tiempo y espacio como artefactos de la perspectiva. Es simplemente que la idea del todo exsite y el ya todo esta en paz ofrece un vacio aterrador, una existencia más alla de cualquier narrativa que rechazamos por demasiado vertiginosa e inmensa. por ello caminamos en circulos en torno a la respuesta de que hay algo mas, por miedo a que esto termine.\n\npero ahi esta dios, viendo el universo ya terminado a traves de cada una de las vidas, quizas su favorita sea la del pirata cojo, con parche en el ojo, con cara de malo...\n   \n\nnot the tao  \n\nwith adrian matias"
+ },
+ {
+  "id": "c_JMsMy0DSM",
+  "kind": "video",
+  "title": "0014 rag on one gpu vs grok to clone my mind",
+  "when": "",
+  "length": "",
+  "date": "2026-03-26",
+  "description": "#0014 rag on one gpu vs grok to clone my mind\n\nSometimes the deepest coherence emerges when brute force meets its mirror in constraint.\nOn a single consumer GPU bought with a few hundred euros, I resurrected a two-year-old project and asked it the real question: can a modest retrieval system distill the entire soul of my blog, my voice, my encrypted contradictions, the Tao of fatherhood, the silent continuum between my daughters… and speak as me?\n\nQwen 3.5 running locally versus Grok 4.2 backed by its Memphis data center.\nDavid against Goliath, with no tokens ever leaving the machine.\n\nAn attempt to clone a mind, to turn fifteen years of writings into a living mirror that captures not just facts, but the hidden patterns, the spiritual dimension, the irreversible train of fatherhood, and the hunger of the void. The local model was not worse. In moments of depth it was better.\n\nThe full pipeline: crawling, chunking, embeddings, semantic search, LangChain, Ollama — the Ragas evaluation, the painful limitations, the thinking trace that refused to stay hidden, and the quiet realization that decentralized hierarchical intelligence can stand toe-to-toe with centralized brute force.\n\nJust to appreciate the vastness of the possibilities of our era, this is just one of them.\n\nyoutube https://youtu.be/c_JMsMy0DSM\nrepo https://github.com/adrianmatias/ml-sandbox/tree/master/ragblog\nblog https://delightfulobservaciones.blogspot.com/\n\nnot the tao\nwith adrian matias\n\n---\n\nchapters\n\n00:00 Introduction – The RAG Blog Project & Why It Matters\nThe origin story, the soul of the blog, and the quest to clone my voice, tone, and contradictions.\n\n07:07 Hardware Revival – 60 GB GPU vs CPU Days\nWhy I bought the card, how it changes everything, and the return of a two-year-old project.\n\n09:02 My Blog & The Personal Archive\nFifteen years of writings: economics, Bitcoin, philosophy, boxing, fatherhood, and the encrypted intimate layers.\n\n11:28 How RAG Actually Works (Explained)\nCrawling → chunking → embeddings → Chroma → LangChain → grounded generation. No more hallucinations by design.\n\n21:28 Live Code Walkthrough – The Core Pipeline\nLangChain retriever, prompt engineering, Ollama local LLM, and the high-level abstraction that makes it all clean.\n\n25:30 First Real Query Demo – Elena & Alejandra\nThe non-obvious, cross-document sisterhood and fatherhood journey. See the model synthesize what is never stated explicitly.\n\n35:04 The Crawler & Data Ingestion\nBeautifulSoup, JSON export, why the blog is a deliberately hard test for RAG.\n\n37:52 Running Qwen 3.5 Locally – 9B & 27B Versions\nGPU fan spin-up, what fits, what barely fits, and the first answers.\n\n39:53 Evaluation Framework – Ragas Deep Dive\nHow I created a golden test set, faithfulness vs relevancy, precision/recall for retrieval, and automatic scoring.\n\n52:00 Generating the Evaluation Dataset\nOpen-book exam style, personas, query styles, and why a lighter model is perfect for this step.\n\n59:54 The 27B Struggle – Quantization, Thinking Trace Leak, & Ollama CPP Wars\nOut-of-memory, custom quantization script, the thinking trace that refused to stay hidden, and ruthless simplification under constraint.\n\n1:12:41 Local RAG vs Grok 4.2 – David vs Goliath\nSide-by-side comparison on the same questions. No tokens leave the machine.\n\n1:14:47 Query 1 – The Hidden Impact of Boxing on My Life\nSubtle allegorical post, no direct keyword, yet both models find the signal.\n\n1:21:10 Query 2 – Bitcoin & Hypernolithic Information\nClear title match + deep philosophical capture across posts.\n\n1:22:58 Query 3 – Elena & Alejandra (Full Depth Analysis)\nThe most personal, spiritual, and cross-timeline synthesis. Where the local model shines.\n\n1:29:20 Philosophical Conclusion – Decentralized Intelligence & The Void’s Hunger\nBrute force vs hierarchical systems, constraints as teachers, cloning consciousness, and what this era actually makes possible.\n\n1:41:48 End Screen & Links"
+ },
+ {
+  "id": "mGPn4-F_N-k",
+  "kind": "video",
+  "title": "0013 page rank for boxers",
+  "when": "",
+  "length": "",
+  "date": "2026-03-02",
+  "description": "0013 pagerank for boxers\n\nSometimes the deepest clarity arrives when you flip the sign of an exponent.\nIn this episode I walk the full git-commit journey of TopBox, from the first scraping of Wikipedia tables to the moment I inverted the time decay so that older fights could finally carry more weight. What began as a quiet rejection of taxi-driver-beating P4P lists on transitive victories became two parallel rankings: one that lets the historical network breathe, another that listens to the present heat, ignoring the post prime fights yet to come on today's rising stars.\n\nCanelo rises in the consolidated view, Bivol still owns the recent one, Ali steps back into the conversation, and the graph keeps revealing what the eye alone misses: that every fighter’s story is censored at the exact point where we stop watching.\n\nNo projections, no prime-year tricks, just the raw signal and its necessary asymmetries.\nA walk through the code, the data, and the quiet paradox of ranking living men.\n\nrepo https://github.com/adrianmatias/ml-sandbox/tree/master/topbox\nyoutube https://www.youtube.com/watch?v=mGPn4-F_N-k\n\nnot the tao\nwith adrian matias"
+ },
+ {
+  "id": "wzJQV6GNN2I",
+  "kind": "video",
+  "title": "0012 learn by compression build by removal",
+  "when": "",
+  "length": "",
+  "date": "2026-02-10",
+  "description": "0012 learn by doing build by removal\n\nComplexity is not sophistication, simplicity is the actual sophistication. Just like Michelangelo chisels the rock out of the sculpture or Elon naked the minimal raptor engine, we find out that less is more when evaluating our mental models on a challenging environment. Contrary to the fear of missing something, the auto-encoder that compresses a representation is what finds knowledge out of data, showing the way for not getting beaten by the final boss of accumulating complexity.\n\nnot the tao\nwith adrian matias\n\nyoutube https://youtu.be/wzJQV6GNN2I\nspotify https://open.spotify.com/episode/3baXinQGp4eGvooSwEKzOg?si=Znd9GuRVQY-9ONaJUZR85A"
+ },
+ {
+  "id": "fSPUbvdZM7w",
+  "kind": "video",
+  "title": "0011 hyperawareness",
+  "when": "",
+  "length": "",
+  "date": "2026-02-10",
+  "description": "The sync of realising the presence while acting leads to superpowers. Lucid dreaming reveals the fabric of the universe and brings to the fingertips the magic of going beyond the illusory boundary between ego and the outer. The underlying common denominator for both may be the consciousness screaming that mind and reality could be the same."
+ },
+ {
+  "id": "Z-EhDsOQ0PY",
+  "kind": "video",
+  "title": "0010 transfer learning deprecates xgboost",
+  "when": "",
+  "length": "",
+  "date": "2025-09-02",
+  "description": "For years, XGBoost has ruled tabular data, effortlessly handling messy features, skewed targets, and minimal feature engineering. But transfer learning in deep learning is rewriting taking it further. By leveraging pre-trained models, DL systems learn faster and deeper, using expressive embeddings to transcend traditional feature engineering. These models enable natural parallelization, balance compute between training and inference, and excel in data-scarce scenarios through few-shot and zero-shot learning. What revolutionized AI in vision and language, pretraining and fine-tuning, is now unlocking tabular datasets once thought too complex for machine learning alone."
+ },
+ {
+  "id": "rS7TAoGsLHk",
+  "kind": "video",
+  "title": "0009 there is no matter there is no energy",
+  "when": "",
+  "length": "",
+  "date": "2025-06-16",
+  "description": "You know there is nothing out there, no matter, but crystallized light, no energy but organised info about the boiling void, no space nor time, but a web of localities among instantaneous dualities. You bend the spoon only if you realise there is no spoon."
+ },
+ {
+  "id": "EUz6KY9JAHI",
+  "kind": "video",
+  "title": "0008 all truth contains paradoxes",
+  "when": "",
+  "length": "",
+  "date": "2025-01-12",
+  "description": "Gödel states it very clearly: any meaningful description of reality can contain lies which are not detectable within their logical system. It is just because of the room for recursivity and contradiction as long as you can spell the quote “this is a lie”. This happens to be the ultimate trick that places mirrors in front of mirrors, bootstrap infinity out void, and allows neverending alternating layers of truth and its opposite. From the Mandelbrot set as a naive tool mining out the latent complexity of reality to the beating duality of Tao or the purposeless chase for Zen, without skipping the mind as a dimensionality reduction of reality into the embedding space of concepts, let’s traverse the pathless land of one and its opposite within the truth of it all."
+ },
+ {
+  "id": "DYkzF-Q-SMI",
+  "kind": "video",
+  "title": "0007 some classification problems are anomaly detection problems instead",
+  "when": "",
+  "length": "",
+  "date": "2024-11-26",
+  "description": "Do not try to put legs on a snake, as the zen quote teaches. From the naive tutorial of “classify cat vs. dog in 10 lines of code” to the realization that most of the idealizations floating around do not capture the depth of actual problems having a worthy solution. Acknowledging that the path to solve heavy unbalanced classification problems does not go through the comfort of a balanced one, but accepting that what our systems look for is the unexpected, the non conforming, the outlier which has to be the prize instead of the obstacle. Think about deep representations of data in favor of smote, contrastive learning as an end to the pity of rebalancing, confidence aware losses and even a step back towards non-overfitting as the key to learning anything of true value."
+ },
+ {
+  "id": "ptBz4UyLj3w",
+  "kind": "video",
+  "title": "0006 machine learning for grown ups",
+  "when": "",
+  "length": "",
+  "date": "2024-11-12",
+  "description": "When we do machine learning for grown ups we do not output notebooks, we do not output powerpoint slides. Machine learning engineering deals with code and aims to solve problems in an industrial manner. Object orientation, test driven development, backwards problem solving and aggressive simplification are traits of machine learning engineering, for grown ups."
+ },
+ {
+  "id": "TWbI-wiuyx8",
+  "kind": "video",
+  "title": "#0005 can spacetime be not fundamental",
+  "when": "",
+  "length": "",
+  "date": "2024-11-04",
+  "description": "Spacetime might be made of something else. Quantum entanglement transcends time and space and could be the source of an emergent fabric where distance is a manifestation of the degree of entanglement between points. Not only discrete pixels would be beyond the resolution of our observation of a geometry resembling continuity, but reality as a film where there are frames after frames, with no time in between."
+ },
+ {
+  "id": "Wi7pzrygp8M",
+  "kind": "video",
+  "title": "#0004 authenticity may be the scarcity of our era",
+  "when": "",
+  "length": "",
+  "date": "2024-10-30",
+  "description": "The next few years will force us to face the question of what it is to be a human. AI put us in front of the choice of human authenticity vs. synthetic semantic density. Do we prefer unlimited sinks for our attention or deep connection? Is it about what we do or about who we are?"
+ },
+ {
+  "id": "BXNBNs7Bqms",
+  "kind": "video",
+  "title": "#0003 people say start machine learning with linear models",
+  "when": "",
+  "length": "",
+  "date": "2024-10-29",
+  "description": "New simplicity is brought to machine learning by extreme tree-based frameworks. Think about orders of magnitude in efficiency boosting. Do not get distracted with humongous clusters. Leave behind the idealization of the normal distribution and get confidently lost in the forest."
+ },
+ {
+  "id": "W9m29a8pnAs",
+  "kind": "video",
+  "title": "#0002 the change in mark zuckerberg's haircut",
+  "when": "",
+  "length": "",
+  "date": "2024-10-29"
+ },
+ {
+  "id": "MS-FfEgeOcQ",
+  "kind": "video",
+  "title": "#0001 those who enter here abandon all hope",
+  "when": "",
+  "length": "",
+  "date": "2024-10-28"
+ }
+]

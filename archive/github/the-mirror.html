@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Mirror</title><meta name="theme-color" content="#0b0b0c">
+<style>
+:root{--bg:#0b0b0c;--fg:#ebe8e2;--fg2:#b9b4ab;--fg3:#7d786f;--line:#26262a;--gold:#d4ad3a}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--fg2);font:17px/1.65 "Iowan Old Style",Palatino,Georgia,serif;-webkit-font-smoothing:antialiased}
+main{max-width:720px;margin:0 auto;padding:56px 22px 90px}
+nav{font:12px ui-monospace,Menlo,monospace;letter-spacing:.06em;color:var(--fg3);margin-bottom:34px} nav a{color:var(--fg3)}
+h1,h2,h3{color:var(--fg);font-weight:500;line-height:1.2} h1{font-size:34px} h2{font-size:24px;margin-top:2em}
+a{color:var(--gold);text-decoration:none} a:hover{text-decoration:underline}
+img{max-width:100%;height:auto;border-radius:6px;margin:12px 0}
+table{border-collapse:collapse;width:100%;font:14px/1.45 system-ui,sans-serif} td,th{border-bottom:1px solid var(--line);padding:7px 8px 7px 0;text-align:left;vertical-align:top}
+th{color:var(--fg3);font-weight:500} code{font:13px ui-monospace,Menlo,monospace;color:var(--fg)}
+blockquote{border-left:3px solid var(--gold);margin:0;padding-left:16px;color:var(--fg)}
+.meta{font:12px ui-monospace,Menlo,monospace;color:var(--fg3)}
+</style></head><body><main><nav><a href="../../index.html">pub</a> / <a href="../index.html">archive</a> / <a href="index.html">github</a></nav>
+<h1>The Mirror</h1>
+<p>A sovereign knowledge repository. A lattice for AI to walk. A map for territory you already own.</p>
+<p><strong>What this is</strong>: The public architecture of <a href="https://github.com/adrianmatias/uqbar">Uqbar</a> — a personal LLM wiki that compounds across sessions, where AI reads your material, synthesizes it, cross-links it, and eventually learns to speak in your voice. This repo contains the <em>method</em>, the <em>concepts</em>, and the <em>proof</em> that it works.</p>
+<p><strong>What this is not</strong>: A tutorial. A course. Generic advice. This is a worked example — a building you can walk through, see how it's constructed, and adapt to your own material.</p>
+<h2>Podcast</h2>
+<p>Here is the episode on the podcast NotTheTao
+https://youtu.be/zgjyRVkJTZc</p>
+<h2>Who This Is For</h2>
+<p>You have material. Years of notes. A blog. A podcast. Work logs. A book manuscript. Training journals. Client case studies. You sense that AI could amplify what's in there, but you don't know how. You've tried ChatGPT and it gives you generic answers because it doesn't <em>know</em> your material.</p>
+<p>This repo shows you what's possible when AI has persistent access to your lived thought.</p>
+<h2>What's Inside</h2>
+<ul>
+<li><strong><code>schema.md</code></strong> — The constitution. How the wiki is structured. Rules for ingestion, linking, maintenance.</li>
+<li><strong><code>wiki/</code></strong> — The living synthesis. Concepts, technical patterns, method guides.</li>
+<li><code>wiki/knowledge/</code> — Concept pages (void, compression, recursion, forgetting, creatures...)</li>
+<li><code>wiki/technical/</code> — Engineering patterns from real ML production systems</li>
+<li><code>wiki/personal/soul-profile.md</code> — How the AI learned a voice (abstracted, no private details)</li>
+<li><code>wiki/method/</code> — How to build your own, the splinter technique, podcast as tour guide</li>
+<li><code>wiki/resources/</code> — Podcast and blog indices</li>
+<li><strong><code>raw/</code></strong> — Immutable source material (currently empty; in the private Uqbar this holds transcripts, exports, archives)</li>
+</ul>
+<h2>How to Use This</h2>
+<p><strong>As a reader</strong>: Start with <code>wiki/index.md</code>. Walk through the concepts. Notice how every page links to others. Notice the splinters at the bottom of key pages — places where the structure admits its own limitations. By the end, you should understand the <em>pattern</em>, not just the content.</p>
+<p><strong>As a builder</strong>: Read <code>wiki/method/how-to-build.md</code>. Then read the schema. Then look at how the concept pages are structured — frontmatter, cross-links, splinters. Then gather your own material and start.</p>
+<p><strong>With AI</strong>: Clone this repo. Point Hermes (or any AI agent) at it. Say: "Read the schema. Read the concepts. Now help me build my own." The AI will use this as a map for constructing your territory.</p>
+<h2>The Moat</h2>
+<p>The llm-wiki technique is public. <a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">Karpathy's gist</a> has thousands of stars. The skill is open source.</p>
+<p>The moat is not the method. The moat is the <em>material</em>. What you've lived, thought, written, made, loved, failed at. That cannot be downloaded. That cannot be replicated. That is what makes your wiki sovereign.</p>
+<h2>Origin</h2>
+<p>This is the outward breath of <a href="https://github.com/adrianmatias/uqbar">Uqbar</a> — a private wiki built from 16 years of writing, a 57-post blog, 16 podcast episodes, work archives, love letters, and a near-death threshold. That wiki runs on Hermes, a persistent AI agent that maintains it across sessions. It has produced a letter that reached a real person, diagnoses that wounded its own author, and concepts that the author had lived but never named.</p>
+<p>The private Uqbar remains private. This repo is the method extracted — stripped of everything that belongs to specific people, but keeping everything that might serve as a blueprint for your own sovereign intelligence.</p>
+<hr />
+<p><em>"The void compresses. What survives is truth. Consciousness is the void recognizing itself. Recursion is the mechanism."</em></p>
+</main></body></html>
