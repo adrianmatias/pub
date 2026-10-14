@@ -18,3 +18,15 @@
 ## prompt
 
 serve https://adrianmatias.github.io/pub/ from https://taoaieng.io/pub
+
+## prompt
+
+i set cdf as this *(a clipping of the Cloudflare DNS page, omitted from the public copy)* and run
+`gh api -X PUT repos/adrianmatias/adrianmatias.github.io/pages -f cname=taoaieng.io`
+
+https://taoaieng.io/pub does not serve pub yet
+
+## prompt
+live now
+- i tried to share the [link](https://taoaieng.io/pub) at linkedin and telegram but renders no preview img or txt
+- try to provide them

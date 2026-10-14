@@ -13,3 +13,13 @@
 - The prompt: *«serve https://adrianmatias.github.io/pub/ from https://taoaieng.io/pub»*. GitHub serves a project site under its owner's custom domain, so the path `/pub` appears only when `taoaieng.io` is set on `adrianmatias.github.io` (the CV site then answers at `taoaieng.io/`). A `cname` on this repo claims the apex instead and drops the path.
 - Done: `cname` removed from this repo (`gh api -X PUT repos/adrianmatias/pub/pages -F cname=null`); `adrianmatias.github.io/pub/` serves again. README › publish and AGENTS now say how it works and that this repo carries no domain.
 - Waiting on DNS: `taoaieng.io` still resolves to the Squarespace page through Cloudflare. Setting the domain on the user site before DNS moves would redirect the CV site to that page, so it was not set.
+
+## reply — the root of taoaieng.io still pointed to Squarespace; the domain was taken off the user site until the DNS was fixed (done by mat, now live)
+
+- The four apex `A` records were still Squarespace's (proxied), and `_domainconnect` had been changed instead of them. With the domain on the user site, both the CV site and pub redirected to "Coming Soon", so I removed it again (`-F cname=null`) until the apex pointed to GitHub. mat then fixed the apex and set the domain: `taoaieng.io` → `185.199.108–111.153`, `taoaieng.io/` serves the CV site, `taoaieng.io/pub/` serves pub.
+
+## reply — link previews: every page now carries Open Graph + Twitter-card tags, and the two front pages have their own 1200×630 card
+
+- Why there was no preview: the pages had a `<title>` and nothing else. LinkedIn and Telegram build the card from `og:title`, `og:description` and `og:image`, and the image needs an **absolute** URL.
+- Added: `og:*`, `twitter:*` (`summary_large_image`) and `canonical` on the home page, the piece and all 68 archive pages (`tools/render.py` now writes them; descriptions come from each page's opening text). New images: `og.png` (the pub card) and `infog/tsunami-and-printing-press/og.png` (the map with the title over it), both 1200×630 PNG. AGENTS records the one exception to relative links (preview metadata is absolute, `https://taoaieng.io/pub/…`).
+- Caches: LinkedIn and Telegram keep the first, empty result they fetched. Refresh LinkedIn at https://www.linkedin.com/post-inspector/ (paste the URL, *Inspect*), and Telegram by sending the URL to @WebpageBot. Sharing `https://taoaieng.io/pub/` with the trailing slash skips one redirect.

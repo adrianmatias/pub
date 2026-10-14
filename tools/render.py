@@ -12,9 +12,11 @@ from pathlib import Path
 import markdown
 
 ROOT = Path(__file__).resolve().parent.parent
+BASE = "https://taoaieng.io/pub/"  # absolute only for link previews (crawlers need it); page links stay relative
 PAGE = """<!DOCTYPE html>
 <html lang="{lang}"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{title}</title><meta name="theme-color" content="#0b0b0c">
+{social}
 <style>
 :root{{--bg:#0b0b0c;--fg:#ebe8e2;--fg2:#b9b4ab;--fg3:#7d786f;--line:#26262a;--gold:#d4ad3a}}
 *{{box-sizing:border-box}} body{{margin:0;background:var(--bg);color:var(--fg2);font:17px/1.65 "Iowan Old Style",Palatino,Georgia,serif;-webkit-font-smoothing:antialiased}}
@@ -55,6 +57,24 @@ def crumbs(path: Path) -> str:
     return " / ".join(parts)
 
 
+def social(title: str, text: str, dest: Path) -> str:
+    """Open Graph / Twitter tags so shared links render a card (LinkedIn, Telegram, X)."""
+    plain = re.sub(r"!\[[^\]]*\]\([^)]*\)|\[([^\]]*)\]\([^)]*\)|[#*_>`]", lambda m: m.group(1) or "", text)
+    plain = re.sub(r"\||-{3,}|(?m:^\s*-\s)", " ", plain)
+    plain = re.sub(r"\s+", " ", plain).strip()
+    plain = plain[len(title):].strip() if plain.startswith(title) else plain
+    desc = (plain[:197] + "…") if len(plain) > 200 else plain
+    rel = dest.relative_to(ROOT).as_posix()
+    url = BASE + (rel[: -len("index.html")] if rel.endswith("index.html") else rel)
+    t, d, img = html.escape(title, quote=True), html.escape(desc, quote=True), BASE + "og.png"
+    return (f'<link rel="canonical" href="{url}">\n<meta name="description" content="{d}">\n'
+            f'<meta property="og:type" content="article"><meta property="og:site_name" content="tao · ai · eng">\n'
+            f'<meta property="og:title" content="{t}"><meta property="og:description" content="{d}">\n'
+            f'<meta property="og:url" content="{url}"><meta property="og:image" content="{img}">\n'
+            f'<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">\n'
+            f'<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="{img}">')
+
+
 def render(src: Path, dest: Path) -> None:
     meta, text = front_matter(src.read_text(encoding="utf-8"))
     body = markdown.markdown(text, extensions=["tables"])
@@ -66,7 +86,8 @@ def render(src: Path, dest: Path) -> None:
         info = (f'<p class="meta">{html.escape(meta.get("date", ""))} · originally published at '
                 f'<a href="{html.escape(meta["source"])}">{html.escape(meta["source"])}</a></p>')
     lang = "es" if "/posts/" in str(src) else "en"
-    dest.write_text(PAGE.format(lang=lang, title=html.escape(title), crumbs=crumbs(dest), meta=info, body=body),
+    dest.write_text(PAGE.format(lang=lang, title=html.escape(title), crumbs=crumbs(dest), meta=info, body=body,
+                                social=social(title, text, dest)),
                     encoding="utf-8")
 
 
