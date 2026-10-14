@@ -35,3 +35,9 @@ live now
 
 - https://taoaieng.io/pub/infog/tsunami-and-printing-press/ should have a link to the parent site /pub.
 - there are some nice links between cards in the map, but they are not readeable.
+
+## prompt
+
+- the prev infog is amazing
+- i would like to have a second one about how i work as ds/m/ai in the era of the agents, how it has evolved, how it could become in the future. wide perspective, details too.
+- keep if offline for now

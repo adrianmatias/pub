@@ -30,3 +30,9 @@
 - **Readable links:** the labels were SVG text inside the world, 34 world-px — about 6 screen-px on the whole-map view. They are now screen-space chips (10 px mono on a dark pill) that follow the map and stay the same size at any zoom. When you zoom into a tile, only that tile's links stay lit. Clicking a chip flies to the two tiles it connects.
 - **Placement:** each label sits where its curve crosses open ground. For every link the bend is chosen so the midpoint lands off every tile and clear of other labels. The grid pitch went from 1500 × 1200 to 1800 × 1480, so the gaps can hold a label; the lines got a little more contrast. Long links now arc around the tiles instead of running under them.
 - `og.png` re-rendered on the new layout. Checked headless on the whole-map, tile and link-click views.
+
+## reply — Closing Doors, built and reviewed, kept offline on branch `draft/closing-doors` (not pushed)
+
+- **Piece:** `infog/closing-doors/` — 18 tiles on the same zoomable engine. Columns are eras (2007 → 2030); rows are the field, his practice and the evidence. Each tile has sources inline. `research/` holds what the four research slices could not establish, the adversarial review, and `src/` (the readable data plus `build.py`).
+- **Review:** `openai/gpt-6.1-sol`, a different model family from the author. Round 1 FAIL: 11 blockers and 14 should-fix. Round 2 (re-check of the fixes only): 21 resolved, 4 partly, 1 new; all five were then fixed. See `research/review.md`.
+- **Offline:** only the branch exists, nothing is pushed, and the piece carries `noindex` and a "draft · offline" pill. To publish: drop both, merge into `master`, push.

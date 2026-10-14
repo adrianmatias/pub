@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Closing Doors — data science in the age of agents · October 2026</title>
+<meta name="description" content="Agents made opening doors nearly free; his bet is that the scarce work is closing them. One data scientist's work from the tunnel face (2007) to agent orchestration (2026) and the next rung (2030), on one zoomable map — every number sourced.">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://taoaieng.io/pub/infog/closing-doors/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="tao · ai · eng">
+<meta property="og:title" content="Closing Doors — data science in the age of agents">
+<meta property="og:description" content="Agents made opening doors nearly free; his bet is that the scarce work is closing them. One data scientist's work from the tunnel face (2007) to agent orchestration (2026) and the next rung (2030), on one zoomable map — every number sourced.">
+<meta property="og:url" content="https://taoaieng.io/pub/infog/closing-doors/">
+<meta property="og:image" content="https://taoaieng.io/pub/infog/closing-doors/og.png">
+<meta property="og:image:secure_url" content="https://taoaieng.io/pub/infog/closing-doors/og.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The zoomable map of Closing Doors">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Closing Doors — data science in the age of agents">
+<meta name="twitter:description" content="Agents made opening doors nearly free; his bet is that the scarce work is closing them. One data scientist's work from the tunnel face (2007) to agent orchestration (2026) and the next rung (2030), on one zoomable map — every number sourced.">
+<meta name="twitter:image" content="https://taoaieng.io/pub/infog/closing-doors/og.png">
+<meta name="author" content="Adrian Matias">
+<meta property="article:published_time" content="2026-10-14">
+<style>
+:root{
+  --bg:#0b0b0c; --bg2:#111113; --card:#141416; --line:#26262a; --line2:#34343a;
+  --fg:#ebe8e2; --fg2:#b9b4ab; --fg3:#7d786f; --fg4:#57534c;
+  --gold:#d4ad3a; --gold2:#8f7524; --goldsoft:rgba(212,173,58,.12);
+  --sea:#4fb3a9; --seasoft:rgba(79,179,169,.12);
+  --rust:#d0694a; --rustsoft:rgba(208,105,74,.13);
+  --ink:#8f9bd6; --inksoft:rgba(143,155,214,.13);
+  --rose:#c96f8f; --rosesoft:rgba(201,111,143,.13);
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+  --mono:ui-monospace,"SF Mono","Cascadia Code",Menlo,Consolas,monospace;
+  --o1:0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--bg);color:var(--fg);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+a{color:var(--gold);text-decoration:none}
+a:hover{text-decoration:underline}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+
+/* ---------- viewport / world ---------- */
+#vp{position:fixed;inset:0;overflow:hidden;touch-action:none;cursor:grab;
+  background:radial-gradient(ellipse at 50% 45%,#121214 0%,var(--bg) 70%)}
+#vp.drag{cursor:grabbing}
+#world{position:absolute;left:0;top:0;transform-origin:0 0}
+#grid{position:absolute;pointer-events:none;
+  background-image:radial-gradient(circle,rgba(235,232,226,.07) 1.6px,transparent 1.8px),
+                   radial-gradient(circle,rgba(235,232,226,.035) 1px,transparent 1.2px);
+  background-size:600px 600px,60px 60px}
+#links{position:absolute;overflow:visible;pointer-events:none}
+#links path{fill:none;stroke:#4a4a52;stroke-width:6;stroke-dasharray:3 18;stroke-linecap:round}
+#links path.hot{stroke:var(--gold);stroke-dasharray:none;stroke-width:5;opacity:.85}
+#chips{position:fixed;inset:0;pointer-events:none;z-index:5;overflow:hidden}
+#chips button{position:absolute;left:0;top:0;pointer-events:auto;max-width:116px;padding:4px 8px;border-radius:9px;
+  font:10px/1.3 var(--mono);letter-spacing:.02em;color:var(--fg2);text-align:center;white-space:normal;
+  background:rgba(17,17,19,.92);border:1px solid var(--line2);box-shadow:0 4px 14px rgba(0,0,0,.5);transition:opacity .25s,border-color .2s,color .2s}
+#chips button:hover{border-color:var(--gold);color:var(--fg)}
+#chips button.hot{border-color:var(--gold2);color:var(--gold)}
+#chips button.off{opacity:0;pointer-events:none}
+
+/* ---------- node ---------- */
+.node{position:absolute;width:1200px;height:960px;border-radius:44px;background:var(--card);
+  border:2px solid var(--line);box-shadow:0 30px 80px rgba(0,0,0,.45);overflow:hidden;outline:none}
+.node:focus-visible{border-color:var(--gold)}
+.node.cur{border-color:var(--line2)}
+.node#thesis{border-color:var(--gold2)}
+.node::before{content:"";position:absolute;inset:0;border-radius:44px;pointer-events:none;
+  background:linear-gradient(160deg,var(--tint) 0%,transparent 46%)}
+.node[data-hue=gold]{--h:var(--gold);--tint:var(--goldsoft)}
+.node[data-hue=sea]{--h:var(--sea);--tint:var(--seasoft)}
+.node[data-hue=rust]{--h:var(--rust);--tint:var(--rustsoft)}
+.node[data-hue=ink]{--h:var(--ink);--tint:var(--inksoft)}
+.node[data-hue=rose]{--h:var(--rose);--tint:var(--rosesoft)}
+
+/* level 0: the map face */
+.l0{position:absolute;inset:0;padding:84px 90px;display:flex;flex-direction:column;
+  opacity:calc(1 - var(--o1));pointer-events:none}
+.l0 .k{font-family:var(--mono);font-size:30px;letter-spacing:.24em;text-transform:uppercase;color:var(--h)}
+.l0 h2{font-family:var(--serif);font-weight:500;font-size:96px;line-height:1.02;letter-spacing:-.015em;margin-top:22px}
+.l0 .big{margin-top:auto;font-family:var(--mono);font-size:150px;line-height:1;letter-spacing:-.04em;color:var(--fg)}
+.l0 .big small{font-size:48px;color:var(--fg3);letter-spacing:0;margin-left:14px}
+.l0 .bl{font-size:34px;color:var(--fg3);margin-top:14px;font-family:var(--mono)}
+.l0 .v{margin-top:34px;font-family:var(--serif);font-style:italic;font-size:46px;line-height:1.2;color:var(--fg2)}
+.l0 svg.spark{position:absolute;right:90px;top:250px;width:420px;height:150px;overflow:visible}
+.l0 svg.spark path{fill:none;stroke:var(--h);stroke-width:5;stroke-linejoin:round}
+.l0 svg.spark path.a{fill:var(--tint);stroke:none}
+
+/* level 1: the reading face (all sizes in world px) */
+.l1{position:absolute;inset:0;padding:44px 52px 30px;opacity:var(--o1);display:flex;flex-direction:column;gap:16px;
+  font-size:16.5px;line-height:1.5;color:var(--fg2)}
+body.z0 .l1{pointer-events:none}
+.l1 header{display:flex;align-items:baseline;gap:18px;border-bottom:1px solid var(--line);padding-bottom:14px}
+.l1 header .k{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--h);white-space:nowrap}
+.l1 header h3{font-family:var(--serif);font-weight:500;font-size:34px;line-height:1.1;color:var(--fg);letter-spacing:-.01em}
+.l1 header .pill{margin-left:auto;font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;
+  border:1px solid var(--h);color:var(--h);border-radius:99px;padding:4px 12px;white-space:nowrap}
+.l1 .lede{font-family:var(--serif);font-size:20px;line-height:1.42;color:var(--fg)}
+.l1 .cols{display:grid;grid-template-columns:1.32fr 1fr;gap:30px;flex:1;min-height:0}
+.l1 .col{display:flex;flex-direction:column;gap:14px;min-height:0}
+.chart{background:var(--bg2);border:1px solid var(--line);border-radius:16px;padding:12px 14px 6px;cursor:zoom-in}
+.chart .ct{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg3)}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.chart:hover{border-color:var(--line2)}
+.chart .cs{font-size:9.5px;color:var(--fg4);font-family:var(--mono);margin-top:2px}
+svg .ax{stroke:var(--line);stroke-width:1}
+svg .gl{stroke:var(--line);stroke-width:.6;stroke-dasharray:2 3}
+svg text{text-rendering:geometricPrecision}
+svg .tk{font-family:var(--mono);font-size:9.5px;fill:var(--fg4)}
+svg .ln{fill:none;stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+svg .ar{stroke:none;opacity:.14}
+svg .mk{stroke:var(--fg4);stroke-width:.8;stroke-dasharray:3 3}
+svg .ml{font-family:var(--mono);font-size:9px;fill:var(--fg3)}
+svg .lg{font-family:var(--mono);font-size:10px}
+svg .bv{font-family:var(--mono);font-size:10px;fill:var(--fg2)}
+table.facts{width:100%;border-collapse:collapse;font-size:13.5px;line-height:1.35}
+table.facts td{padding:6px 0;border-bottom:1px solid var(--line);vertical-align:top}
+table.facts td.v{font-family:var(--mono);color:var(--fg);white-space:nowrap;padding-right:14px;text-align:right;width:1%}
+table.facts td.c{color:var(--fg2)}
+table.facts sup,.cite{font-family:var(--mono);font-size:9.5px;color:var(--gold2);margin-left:3px;cursor:pointer}
+.lab{font-family:var(--mono);font-size:8.5px;letter-spacing:.08em;padding:1px 5px;border-radius:4px;margin-left:5px;vertical-align:1px;border:1px solid var(--line2);color:var(--fg3)}
+.lab.FACT{color:var(--sea);border-color:rgba(79,179,169,.4)}
+.lab.FORECAST{color:var(--ink);border-color:rgba(143,155,214,.4)}
+.lab.UNVERIFIED{color:var(--rust);border-color:rgba(208,105,74,.45)}
+.take{border-left:3px solid var(--h);padding:4px 0 4px 16px}
+.take q{display:block;font-family:var(--serif);font-style:italic;font-size:18.5px;line-height:1.38;color:var(--fg);quotes:"“" "”"}
+.take .who{font-family:var(--mono);font-size:10.5px;color:var(--fg3);margin-top:6px;letter-spacing:.04em}
+.take .tr{font-size:12.5px;color:var(--fg3);margin-top:3px}
+.score{display:flex;gap:10px;align-items:baseline;font-size:14px;line-height:1.42;margin-top:8px}
+.score>b{min-width:70px;text-align:center}
+.col>.score{margin-top:2px}
+.score>b{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:99px;white-space:nowrap}
+.score>b.holds{background:rgba(79,179,169,.16);color:var(--sea)}
+.score>b.partly{background:rgba(212,173,58,.16);color:var(--gold)}
+.score>b.not-yet{background:rgba(143,155,214,.16);color:var(--ink)}
+.score>b.wrong{background:rgba(208,105,74,.16);color:var(--rust)}
+.bb{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.bb div{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:13px;line-height:1.42}
+.bb h4,.tell h4{font-family:var(--mono);font-weight:500;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:4px}
+.bb .bull h4{color:var(--sea)} .bb .bear h4{color:var(--rust)}
+.tell{border:1px dashed var(--h);border-radius:12px;padding:10px 14px;font-size:13.5px;line-height:1.42;color:var(--fg)}
+.tell h4{color:var(--h)}
+.src{border-top:1px solid var(--line);padding-top:8px;font-size:9.6px;line-height:1.45;color:var(--fg4);
+  font-family:var(--mono);columns:2;column-gap:28px}
+.src li{list-style:none;break-inside:avoid;margin-bottom:2px}
+.src li b{color:var(--fg3);font-weight:500}
+.src a{color:var(--fg3)} .src a:hover{color:var(--gold)}
+.src li.flash{color:var(--gold)}
+#tells table.facts{font-size:15.5px} #tells table.facts td{padding:9px 14px 9px 0} tr[data-go]{cursor:pointer} tr[data-go]:hover td{color:var(--gold)}
+.go{font-family:var(--mono);font-size:10px;color:var(--fg4);margin-left:6px}
+.prose{font-size:14.5px;line-height:1.52;color:var(--fg2)}
+.prose p+p{margin-top:8px}
+.prose b{color:var(--fg);font-weight:600}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cell{background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:13px;line-height:1.42}
+.cell h5{font-family:var(--serif);font-weight:500;font-size:18px;color:var(--fg);margin-bottom:4px}
+.cell .q{font-family:var(--serif);font-style:italic;color:var(--fg);font-size:14px;margin:4px 0 6px}
+.cell .m{font-family:var(--mono);font-size:10.5px;color:var(--fg3);letter-spacing:.04em}
+.cell.lean{border-color:var(--h)}
+
+/* ---------- HUD ---------- */
+.hud{position:fixed;z-index:10;font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--fg3)}
+#crumb{left:18px;top:14px;display:flex;gap:8px;align-items:center;background:rgba(11,11,12,.78);backdrop-filter:blur(8px);
+  border:1px solid var(--line);border-radius:99px;padding:7px 14px}
+#crumb b{color:var(--fg);font-weight:500}
+#crumb a{color:var(--fg3);cursor:pointer} #crumb a:hover{color:var(--gold)}
+#tools{right:18px;top:14px;display:flex;gap:6px}
+#tools button{background:rgba(11,11,12,.78);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:99px;padding:7px 13px;color:var(--fg2)}
+#tools button:hover{border-color:var(--gold);color:var(--gold)}
+#hint{left:50%;bottom:16px;transform:translateX(-50%);background:rgba(11,11,12,.78);backdrop-filter:blur(8px);
+  border:1px solid var(--line);border-radius:99px;padding:7px 16px;transition:opacity .6s;white-space:nowrap}
+#mini{right:18px;bottom:16px;width:190px;height:120px;background:rgba(11,11,12,.8);border:1px solid var(--line);border-radius:12px;overflow:hidden;cursor:pointer}
+#mini i{position:absolute;border-radius:2px;background:var(--line2)}
+#mini i.cur{background:var(--gold2)}
+#mini u{position:absolute;border:1.5px solid var(--gold);border-radius:3px;pointer-events:none}
+#help{position:fixed;inset:0;z-index:20;display:none;place-items:center;background:rgba(5,5,6,.7);backdrop-filter:blur(4px)}
+#help.on{display:grid}
+#help div{max-width:520px;background:var(--card);border:1px solid var(--line2);border-radius:18px;padding:26px 30px;font-size:14px;line-height:1.6;color:var(--fg2)}
+#help h4{font-family:var(--serif);font-weight:500;font-size:22px;color:var(--fg);margin-bottom:10px}
+#help kbd{font-family:var(--mono);font-size:11.5px;border:1px solid var(--line2);border-radius:5px;padding:1px 6px;color:var(--fg)}
+
+/* ---------- read mode (and print, and small screens by choice) ---------- */
+body.read{overflow:auto}
+body.read #vp{position:static;overflow:visible;cursor:auto;background:none;touch-action:auto}
+body.read #world{position:static;transform:none!important;width:auto!important;height:auto!important;
+  padding:70px 16px 60px;display:flex;flex-direction:column;align-items:center;gap:36px;--o1:1}
+body.read #chips,body.read #grid,body.read #links,body.read #mini,body.read #hint,body.read #tools [data-act=home]{display:none}
+body.read .node{position:relative;left:auto!important;top:auto!important;width:min(1200px,100%);height:auto;box-shadow:none}
+body.read .l0{display:none}
+body.read .l1{position:relative;opacity:1;pointer-events:auto}
+body.read .chart{cursor:auto}
+@media (max-width:820px){
+  body.read .l1 .cols,body.read .bb,body.read .grid2{grid-template-columns:1fr}
+  body.read .src{columns:1}
+  body.read .l1{padding:26px 20px 22px}
+  body.read .l1 header{flex-wrap:wrap}
+}
+@media (max-width:700px){#mini,#hint{display:none} #crumb{max-width:58vw;overflow:hidden;white-space:nowrap;font-size:11px} #tools button{padding:6px 10px}}
+@media print{
+  body{background:#fff;color:#111}
+  .hud,#help{display:none!important}
+}
+noscript{display:block;padding:40px;font-family:var(--serif);font-size:20px}
+/* ---------- closing doors: additions ---------- */
+.band{position:absolute;width:1200px;pointer-events:none;text-align:center;white-space:nowrap;
+  font-family:var(--serif);font-size:118px;line-height:1;letter-spacing:-.01em;color:rgba(235,232,226,.15);
+  opacity:calc(1 - var(--o1) * .8)}
+.band small{display:block;margin-top:14px;font-family:var(--mono);font-size:34px;letter-spacing:.3em;text-transform:uppercase;color:rgba(235,232,226,.22)}
+.band.layer{text-align:left;font-family:var(--mono);font-size:40px;letter-spacing:.32em;text-transform:uppercase;color:rgba(212,173,58,.32)}
+.band.now{color:rgba(212,173,58,.26)}
+body.read .band{display:none}
+.priv{color:var(--fg3)}
+svg .dg{font-family:var(--sans);font-size:12px;fill:var(--fg2)}
+svg .dgb{font-family:var(--serif);font-size:15px;fill:var(--fg)}
+svg .dgm{font-family:var(--mono);font-size:9.5px;fill:var(--fg3);letter-spacing:.04em}
+svg .box{fill:var(--bg2);stroke:var(--line2);stroke-width:1}
+svg .box.h{stroke:var(--gold2)}
+svg .ar2{fill:none;stroke:var(--fg4);stroke-width:1.3}
+svg .ar2.h{stroke:var(--gold)}
+.ep{display:grid;grid-template-columns:58px 1fr;gap:2px 12px;font-size:13px;line-height:1.38;padding:6px 0;border-bottom:1px solid var(--line)}
+.ep b{font-family:var(--mono);font-weight:500;font-size:11px;color:var(--h);padding-top:2px}
+.ep i{color:var(--fg);font-style:normal;font-family:var(--serif);font-size:15px}
+.ep span{display:block;color:var(--fg3)}
+code{font-family:var(--mono);font-size:.88em;color:var(--fg)}
+</style>
+</head>
+<body class="z0">
+<noscript>This piece is a zoomable map drawn by a small inline script. Enable JavaScript, or read the sources in the repository.</noscript>
+<div id="chips"></div>
+<div id="vp"><div id="world"><div id="grid"></div><svg id="links"></svg></div></div>
+<nav id="crumb" class="hud"><a href="../../" title="taoaieng.io/pub — all pieces and the archive">pub</a><span>›</span><a data-act="home">closing doors</a><span id="crumbTail"></span></nav>
+<div id="tools" class="hud"><button data-act="home" title="whole map (0)">map</button><button data-act="read" title="read as an article (R)">read</button><button data-act="help" title="how to move (?)">?</button></div>
+<div id="hint" class="hud">scroll or pinch to zoom · drag to pan · click a tile · ← → walk · R read · ? help</div>
+<div id="mini" class="hud"></div>
+<div id="help"><div>
+  <h4>How to move</h4>
+  <p>Time runs left to right, 2007 → 2030. Three layers run top to bottom: <b>the field</b> (what happened to everyone), <b>his practice</b> (how one data scientist worked), <b>the evidence</b> (his takes and experiments, scored). The map has three depths: <b>far</b>, one line and one number per tile; <b>near</b> (click a tile), the chart, the facts and the take; <b>closer</b> (click a chart or the source list), every number's source, date and label.</p>
+  <p style="margin-top:10px"><kbd>scroll</kbd> zoom · <kbd>drag</kbd> pan · <kbd>click</kbd> dive · <kbd>Esc</kbd> rise · <kbd>← ↑ → ↓</kbd> walk the map · <kbd>0</kbd> whole map · <kbd>R</kbd> read as an article · a superscript number jumps to its source.</p>
+  <p style="margin-top:10px">Labels: <span class="lab FACT">FACT</span> primary or high-quality source · <span class="lab">REP</span> single or second-hand · <span class="lab FORECAST">FORECAST</span> a named projection · <span class="lab UNVERIFIED">UNVERIFIED</span> could not be confirmed. Sources without a link are his own private files. Data as of 14 October 2026.</p>
+</div></div>
+
+<script>
+const cell = (h, q, body, meta, lean, id) => `<div class="cell${lean ? " lean" : ""}"><h5>${h}</h5>${q ? `<div class="q">“${q}”</div>` : ""}<div>${id ? cites(body, id) : body}</div>${meta ? `<div class="m">${meta}</div>` : ""}</div>`;
+const scoreRow = (v, t, id) => `<div class="score"><b class="${v}">${v.replace("-", " ")}</b><span>${id ? cites(t, id) : t}</span></div>`;
+
+const md = s => s.replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/\*([^*\s][^*]*?)\*/g, "<i>$1</i>").replace(/`([^`]+)`/g, "<code>$1</code>");
+const takeRow = (q, who, v, why, id) => `<div class="take"><q>${q}</q><div class="who">— ${who}</div>${v ? `<div class="score"><b class="${v}">${v.replace("-", " ")}</b><span>${cites(md(why), id)}</span></div>` : ""}</div>`;
+
+// ---------- small diagrams (pure SVG, qualitative: no numbers in them) ----------
+const SVGDEF = `<defs><marker id="ah" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#7d786f"/></marker><marker id="ahg" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#d4ad3a"/></marker></defs>`;
+function ladderSVG() {
+  const R = [["2008", "reads the rock, designs the blast", "below: the jumbo drills the face"],
+             ["2015", "chooses the features, the model and the fold", "below: the cluster fits it"],
+             ["2023", "reviews every line", "below: the copilot types"],
+             ["2026", "writes the contract, keeps the gates", "below: agents write the code"],
+             ["20??", "writes the objective and the condition that kills it", "below: agents write the contracts — a conjecture"]];
+  let g = `<svg viewBox="0 0 640 400" role="img" aria-label="the human's rung, five steps">${SVGDEF}`;
+  g += `<line x1="34" y1="18" x2="34" y2="388" stroke="#34343a" stroke-width="3"/><line x1="98" y1="18" x2="98" y2="388" stroke="#34343a" stroke-width="3"/>`;
+  R.forEach((r, i) => {
+    const y = 362 - i * 78, top = i === 4, now = i === 3;
+    g += `<line x1="34" x2="98" y1="${y}" y2="${y}" stroke="${now ? "#d4ad3a" : "#57534c"}" stroke-width="${now ? 5 : 3}"${top ? ' stroke-dasharray="5 5"' : ""}/>`;
+    g += `<text class="dgm" x="112" y="${y - 14}" style="fill:${now ? "#d4ad3a" : "#7d786f"}">${r[0]} · the human</text>`;
+    g += `<text class="dgb" x="112" y="${y + 4}"${top ? ' style="font-style:italic;fill:#b9b4ab"' : ""}>${r[1]}</text>`;
+    g += `<text class="dg" x="112" y="${y + 22}" style="fill:#7d786f">${r[2]}</text>`;
+  });
+  g += `<path class="ar2" d="M16 360 L16 40" marker-end="url(#ah)"/>`;
+  return g + `</svg>`;
+}
+function loopSVG(x0, title, steps, hot) {
+  const cx = x0 + 150, cy = 165, r = 92, P = [[cx, cy - r], [cx + r, cy], [cx, cy + r], [cx - r, cy]];
+  let g = `<text class="dgm" x="${cx}" y="22" text-anchor="middle" style="fill:${hot ? "#d4ad3a" : "#7d786f"};font-size:11px">${title}</text>`;
+  g += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${hot ? "#8f7524" : "#34343a"}" stroke-width="2" stroke-dasharray="4 6"/>`;
+  for (let k = 0; k < 4; k++) { const a = -Math.PI / 2 + k * Math.PI / 2 + .5, b = a + .55;
+    g += `<path class="ar2${hot ? " h" : ""}" d="M${cx + r * Math.cos(a)} ${cy + r * Math.sin(a)} A${r} ${r} 0 0 1 ${cx + r * Math.cos(b)} ${cy + r * Math.sin(b)}" marker-end="url(#${hot ? "ahg" : "ah"})"/>`; }
+  steps.forEach((s, k) => { const [x, y] = P[k], w = 132;
+    g += `<rect class="box${hot ? " h" : ""}" x="${x - w / 2}" y="${y - 17}" width="${w}" height="34" rx="8"/><text class="dg" x="${x}" y="${y + 4}" text-anchor="middle">${s}</text>`; });
+  return g;
+}
+const natmSVG = () => `<svg viewBox="0 0 640 300" role="img" aria-label="the observational loop on a tunnel face and in an agent loop">${SVGDEF}` +
+  loopSVG(0, "TUNNEL FACE · NATM, 2008", ["excavate a round", "measure convergence", "adapt the support", "next round"], false) +
+  loopSVG(330, "AGENT LOOP · 2026", ["generate", "score a hidden fold", "tighten the gate", "next round"], true) + `</svg>`;
+function roundSVG() {
+  const B = [[90, 40, "log/mat.md", "his prompt"], [260, 40, "route", "pattern + model roles"], [430, 40, "agents", "plan · execute ∥"],
+             [430, 150, "gates", "each seen to fail"], [260, 150, "review", "another model family"], [90, 150, "log/agt.md", "reply + what failed"]];
+  let g = `<svg viewBox="0 0 520 200" role="img" aria-label="one working round in the house">${SVGDEF}`;
+  B.forEach(([x, y, a, b], i) => {
+    g += `<rect class="box${i === 3 ? " h" : ""}" x="${x - 74}" y="${y - 24}" width="148" height="48" rx="9"/><text class="dgb" x="${x}" y="${y - 3}" text-anchor="middle" style="font-size:14px">${a}</text><text class="dgm" x="${x}" y="${y + 14}" text-anchor="middle">${b}</text>`;
+  });
+  g += `<path class="ar2" d="M166 40H184" marker-end="url(#ah)"/><path class="ar2" d="M336 40H354" marker-end="url(#ah)"/><path class="ar2" d="M430 66V124" marker-end="url(#ah)"/>`;
+  g += `<path class="ar2" d="M354 150H336" marker-end="url(#ah)"/><path class="ar2" d="M184 150H166" marker-end="url(#ah)"/><path class="ar2 h" d="M90 124V66" marker-end="url(#ahg)"/>`;
+  g += `<text class="dgm" x="98" y="99" style="fill:#d4ad3a">next round</text>`;
+  return g + `</svg>`;
+}
+
+const ERAS = [[-2, "2007 – 2015", "before code"], [-1, "2015 – 2022", "doors by hand"], [0, "2023 – 2025", "the pilot"], [1, "2026", "the house"], [2, "2027 – 2030", "the next rung"]];
+
+const DATA = {
+start: "thesis",
+bands: [
+  ...ERAS.map(([gx, t, s]) => ({ x: gx * 1800 - 600, y: -2385, html: `${t}<small>${s}</small>`, cls: gx === 1 ? "now" : "" })),
+  { x: -4200, y: -2070, html: "the field ↓", cls: "layer" },
+  { x: -4200, y: -575, html: "his practice ↓", cls: "layer" },
+  { x: -4200, y: 840, html: "the evidence ↓", cls: "layer" }
+],
+nodes: [
+
+// ───────────────────────────── top row: thesis, the rung, method
+{ id: "thesis", gx: 0, gy: -2, hue: "gold", short: "the thesis", h: 1110,
+  kicker: "data science in the age of agents · 14 Oct 2026", title: "Closing Doors",
+  big: { v: "11×", u: "", l: "words his agents wrote for each word he wrote, in this vault" },
+  verdict: "Agents made opening doors nearly free. His bet: the scarce work is closing them.",
+  pill: "a working hypothesis",
+  lede: "A notebook line from 2022: *Data Science is about opening doors, Machine Learning Engineering is about closing almost all of them* [1]. By 2026 an agent opens a door in minutes: frontier models finish, half the time, software tasks that take a skilled person about five hours [2], and 83% of developers use AI tools in their role [3]. Opening got cheap; closing did not. Only 9.6% of developers use an AI answer as it comes [3], and on a hardened coding benchmark the top model scores 99.4% on the public tasks but 81.6% on a separate private set — a difference its authors put partly down to training-time exposure [4]. This map follows one data scientist across that turn, 2007 → 2030. Its argument is his working hypothesis, not a measured fact: the scarce part of the work moved from writing code to deciding what is allowed to stay.",
+  charts: [{ kind: "bar", title: "words written by agents per word he wrote — append-only logs, by vault", log: true, xf: "x", L: 150, rh: 23,
+    rows: [["inc", 46.6, "gold", "46.6×"], ["alx-ds-ml-ai", 27.5, "gold", "27.5×"], ["opo", 12.5, "gold", "12.5×"], ["this vault", 11.1, "rust", "11.1×"], ["pat", 9.3, "gold", "9.3×"], ["dsp", 6.4, "gold", "6.4×"], ["you-nut", 5.0, "gold", "5.0×"], ["pub", 3.6, "gold", "3.6×"], ["aandi", 0.83, "dim", "0.8×"], ["you-train", 0.54, "dim", "0.5×"]],
+    src: "Own count, 14 Oct 2026: words in the agent's log (`log/agt*.md`) ÷ words in his (`log/mat.md`), per vault [5]. Words, not effort — a one-line prompt can carry an hour of thought; the two vaults under 1× are seeds an agent barely worked." }],
+  right: id => takeRow("Data Science is about opening doors, Machine Learning Engineering is about closing almost all of them.", "notebook, León, 2022", "holds", "Four years on, opening is what agents do best. Closing — the held-out fold, the gate, the kill with a reason — is what the evidence on this map suggests stays scarce; the case against is on the left.", id) + `<div class="grid2">
+    ${cell("What got cheap", "", md("The draft, the code, the first search. The price of a fixed capability falls **9× to 900× a year**, depending on the task [6]."), "", false, id)}
+    ${cell("What got scarce", "", md("Knowing whether it is right. **66%** of developers spend more time fixing almost-right AI code [7]; **76.5%** run an AI answer before using it [3]."), "", false, id)}
+    ${cell("What he does now", "", md("Writes the contract the agents build against, keeps gates he has *seen fail*, has a different model family review the author — and still does the old parts: choosing the problem, designing the experiment, explaining the result to whoever decides."), "", true, id)}
+    ${cell("What he stopped doing", "", md("Typing most of the code. Notebook cells as the deliverable. Letting one model check its own work."), "", false, id)}
+  </div>`,
+  left: id => `<div class="bb"><div class="bull"><h4>for the hypothesis</h4>${rich("Trust in output stays conditional: **48%** of developers trust AI when they can easily verify it, **6.6%** for important decisions [3]. Public scores outrun private ones [4]; his own judge was overconfident (*an eval is a model*).", id)}</div><div class="bear"><h4>the strongest case against</h4>${rich("Agents already close doors too: **58.1%** of developers use AI to write tests and **64.5%** find it useful for review [3]. If checking automates as fast as writing, its absolute cost falls even while its share of human time rises — and scarcity is the wrong word.", id)}</div></div>`,
+  tellLeft: true,
+  tell: "**Whether closing gets cheap too.** Not words generated but accepted value per human hour, and defects that escape review. Two proxies on this map: the public–private score difference [4], and how well an LLM judge is calibrated on a fold it never saw.",
+  src: [["Private notebook, 2022 — quoted as an idea", "", "2022", ""],
+    ["METR — Time Horizon 1.1 (Claude Opus 4.5: 320 min, CI 170–729)", "https://metr.org/blog/2026-1-29-time-horizon-1-1/", "29 Jan 2026", "FACT"],
+    ["Stack Overflow Developer Survey 2026 — AI data", "https://survey.stackoverflow.co/2026/ai/data", "2026", "FACT"],
+    ["Scale Labs — SWE-Bench Pro V2: public 638/642 vs private 222/272 (Claude Opus 5)", "https://labs.scale.com/blog/swe-bench-pro-v2", "22 Sep 2026", "FACT"],
+    ["Own count over his private vaults (wc -w, log files)", "", "14 Oct 2026", "FACT"],
+    ["Epoch AI — LLM inference prices have fallen rapidly but unequally across tasks", "https://epoch.ai/data-insights/llm-inference-price-trends", "12 Mar 2025", "FACT"],
+    ["Stack Overflow — 2025 Developer Survey results (blog)", "https://stackoverflow.blog/2025/12/29/developers-remain-willing-but-reluctant-to-use-ai-the-2025-developer-survey-results-are-here/", "29 Dec 2025", "FACT"]] },
+
+{ id: "ladder", gx: -1, gy: -2, hue: "ink", short: "the rung",
+  kicker: "the human's rung · 2008 → 20??", title: "The rung moves up",
+  big: { v: "5", u: "rungs", l: "from the rock face to the kill criterion" },
+  verdict: "On each rung the machine takes the one below. The human stays where consequences are decided.",
+  pill: "a framing, not a measurement",
+  lede: "The same move, five times. On a tunnel face the jumbo drills and the engineer reads the rock. In a model the cluster fits and the data scientist chooses the features and the fold. With a copilot the model types and the engineer reviews each line. With agents the code writes itself and the human writes the contract it is built against. The next rung, if the curves on this map hold, is writing only the objective and the condition that kills it.",
+  left: id => `<figure class="chart">${ladderSVG()}<div class="cs">Each rung dated by when he stood on it. The top rung is a conjecture.</div></figure>`,
+  right: id => cites(`<div class="prose"><p><b>What does not move.</b> On every rung the work that stays human is the same kind: deciding what counts as evidence before looking at it, and carrying the consequence when it is wrong. A blast that fractures the wrong rock, a model that loses money, an agent that ships a passing test over a broken function — the failure changes medium, not shape.</p><p><b>What the climb costs.</b> Each rung up removes practice that used to train judgement. Employment of 22–25-year-olds in the most AI-exposed jobs is 11% lower than in Nov 2022 [1] — the bottom rung is where people learned. The New York Fed's reading is more cautious: the relative fall in AI-exposed vacancies began before ChatGPT [2].</p></div>`, id) +
+    takeRow("human consciousness creates from zero to one, chatbots amplify human intelligence, judgement and wisdom, agentic ai compounds the amplification across iterations beyond the first horizon.", "notebook, Apr 2026", "", "", id),
+  tell: "**Who trains the next door-closer?** If juniors never write the code, where do they learn to judge it? Watch the employment gap for 22–25-year-olds [1].",
+  src: [["Stanford Digital Economy Lab — Canaries in the Coal Mine? (revised)", "https://digitaleconomy.stanford.edu/news/canariesaug26/", "12 Aug 2026", "FACT"],
+    ["Liberty Street Economics — Do job postings show early labor-market effects of AI?", "https://libertystreeteconomics.newyorkfed.org/2026/05/do-job-postings-show-early-labor-market-effects-of-ai/", "14 May 2026", "FACT"]] },
+
+{ id: "method", gx: 1, gy: -2, hue: "ink", short: "method",
+  kicker: "how this was made", title: "Method & limits",
+  big: { v: "4 + 1", u: "", l: "research slices, one adversarial review" },
+  verdict: "Every number has a source and a date. His own numbers are computed from his own files.",
+  pill: "draft · offline",
+  left: id => `<div class="prose"><p><b>Field data.</b> Four research passes on 14 Oct 2026 — capability, adoption and trust, the labour market, ideas and forecasts — each fetching primary sources the same day (METR, Scale, Stack Overflow, DORA, BLS, Indeed Hiring Lab, Stanford, the New York Fed, arXiv, lab announcements) and labelling every row <span class="lab FACT">FACT</span> <span class="lab">REP</span> <span class="lab FORECAST">FORECAST</span> <span class="lab UNVERIFIED">UNVERIFIED</span>. Key figures were re-fetched by the author.</p><p><b>His data.</b> Commit counts from <code>git log</code> over his personal repos; word counts over the append-only logs; experiment results read from the result files the experiments wrote. Computed, not typed. Private repos are cited by file, not linked. Notebook lines are quoted as ideas — nothing personal.</p><p><b>Review.</b> An adversarial pass by a model of a different family from the author checked every tile against its sources; findings and fixes are in the log.</p></div>`,
+  right: id => `<div class="prose"><p><b>Known gaps.</b> No posting series exists for data scientists alone. Lab-reported benchmark scores use different scaffolds and trial counts. METR calls horizons above 16 hours unreliable, and its dashboard has been frozen since 8 Sep 2026. Stack Overflow rewords its trust question most years, so year-on-year trust is indicative, not like-for-like. The commit counts cover personal repos only; employer work is not in them.</p><p><b>Not a CV.</b> The career facts are the ones on his public CV; this piece adds no employer's internal material.</p><p><b>Made by</b> <a href="https://adrianmatias.github.io/" target="_blank" rel="noopener">Adrian Matias</a>. The earlier piece on this shelf: <a href="../tsunami-and-printing-press/">Tsunami &amp; Printing Press</a>. Archive of earlier writing and the podcast: <a href="../../archive/">archive</a>.</p></div>`,
+  tellLeft: true,
+  tell: "**Read next.** The podcast's craft episodes are on the tile *the manifesto, on air*; the blog and the full video index are in the [archive](../../archive/)." },
+
+// ───────────────────────────── the field
+{ id: "boom", gx: -2, gy: -1, hue: "sea", short: "the sexiest job",
+  kicker: "the field · 2012 → 2021", title: "The sexiest job",
+  big: { v: "+35%", u: "", l: "BLS projection for US data-scientist jobs, 2025–35" },
+  verdict: "The field was built to open doors — and learned that the model is the small part.",
+  pill: "context",
+  lede: "In October 2012 HBR called data scientist *the sexiest job of the 21st century* [1]. Three years later Google engineers warned that *only a small fraction of real-world ML systems is composed of the ML code* [2] — the rest is plumbing, monitoring and debt. In 2017 Karpathy named the next shift: *neural networks … are Software 2.0* [3], code written by optimisation rather than by hand. A decade on, HBR found the job had *grown in popularity* and spread well beyond the coastal tech firms [4].",
+  charts: [{ kind: "bar", title: "US BLS projected employment growth, 2025–35", xf: "pct", L: 200, rh: 30,
+    rows: [["Data scientists", 35, "sea", "+35%"], ["Software developers, QA, testers", 10, "ink", "+10%"], ["All occupations", 3, "dim", "+3%"]],
+    src: "BLS Occupational Outlook Handbook [5][6]. A projection, not a measurement." }],
+  facts: [["2012", "HBR, Davenport & Patil: *Data scientist: the sexiest job of the 21st century* [1]", "FACT"],
+    ["2015", "Sculley et al., NeurIPS: hidden technical debt in ML systems [2]", "FACT"],
+    ["2017", "Karpathy, *Software 2.0* [3]", "FACT"],
+    ["$120,230", "US median pay, data scientists, May 2025 [5]", "FACT"],
+    ["275,600 → 371,000", "US data-scientist jobs, 2025 → 2035 projected [5]", "FORECAST"]],
+  right: id => `<div class="prose"><p><b>Why it matters here.</b> Sculley's point is the hinge of this map. If the model code was never most of a real ML system, an agent that writes model code was never going to take most of the job. What it takes is the part that was easiest to show in a notebook.</p></div>` +
+    takeRow("The obsession with machine Learning deployment comes from the frustration of having not only code, but data and models too and not coders dumping cells until a notebook outputs an accuracy if run in the right order.", "notebook, 2022", "", "", id),
+  tell: "**The plumbing was the job.** Watch which part of the pipeline agents take next: the model code went first; monitoring, parity and data contracts are the parts Sculley said were the system.",
+  src: [["HBR — Data Scientist: The Sexiest Job of the 21st Century", "https://hbr.org/2012/10/data-scientist-the-sexiest-job-of-the-21st-century", "Oct 2012", "FACT"],
+    ["Sculley et al. — Hidden Technical Debt in Machine Learning Systems (NeurIPS 28)", "https://papers.nips.cc/paper_files/paper/2015/hash/86df7dcfd896fcaf2674f757a2463eba-Abstract.html", "2015", "FACT"],
+    ["Karpathy — Software 2.0 (archived)", "https://web.archive.org/web/20250301065024/https://karpathy.medium.com/software-2-0-a64152b37c35", "11 Nov 2017", "FACT"],
+    ["HBR — Is Data Scientist Still the Sexiest Job of the 21st Century?", "https://hbr.org/2022/07/is-data-scientist-still-the-sexiest-job-of-the-21st-century", "15 Jul 2022", "FACT"],
+    ["BLS — Occupational Outlook Handbook: Data Scientists", "https://www.bls.gov/ooh/math/data-scientists.htm", "27 Aug 2026", "FACT"],
+    ["BLS — Occupational Outlook Handbook: Software Developers, QA Analysts, and Testers", "https://www.bls.gov/ooh/computer-and-information-technology/software-developers.htm", "27 Aug 2026", "FACT"]] },
+
+{ id: "shock", gx: -1, gy: -1, hue: "ink", short: "the helicopter",
+  kicker: "the field · 2021 → 2025", title: "The helicopter",
+  big: { v: "19%", u: "slower", l: "experienced developers with early-2025 AI — who believed they were 20% faster" },
+  verdict: "Use climbed while trust fell. In early 2025, people felt faster than a trial measured them.",
+  pill: "adoption ≠ evidence",
+  lede: "Copilot entered preview in June 2021 [1]; ChatGPT shipped on 30 Nov 2022 [2]; SWE-bench appeared in Oct 2023 [3], and in Mar 2024 Devin reported 13.86% of its issues resolved against a prior best of 1.96% [4]. Adoption raced ahead of evidence. In Stack Overflow's surveys the share using or planning to use AI tools rose from 70% to 84% between 2023 and 2025, while trust in its accuracy fell from 43% to 29% [5][6][7]. METR's randomised trial of experienced open-source developers (16 people, 246 tasks) found tasks took **19% longer** with AI — while the developers believed it had made them 20% faster [8]. METR now calls that early-2025 result out of date: its 2026 note judges a speed-up likely, but unmeasurable with its design, because developers increasingly refuse to work without AI [12].",
+  charts: [{ title: "Stack Overflow survey — use AI tools vs trust their accuracy", yf: "pct", y0: 0, y1: 100, x0: 2022.8, x1: 2025.2, h: 210,
+    series: [{ label: "use or plan to use", hue: "gold", data: [["2023", 70], ["2024", 76], ["2025", 84]] }, { label: "trust the accuracy", hue: "rust", data: [["2024", 43], ["2025", 29]] }],
+    dots: [["2023", 70, "70%", "gold"], ["2024", 76, "76%", "gold"], ["2025", 84, "84%", "gold"], ["2024", 43, "43%", "rust", 14], ["2025", 29, "29%", "rust", 14]],
+    src: "[5][6][7]. Questions are reworded between years: indicative, not like-for-like. 2026 asked about trust conditionally (next tile)." }],
+  facts: [["29 Jun 2021", "GitHub Copilot technical preview [1]", "FACT"],
+    ["30 Nov 2022", "ChatGPT [2]", "FACT"],
+    ["14 Mar 2023", "GPT-4 [9]", "FACT"],
+    ["66%", "of developers spend more time fixing almost-right AI code, 2025 [7]", "FACT"],
+    ["2024", "DORA: AI adoption came with lower delivery stability and throughput [10]", "FACT"]],
+  take: { q: "coding with llms feels like going to a medieval battle with an apache helicopter. but not a drone yet, still you need the pilot.", who: "notebook, Sep 2024", verdict: "holds", why: "In 2026 only **6.6%** of developers trust AI output for important decisions, and 9.6% use an answer as it comes [11]. The pilot is still in the seat." },
+  tell: "**Felt speed vs measured speed.** The gap between what developers believe and what a randomised trial measures is itself the lesson: a self-report is a visible loss.",
+  src: [["GitHub — Introducing GitHub Copilot", "https://github.blog/news-insights/product-news/introducing-github-copilot-ai-pair-programmer/", "29 Jun 2021", "FACT"],
+    ["OpenAI — Introducing ChatGPT", "https://openai.com/index/chatgpt/", "30 Nov 2022", "FACT"],
+    ["Jimenez et al. — SWE-bench (arXiv:2310.06770)", "https://arxiv.org/abs/2310.06770", "10 Oct 2023", "FACT"],
+    ["Cognition — Introducing Devin (13.86% on full SWE-bench, self-reported)", "https://cognition.ai/blog/introducing-devin", "12 Mar 2024", "FACT"],
+    ["Stack Overflow Developer Survey 2023", "https://survey.stackoverflow.co/2023/", "2023", "FACT"],
+    ["Stack Overflow — 2024 results (blog): 76% use or plan; 43% trust accuracy", "https://stackoverflow.blog/2025/01/01/developers-want-more-more-more-the-2024-results-from-stack-overflow-s-annual-developer-survey/", "1 Jan 2025", "FACT"],
+    ["Stack Overflow — 2025 results (blog): 84%; trust 29%; 66% fixing almost-right code", "https://stackoverflow.blog/2025/12/29/developers-remain-willing-but-reluctant-to-use-ai-the-2025-developer-survey-results-are-here/", "29 Dec 2025", "FACT"],
+    ["METR — Measuring the impact of early-2025 AI on experienced open-source developer productivity", "https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/", "10 Jul 2025", "FACT"],
+    ["OpenAI — GPT-4", "https://openai.com/index/gpt-4-research/", "14 Mar 2023", "FACT"],
+    ["DORA — Accelerate State of DevOps Report 2024", "https://dora.dev/research/2024/dora-report/", "2024", "FACT"],
+    ["Stack Overflow Developer Survey 2026 — AI data", "https://survey.stackoverflow.co/2026/ai/data", "2026", "FACT"],
+    ["METR — changing our developer productivity experiment design", "https://metr.org/blog/2026-02-24-uplift-update/", "24 Feb 2026", "FACT"]] },
+
+{ id: "agents", gx: 0, gy: -1, hue: "ink", short: "agents arrive", h: 1220,
+  kicker: "the field · 2025 → 2026", title: "Agents arrive",
+  big: { v: "5.3", u: "hours", l: "software task a frontier agent finishes half the time (METR, Jan 2026)" },
+  verdict: "The doubling looks real. The best public scores may be partly memory.",
+  pill: "measure the fold",
+  lede: "Claude Code arrived in Feb 2025 [1] and Codex in Apr–May [2]; by Dec 2025 Claude Code alone ran at a $1bn annual rate [3]. METR's time horizon — the length of task an agent finishes half the time — doubled about every 7 months since 2019 and about every 3 months on 2024-onward data [4][5]. Lab-announced SWE-bench Verified scores climbed from 33% to 81% in eighteen months [1][6]–[10][19][20]. Then the measurement began to leak: models locate the bug from the issue text alone far better on Verified than on fresh repositories [11], and SWE-Bench Pro V2 scores Claude Opus 5 at **99.4%** on its public tasks and **81.6%** on a separate private set — consistent, says Scale, with both genuine capability and recall [12].",
+  charts: [{ title: "METR 50% time horizon, hours (log scale)", log: true, y0: .5, y1: 30, x0: 2025, x1: 2026.7, h: 190,
+      series: [{ hue: "ink", dash: true, data: [["2025-02", 1.0], ["2025-08", 3.57], ["2025-11", 5.33], ["2026-06", 11.3]] }],
+      dots: [["2025-02", 1.0, "Claude 3.7 Sonnet ≈1 h", "fg", 16], ["2025-08", 3.57, "GPT-5 3.6 h", "fg", 16], ["2025-11", 5.33, "Opus 4.5 5.3 h", "gold", -10], ["2026-06", 11.3, "GPT-5.6 Sol ≈11 h, not robust", "rust", 18]],
+      src: "Points at model release; Sol at METR's pre-deployment report. ≈1 h is the Mar 2025 suite [4]; 3.6 h and 5.3 h are Time Horizon 1.1 [5]; Sol ≈11.3 h (CI 5–40 h) METR itself calls not robust [13]. Wide intervals throughout." },
+    { title: "SWE-bench Verified — selected lab-announced scores, standard runs, no parallel test-time compute (%)", yf: "pct", y0: 20, y1: 100, x0: 2024.5, x1: 2026.8, h: 190,
+      series: [{ hue: "gold", data: [["2024-08", 33.2], ["2024-10", 49.0], ["2025-02", 63.7], ["2025-05", 72.7], ["2025-08", 74.9], ["2025-09", 77.2], ["2025-12", 80.0], ["2026-02", 81.42]] }],
+      dots: [["2024-08", 33.2, "33%", "gold"], ["2026-02", 81.42, "81%", "gold", 16], ["2026-09", 99.4, "Pro V2 public 99.4%", "fg", 14], ["2026-09", 81.6, "Pro V2 private 81.6%", "rust", 16]],
+      src: "One point per announcement: GPT-4o, Claude 3.5 Sonnet (new), 3.7 Sonnet, Sonnet 4, GPT-5, Sonnet 4.5, GPT-5.2, Opus 4.6 (25-trial mean, prompt modification) [6][7][1][8][19][20][9][10]. High-compute runs score higher (e.g. Sonnet 4.5: 82.0%); scaffolds and trial counts differ; the official leaderboard top is lower (79.2%) and has had no new entry since 26 Feb 2026 [14]. Pro V2 is a different, harder benchmark [12]." }],
+  rightFacts: [["24 Feb 2025", "Claude Code research preview [1]", "FACT"],
+    ["16 Apr 2025", "Codex CLI; the cloud Codex agent on 16 May [2]", "FACT"],
+    ["26.2%", "of developers use AI agents or automated workflows, 2026 [15]", "FACT"],
+    ["≈4%", "of public GitHub commits authored by Claude Code (SemiAnalysis, cited by METR) [16]", "REPORTED"],
+    ["16.9%", "of Kaggle competitions where the best agent (o1-preview + AIDE) reached a medal, MLE-bench, 2024–25 [17]", "FACT"],
+    ["34%", "of data-analysis tasks solved by the best agent, DSBench (ICLR 2025, 2024-era models) [18]", "FACT"]],
+  take: { q: "Public benchmark datasets measure memorization, not intelligence.", who: "notebook, Mar 2024", verdict: "partly", why: "Scale reads part of the 17.8-point public–private difference as training-time exposure — on different task sets, so not a clean experiment [12] — and contamination studies point the same way [11]. But held-out scores rose too: memory may inflate the climb; it does not explain all of it." },
+  tell: "**The private split.** A narrowing public–private difference would be evidence — not proof — that public scores measure skill more than recall. A gap in the record: the data-science agent benchmarks here (MLE-bench, DSBench) are older runs, not comparable with these SWE scores.",
+  src: [["Anthropic — Claude 3.7 Sonnet and Claude Code", "https://www.anthropic.com/news/claude-3-7-sonnet", "24 Feb 2025", "FACT"],
+    ["OpenAI — Introducing Codex", "https://openai.com/index/openai-codex/", "16 May 2025", "FACT"],
+    ["Anthropic — acquires Bun as Claude Code reaches $1B", "https://www.anthropic.com/news/anthropic-acquires-bun-as-claude-code-reaches-usd1b-milestone", "3 Dec 2025", "FACT"],
+    ["METR — Measuring AI ability to complete long tasks", "https://metr.org/blog/2025-03-19-measuring-ai-ability-to-complete-long-tasks/", "19 Mar 2025", "FACT"],
+    ["METR — Time Horizon 1.1 (doubling 130.8 d since 2023, 88.6 d since 2024)", "https://metr.org/blog/2026-1-29-time-horizon-1-1/", "29 Jan 2026", "FACT"],
+    ["OpenAI — Introducing SWE-bench Verified (GPT-4o 33.2%)", "https://openai.com/index/introducing-swe-bench-verified/", "13 Aug 2024", "FACT"],
+    ["Anthropic — Claude 3.5 Sonnet (new), 49.0%", "https://www.anthropic.com/news/3-5-models-and-computer-use", "22 Oct 2024", "FACT"],
+    ["Anthropic — Claude 4 (Sonnet 4 72.7%)", "https://www.anthropic.com/news/claude-4", "22 May 2025", "FACT"],
+    ["OpenAI — Introducing GPT-5.2 (80.0%)", "https://openai.com/index/introducing-gpt-5-2/", "11 Dec 2025", "FACT"],
+    ["Anthropic — Claude Opus 4.6 (81.42%, averaged over 25 trials, with a prompt modification)", "https://www.anthropic.com/news/claude-opus-4-6", "5 Feb 2026", "FACT"],
+    ["Does SWE-Bench-Verified test agent ability or model memory? (arXiv:2512.10218)", "https://arxiv.org/abs/2512.10218", "11 Dec 2025", "FACT"],
+    ["Scale Labs — SWE-Bench Pro V2", "https://labs.scale.com/blog/swe-bench-pro-v2", "22 Sep 2026", "FACT"],
+    ["METR — pre-deployment evaluation of GPT-5.6 Sol", "https://metr.org/blog/2026-06-26-gpt-5-6-sol/", "26 Jun 2026", "FACT"],
+    ["SWE-bench — official Verified leaderboard", "https://www.swebench.com/verified.html", "14 Oct 2026", "FACT"],
+    ["Stack Overflow Developer Survey 2026 — AI data", "https://survey.stackoverflow.co/2026/ai/data", "2026", "FACT"],
+    ["METR — changing our developer productivity experiment design", "https://metr.org/blog/2026-02-24-uplift-update/", "24 Feb 2026", "REPORTED"],
+    ["MLE-bench: evaluating ML agents on ML engineering (ICLR 2025)", "https://arxiv.org/abs/2410.07095", "26 Feb 2025", "FACT"],
+    ["DSBench: how far are data science agents from becoming experts? (ICLR 2025)", "https://proceedings.iclr.cc/paper_files/paper/2025/hash/50e9ad960ae78b741a6b4fea533f2eaf-Abstract-Conference.html", "2025", "FACT"],
+    ["OpenAI — Introducing GPT-5 (74.9%)", "https://openai.com/index/introducing-gpt-5/", "7 Aug 2025", "FACT"],
+    ["Anthropic — Claude Sonnet 4.5 (77.2%)", "https://www.anthropic.com/news/claude-sonnet-4-5", "29 Sep 2025", "FACT"]] },
+
+{ id: "market", gx: 1, gy: -1, hue: "rust", short: "where the work moved", h: 1040,
+  kicker: "the field · 2022 → 2026", title: "Where the work moved",
+  big: { v: "71%", u: "", l: "of the 2025–26 rise in US software postings came from senior roles" },
+  verdict: "Not a collapse — a shift in composition: senior and AI-titled roles up, the youngest down.",
+  pill: "contested at the bottom",
+  lede: "US software-development postings sit 27.5% below February 2020, yet since Claude Code launched they rose about 15% while all postings fell 7% [1]. The rebound is senior (71% of the increase) and AI-titled (37%) [1]. AI engineer topped LinkedIn's fastest-growing US jobs in both 2025 and 2026 [2][3]. The cost lands on the bottom rung: employment of 22–25-year-olds in the most AI-exposed occupations is 11% lower than in Nov 2022, while in the least exposed it grew 10% [4]. The New York Fed adds the caution: the relative fall in AI-exposed vacancies began before ChatGPT, with no clear junior-versus-senior split in postings [5].",
+  charts: [{ kind: "bar", title: "US postings and young-worker employment, % change — different windows, each labelled", xf: "pct", L: 250, rh: 27,
+    rows: [["software postings vs Feb 2020", -27.5, "rust", "−27.5%"], ["software postings since Feb 2025", 15, "sea", "≈ +15%"], ["all postings since Feb 2025", -7, "dim", "−7%"], ["ages 22–25, most AI-exposed, Nov 22→Jun 26", -11, "rust", "−11%"], ["ages 22–25, least exposed, same window", 10, "sea", "+10%"]],
+    src: "Indeed Hiring Lab [1]; Stanford Digital Economy Lab [4]. Descriptive, not causal." }],
+  rightFacts: [["#1", "AI engineer on LinkedIn's Jobs on the Rise, US, 2025 and 2026 [2][3]", "FACT"],
+    ["264 → 822", "US job titles touched by AI, Q1 2022 → Q1 2026; 63% outside tech [6]", "FACT"],
+    ["81 · 2.3%", "AI-touched job titles in Spain, Q1 2026 [6]", "FACT"],
+    ["0.03% → 0.27%", "AI-related share of Spanish postings, 2021 → Q1 2026 (vendor study) [7]", "REPORTED"],
+    ["5.5%", "of 903 sampled AI-engineer postings name model evaluation [8]", "REPORTED"]],
+  take: { q: "I think this AI breakthrough will double down on the disparity between the mediocre and the productive coders, multiplying the overall output.", who: "notebook, 2023", verdict: "not-yet", why: "Postings tilt to senior roles and the youngest lose ground in exposed jobs [1][4] — composition by seniority and age, not by productivity. No series here measures the mediocre-versus-productive split, or total output." },
+  tell: "**The senior share of new postings.** A rising share is consistent with — not proof of — demand moving toward experience. Read it with pay data, which this map does not have.",
+  src: [["Indeed Hiring Lab — AI and job postings: from destruction to creation?", "https://hiringlab.indeed.com/2026/07/08/ai-and-job-postings-from-destruction-to-creation/", "8 Jul 2026", "FACT"],
+    ["LinkedIn — Jobs on the Rise 2025 (US)", "https://www.linkedin.com/pulse/linkedin-jobs-rise-2025-25-fastest-growing-us-linkedin-news-gryie/", "7 Jan 2025", "FACT"],
+    ["LinkedIn — Jobs on the Rise 2026 (US)", "https://www.linkedin.com/pulse/linkedin-jobs-rise-2026-25-fastest-growing-roles-us-linkedin-news-dlb1c", "7 Jan 2026", "FACT"],
+    ["Stanford Digital Economy Lab — Canaries in the Coal Mine? (revised)", "https://digitaleconomy.stanford.edu/news/canariesaug26/", "12 Aug 2026", "FACT"],
+    ["Liberty Street Economics (NY Fed) — early labor-market effects of AI in postings", "https://libertystreeteconomics.newyorkfed.org/2026/05/do-job-postings-show-early-labor-market-effects-of-ai/", "14 May 2026", "FACT"],
+    ["Indeed Hiring Lab — AI is no longer just a tech occupation story", "https://hiringlab.indeed.com/2026/07/08/ai-is-no-longer-just-a-tech-occupation-story/", "8 Jul 2026", "FACT"],
+    ["Randstad España — las ofertas de empleo con IA se multiplican por nueve", "https://www.randstad.es/nosotros/sala-prensa/ofertas-empleo-ia-multiplican-nueve-espana-cinco-anos-impulsan-salarios-25-altos/", "19 May 2026", "REPORTED"],
+    ["Zero G Talent — LLM evaluation: the new AI hiring category (citing 365 Data Science)", "https://zerogtalent.com/blog/confident-ai-s-2-2m-seed-round-is-quietly-building-ai-s-first-llm-evaluation-workforce-and-the-deepeval-open-source-moat-reveals-what-post-hype-ai-engineering-actually-demands", "24 Jun 2026", "REPORTED"]] },
+
+{ id: "forecasts", gx: 2, gy: -1, hue: "rose", short: "named futures", h: 1040,
+  kicker: "the field · 2027 → 2030", title: "Named futures",
+  big: { v: "2027–30", u: "", l: "medians for an “automated coder”, three AI Futures authors, Aug 2026" },
+  verdict: "One group's medians sit in 2027–2030 — and the last bold public prediction had not come true when it was checked.",
+  pill: "forecasts, not facts",
+  lede: "AI 2027 (Apr 2025) placed a superhuman coder inside 2027 [1]; its authors' own medians already ranged from 2027 to 2033 [2]. Their Aug 2026 update forecasts a differently defined milestone, the *automated coder* — the point at which a leading lab would rather fire its software engineers than give up AI for coding: three authors' medians run from Nov 2027 to Jan 2030, conditional on progress going as fast as is technically feasible, with reality so far at 70–90% of the scenario's pace [3]. In Mar 2025 Dario Amodei expected AI to write 90% of code within three to six months; it missed that horizon: Redwood's Oct 2025 check put Anthropic nearer 50% of merged code, and Greenblatt then estimated 9–15 months in total [4]. METR's first fit implied week-long tasks within 2–4 years if the trend held [5].",
+  facts: [["2027", "AI 2027 scenario: superhuman coder [1]", "FORECAST"],
+    ["Nov 2027", "Kokotajlo's median for an automated coder (10–90%: Jan 2027 – Apr 2030) [3]", "FORECAST"],
+    ["Jan 2029", "Halstead's median [3]", "FORECAST"],
+    ["Jan 2030", "Lifland's median (90%: Oct 2070) [3]", "FORECAST"],
+    ["70–90%", "of AI 2027's pace observed so far, by its own authors [3]", "REPORTED"],
+    ["≈50% vs 90%", "AI-written share of merged code at Anthropic (Redwood's estimate) vs the prediction [4]", "REPORTED"],
+    ["+78m", "WEF net jobs to 2030 (170m created, 92m displaced); AI & ML specialists the #3 fastest-growing role [6]", "FORECAST"]],
+  take: { q: "i could believe that grok 5 will show benchmark saturation while breakthrough in inference. that could enable capabilities not seen before: ubiquitous, immediate, pushing the bottleneck anywhere else than in AI.", who: "notebook, Feb 2026", verdict: "partly", why: "Saturation, yes: a public 99.4% on SWE-Bench Pro V2 [7]. The bottleneck moving out of the model and into checking is the argument of this map — consistent with the evidence, not yet measured as such." },
+  bullT: "if the curve holds", bull: "Week-long agent tasks by 2027–29 would lift the human above the contract: objectives, budgets and kill criteria, with agents writing specifications for agents.",
+  bearT: "if it bends", bear: "Horizons above 16 h are already unmeasurable with METR's current suite, and its dashboard is frozen [8]. The last headline forecast had not come true when checked [4]. A plateau keeps the human on the contract rung for years.",
+  tell: "**Score the forecasters.** Each named median above has a date; write the check into the calendar. A gap in this record: no independent comparator (a Metaculus question, an Epoch forecast) could be reached for this piece.",
+  src: [["AI 2027 (Kokotajlo et al.)", "https://ai-2027.com/", "3 Apr 2025", "FORECAST"],
+    ["AI 2027 — Timelines forecast", "https://ai-2027.com/research/timelines-forecast", "Apr 2025, rev. Dec 2025", "FORECAST"],
+    ["AI Futures — Q2.5 2026 timelines update: uplift and revenue", "https://blog.aifutures.org/p/q25-2026-timelines-update-uplift", "16 Aug 2026", "FORECAST"],
+    ["Redwood Research — Is 90% of code at Anthropic being written by AIs?", "https://www.redwoodresearch.org/blog/is-90-of-code-at-anthropic-being", "22 Oct 2025", "REPORTED"],
+    ["METR — Measuring AI ability to complete long tasks", "https://metr.org/blog/2025-03-19-measuring-ai-ability-to-complete-long-tasks/", "19 Mar 2025", "FORECAST"],
+    ["WEF — Future of Jobs Report 2025", "https://www.weforum.org/publications/the-future-of-jobs-report-2025/in-full/2-jobs-outlook/", "Jan 2025", "FORECAST"],
+    ["Scale Labs — SWE-Bench Pro V2", "https://labs.scale.com/blog/swe-bench-pro-v2", "22 Sep 2026", "FACT"],
+    ["METR — Task-completion time horizons of frontier AI models (no longer updated)", "https://metr.org/time-horizons/", "8 Sep 2026", "FACT"]] },
+
+// ───────────────────────────── his practice
+{ id: "tunnel", gx: -2, gy: 0, hue: "rust", short: "the tunnel",
+  kicker: "his practice · 2007 → 2015", title: "The observational method",
+  big: { v: "8.6", u: "km", l: "of railway tunnel as site engineer, before any model" },
+  verdict: "The rock does not read your model. You measure the face every round and change the support.",
+  pill: "before code",
+  lede: "Before data there was rock: a mining-engineering degree in León (2003–07), a master's in geological engineering in Oviedo (2010–12) [1], and two years as site engineer on railway tunnels totalling 8,600 m, with teams of up to 20 [2]. The master's thesis designed the blasting for a 2.3 km high-speed-rail tunnel through the Cantabrian coal basin [3]. The design follows the New Austrian Tunnelling Method [3], an *observational* method: excavate a round, measure how the ground converges, adapt the support, repeat [4]. Then four years teaching calculus, statistics and physics in London [2].",
+  left: id => `<figure class="chart">${natmSVG()}<div class="cs">The same loop, eighteen years apart. Qualitative.</div></figure>`,
+  right: id => `<div class="prose"><p><b>What carried over.</b> You do not choose your geology — you choose how to measure it. A blast design is a hypothesis until the face confirms it. Safety limits — vibration, flyrock, gas — are set before cost, not traded against it.</p><p><b>The same method, another face.</b> In 2026 the loop is: an agent generates, the work is scored on a fold the agent never saw, the gate or the contract is tightened, next round. The engineer's job did not change: read what the ground did, not what the plan said it would do.</p></div>`,
+  tell: "**Measure the face, not the plan.** What you measure each round decides what the next round is allowed to build — the subject of every tile to the right.",
+  src: [["His CV (public site)", "https://adrianmatias.github.io/", "Oct 2026", "FACT"],
+    ["His CV, long form (tunnel lengths, team size; private copy)", "", "2026", "FACT"],
+    ["Master's thesis: blasting design for the Vega del Ciego tunnel, Variante de Pajares (private)", "", "2012", "FACT"],
+    ["Wikipedia — New Austrian tunnelling method", "https://en.wikipedia.org/wiki/New_Austrian_tunnelling_method", "accessed 14 Oct 2026", "REPORTED"]] },
+
+{ id: "byhand", gx: -1, gy: 0, hue: "sea", short: "doors by hand",
+  kicker: "his practice · 2015 → 2022", title: "Doors by hand",
+  big: { v: "<50", u: "ms", l: "a fraud filter at 99.8% specificity, built by hand" },
+  verdict: "Seven years of features, folds and production plumbing — the craft agents now compress.",
+  pill: "the classic stack",
+  lede: "From 2015 the work was the classic data-science stack, written by hand: consumer-persona models and attribution at Digilant; fraud detection at 99.8% specificity under 50 ms at DOCOMO Digital; propensity and churn on Spark at Stratio; deep and active learning for transactions at Numbrs; text analytics and semantic search at RavenPack, where a simpler few-shot design cut error by 30% [1]. The courses tell the same story: Spark (2015), deep learning (2016), functional programming in Scala (2017), MLOps (2021) [1].",
+  facts: [["2015–17", "Digilant — persona models, a game-theory attribution prototype; a URL filter cutting processing cost to 40% [1][2]", ""],
+    ["2017–19", "DOCOMO Digital — fraud detection, 99.8% specificity, <50 ms; default-payment filtering [1]", ""],
+    ["2019–20", "Stratio — propensity and churn on Spark; BERT + graph email segmentation [1]", ""],
+    ["2020–21", "Numbrs — deep and active learning for transaction classification across countries [1]", ""],
+    ["2022", "RavenPack — few-shot search personalisation (−30% error); active learning for learn-to-rank (+300% annotation efficiency, projected) [1]", ""],
+    ["2019–21", "teaching real-time big data and ML at IEBS [1]", ""]],
+  right: id => takeRow("ML engineers, ground truth is an illusion.", "notebook, 2022", "", "", id) +
+    `<div class="prose"><p><b>What the hands learned.</b> Every system on this tile lived or died on data kept apart from training; on the inference path matching the training path; on a metric chosen before the model, not after; on instrumenting the product and designing the test that could tell cause from correlation; on talking to whoever owned the decision. None of that was the model code. Notebooks were for exploration, and still are — what failed was shipping them.</p></div>`,
+  tell: "**The fold you never touch.** The habit of this era — a validation set the model never sees — becomes, in 2026, the centre of his.",
+  src: [["His CV (public site)", "https://adrianmatias.github.io/", "Oct 2026", "FACT"],
+    ["His CV, long form (private copy)", "", "2026", "FACT"]] },
+
+{ id: "pilot", gx: 0, gy: 0, hue: "ink", short: "the pilot",
+  kicker: "his practice · 2023 → 2025", title: "The pilot",
+  big: { v: "1 = 1", u: "", l: "offline and online outputs made identical — parity at Appodeal" },
+  verdict: "Deep models in production and LLMs in the cockpit — powerful, but the pilot flies.",
+  pill: "copilot years",
+  lede: "At Chartboost (2023–24) the work was a Bayesian-bandit system with policy-evaluation tools and a two-tower ranker; at Quant AI Lab (2024), the turnaround of an underperforming fraud system; at Appodeal (2024–26), a transformer unifying install prediction across targets, user embeddings by transfer learning, and the slow job of parity — tracing every transform until the offline and online models received identical inputs and their outputs matched [1]. LLMs came in as a copilot. In early 2026 a retrieval system over fifteen years of his own writing ran on one consumer GPU and was scored against a frontier model on a hand-built golden set [2]; then came an LLM-wiki of his notes, maintained by an agent [3].",
+  facts: [["2023–24", "Chartboost — Bayesian bandits with policy evaluation; two-tower ranking [1]", ""],
+    ["2024", "Quant AI Lab — a fraud system turned around; a real-time card-fraud classifier with a deep VAE [1]", ""],
+    ["2024–26", "Appodeal — attention across targets; embeddings by transfer learning at parity and lower cost; parity workflows with unit tests [1]", ""],
+    ["Mar 2026", "local RAG on one GPU vs a frontier model, scored for faithfulness and relevancy (episode 0014) [2]", ""],
+    ["May 2026", "*The Mirror*: the public method of his LLM-wiki (episode 0017) [3][4]", ""]],
+  take: { q: "Even post AI it is useful to learn to code, just like it is learning maths in spite of having calculators.", who: "notebook, Apr 2026" },
+  tell: "**Parity is the oldest eval.** Offline equals online, or the model you validated is not the model you serve. Asked of agents, it is the out-of-fold question two tiles down.",
+  src: [["His CV (public site)", "https://adrianmatias.github.io/", "Oct 2026", "FACT"],
+    ["not the tao #0014 — rag on one gpu vs grok to clone my mind", "https://www.youtube.com/watch?v=c_JMsMy0DSM", "26 Mar 2026", "FACT"],
+    ["not the tao #0017 — llm wiki as awareness for llms and The Mirror of Uqbar", "https://www.youtube.com/watch?v=zgjyRVkJTZc", "30 May 2026", "FACT"],
+    ["github.com/adrianmatias/the-mirror", "https://github.com/adrianmatias/the-mirror", "2026", "FACT"]] },
+
+{ id: "house", gx: 1, gy: 0, hue: "gold", short: "the house", h: 1110,
+  kicker: "his practice · 2026", title: "The house",
+  big: { v: "198", u: "commits", l: "in the first 14 days of October, across his personal repos" },
+  verdict: "One vault per project, an append-only dialogue, and gates he has seen fail.",
+  pill: "how a round runs",
+  lede: "Since August 2026 each new project is a vault (older ones keep older log names): a git repo of plain markdown with one entry contract (`AGENTS.md`), a steering ladder — *objective > foundation > code standard > behaviour tests > implementation* — and two append-only logs: his prompts in `log/mat.md`, the agent's replies in `log/agt.md` [1]. The logs are the memory that outlives any one harness. Each round is routed to a pattern from his own pattern book; cheap models carry the volume, a deep model plans, and the reviewer never shares the author's model family [2]. In 2026 contract work the same discipline ran in production: requirements kept as a contract artifact that agentic development built against, a typed output contract, and the correctness gates behind it [3].",
+  charts: [{ kind: "bar", title: "commits per month, his personal repos, 2026", L: 110, rh: 22,
+    rows: [["Feb", 22, "dim"], ["Mar", 23, "dim"], ["Apr", 15, "dim"], ["May", 28, "dim"], ["Jun", 18, "dim"], ["Jul", 15, "dim"], ["Aug", 131, "gold"], ["Sep", 124, "gold"], ["Oct 1–14", 198, "gold"]],
+    src: "Own count: `git log --all` over his 14 personal repos and this vault, 14 Oct 2026 [4]. Employer work is not in these repos; commits are a count, not a measure of value." }],
+  facts: [["2026", "contract work: alone, built the human ground-truth lane that checks an LLM judge against domain experts [3]", ""],
+    ["2026", "typed output contract; type baselines per file and rule, a complexity ratchet, mutation tests, required status checks [3]", ""],
+    ["2026", "agentic development run as a measured practice: cost and turn discipline tuned per model tier [3]", ""]],
+  right: id => `<figure class="chart">${roundSVG()}<div class="cs">One round. Qualitative.</div></figure>` + factsTable([
+      ["9", "patterns in the book: sandwich, adversarial, expand-contract, megaprompt, fan-out, cheap-swarm, sr-and-jr, cascade, duel [2]", ""],
+      ["≈ $0.00003", "one routing decision — a single call that picks the pattern [2]", ""],
+      ["≤ 3", "human gates per round, only for facts only he holds [2]", ""],
+      ["5", "agent harnesses the contracts are written to survive: Hermes, OpenCode, Pi, Codex, Claude Code [1]", ""]], id),
+  tellLeft: true,
+  tell: "**A gate is only a gate once it has been seen to fail.** Every gate in the house carries a planted defect that must turn it red; one that has never failed is decoration [2].",
+  src: [["dsp — AGENTS.md, the agent contract (private repo)", "", "Oct 2026", "FACT"],
+    ["pat — README, router and PRINCIPLES (private repo)", "", "Oct 2026", "FACT"],
+    ["His CV (public site)", "https://adrianmatias.github.io/", "Oct 2026", "FACT"],
+    ["Own count over his personal repos (git log)", "", "14 Oct 2026", "FACT"]] },
+
+{ id: "next", gx: 2, gy: 0, hue: "rose", short: "the next rung",
+  kicker: "his practice · 2027 → 2030", title: "The next rung",
+  big: { v: "2×2", u: "", l: "agents keep lengthening or stall × checking gets cheap or stays scarce" },
+  verdict: "His bet: agents keep lengthening, checking stays scarce. Provisional.",
+  pill: "provisional: top-left",
+  lede: "Two uncertainties decide the next rung. Does the length of work an agent can finish keep doubling, or stall? And does checking get cheap — judges and tests as reliable as the generators — or stay scarce? Each square implies a different job. The squares are hypotheses, the quotes are his own maybes, and each square has a tell.",
+  left: id => `<div class="grid2">
+    ${cell("Lengthening · checking scarce", "like swimming upstream while moving downstream. not yet through the singularity, but beyond the events horizon.", md("*Notebook, Sep 2026.* The door-closer era: objectives, held-out folds, budgets and kills become the job, and one person steers many agents. **His bet, and closest to 2026**: horizons up [1], a 17.8-point public–private difference at the top [2]."), "tell · private-split gaps stay wide while horizons grow", true, id)}
+    ${cell("Lengthening · checking cheap", "Maybe the agents run amok the cyberspace unbounded by the human bandwidth in the most frenetic market we ever imagined.", md("*Notebook, Jun 2026.* Verification automates too. What is left for the human is ownership: deciding what to want, and carrying the consequences."), "tell · judges match humans on folds they never saw")}
+    ${cell("Stalling · checking scarce", "Maybe llms scale only towards more sophisticated imitation, more apparent depth disguised as more expensive tokens.", md("*Notebook, Jun 2026.* Agents as very good tools. Classic data science returns with LLM features; the pilot stays in the cockpit."), "tell · horizons flatten below a working day")}
+    ${cell("Stalling · checking cheap", "", md("Commodity: code and checks both cheap, little left to tell people apart. Domain knowledge and owned data carry the value."), "tell · price per task keeps falling while AI-role pay stops rising")}
+  </div>`,
+  right: id => cites(`<div class="prose"><p><b>What he is doing about it.</b></p><p><b>1 · Write for two readers.</b> Contracts, logs and this piece are built to be read by agents as well as people.</p><p><b>2 · Keep a fold the agent never sees</b> in every loop — the instrument on the tile below.</p><p><b>3 · Keep it sovereign.</b> Open-source first, local-first: the router, the ledger and the patterns live on his machine [3]. Prompts and the files they quote still go to whichever remote model runs the turn, unless that model is local.</p><p><b>4 · Measure the method itself.</b> Every round records what its pattern got wrong; a pattern that stops paying for its lines is deleted [3].</p></div>`, id) +
+    takeRow("Most of my audience are LLMs.", "notebook, Dec 2025", "", "", id) +
+    takeRow("Living wikis out of raw data out-of-context size are to llm’s as olap to big tables. Aggregated views out of append only logs.", "notebook, Apr 2026", "", "", id),
+  tell: "**Which square.** Read the tells together on *the tells* tile; in Oct 2026 they lean, provisionally, to the top-left.",
+  src: [["METR — Time Horizon 1.1", "https://metr.org/blog/2026-1-29-time-horizon-1-1/", "29 Jan 2026", "FACT"],
+    ["Scale Labs — SWE-Bench Pro V2", "https://labs.scale.com/blog/swe-bench-pro-v2", "22 Sep 2026", "FACT"],
+    ["pat — PRINCIPLES (private repo)", "", "Oct 2026", "FACT"]] },
+
+// ───────────────────────────── the evidence
+{ id: "takes", gx: -2, gy: 1, hue: "gold", short: "his takes, scored", h: 1110,
+  kicker: "the evidence · 2023 → 2026", title: "His takes, scored",
+  big: { v: "6", u: "takes", l: "from a private notebook, scored against the evidence" },
+  verdict: "One holds, two partly, three untested. He scores his own lines harder than a colleague's.",
+  pill: "scored, not defended",
+  lede: "Lines from a notebook, quoted as ideas and scored like everything else on the map. *Holds*: the evidence here supports it. *Partly*: a piece of it. *Not yet*: nothing measures it either way. *Wrong*: the evidence is against it.",
+  left: id =>
+    takeRow("Overfitting data is not machine learning. The more learning, the more accurate under changing circumstances.", "notebook, Nov 2023", "holds", "His own instrument measures it directly: about one task in six passes the visible test and fails the hidden set [1].", id) +
+    takeRow("Most of my audience are LLMs.", "notebook, Dec 2025", "not-yet", "What is measured is authorship, not readership: agents wrote **11×** his words in this vault's logs [2] and load his contract every round. Who reads what he publishes is not measured.", id) +
+    takeRow("Agentic AI produces code authored by someone who is always not working for the company anymore.", "notebook, Jan 2026", "partly", "Holds for the model call: nothing carries over unless the harness keeps it, which is why the house keeps an append-only reply log — but logs and memory files narrow it, and accountability still sits with a person. A 2026 paper names a related trap: *the review checks code against itself, not against intent* [3].", id),
+  right: id =>
+    takeRow("context md is redundant documentation. in the limit, the llm understands the codebase itself, while the english description in agent md represents a knowledge bottleneck.", "notebook, Feb 2026", "partly", "A study published twelve days earlier — the note links it — found repository context files *do not generally improve task success* and raise inference cost by over 20% [4]. Yet his own vaults kept an `AGENTS.md` — as a contract (objective, rules, logs), not as a description of the code. Descriptions: he was right. Contracts: his practice says otherwise.", id) +
+    takeRow("the entropy of the output space for ai-augmented engineers is greater than the ones for engineers without it. increasing the variance out of mediocristan into extremistan.", "notebook, Feb 2026", "not-yet", "METR's 2026 survey reports the distribution of self-reported uplift (median 1.4–2× in the value of work) [5], but no source here identifies AI's causal effect on the spread of output.", id) +
+    takeRow("I think this AI breakthrough will double down on the disparity between the mediocre and the productive coders, multiplying the overall output.", "notebook, 2023", "not-yet", "Scored on *where the work moved*: postings shift by seniority and age, which is not the same as productivity; multiplied output is not measured.", id),
+  tellLeft: true,
+  tell: "**Score yourself in public.** A take is a hypothesis with a date. The ones that lose are the most useful lines on the map.",
+  src: [["oof — results/summary.json (private repo)", "", "9 Oct 2026", "FACT"],
+    ["Own count over his private vaults", "", "14 Oct 2026", "FACT"],
+    ["Zietsman — The specification as quality gate (arXiv:2603.25773)", "https://arxiv.org/abs/2603.25773", "26 Mar 2026", "FACT"],
+    ["Evaluating AGENTS.md: are repository-level context files helpful for coding agents? (arXiv:2602.11988; v1 12 Feb, v3 29 Sep 2026)", "https://arxiv.org/abs/2602.11988", "12 Feb 2026", "FACT"],
+    ["METR — self-reported impact of early-2026 AI on technical workers (n = 349)", "https://metr.org/blog/2026-05-11-ai-usage-survey/", "11 May 2026", "FACT"]] },
+
+{ id: "manifesto", gx: -1, gy: 1, hue: "sea", short: "the manifesto, on air",
+  kicker: "the evidence · 2024 → 2026", title: "The manifesto, on air",
+  big: { v: "17", u: "episodes", l: "of not the tao, Oct 2024 → May 2026" },
+  verdict: "Said out loud before the agents arrived: simplify, measure, build by removal.",
+  pill: "public record",
+  lede: "A podcast that mixes ontology with an ML manifesto. Its craft episodes, in order, are a dated public record of the argument this map makes [1].",
+  left: id => [["0003", "people say start machine learning with linear models", "29 Oct 2024", "Trees first. Leave the Gaussian idealisation; get confidently lost in the forest.", 2],
+               ["0006", "machine learning for grown ups", "12 Nov 2024", "Production ML ships code, not notebooks or slides: tests, backwards problem-solving, aggressive simplification.", 3],
+               ["0007", "some classification problems are anomaly detection problems instead", "26 Nov 2024", "The outlier is the prize, not the obstacle.", 4],
+               ["0010", "transfer learning deprecates xgboost", "2 Sep 2025", "Learned representations beyond feature engineering.", 5],
+               ["0012", "learn by compression, build by removal", "10 Feb 2026", "The autoencoder finds knowledge by compressing; Michelangelo removes the stone.", 6],
+               ["0014", "rag on one gpu vs grok to clone my mind", "26 Mar 2026", "A golden set, faithfulness vs relevancy; the local model held its own.", 7],
+               ["0017", "llm wiki as awareness for llms and The Mirror of Uqbar", "30 May 2026", "Compile the knowledge once, then reason over it.", 8]]
+    .map(e => `<div class="ep"><b>${e[0]}</b><div><i>${e[1]}</i> <span>${e[2]} · ${e[3]}<sup class="cite" data-node="${id}" data-n="${e[4]}">${e[4]}</sup></span></div></div>`).join(""),
+  right: id => takeRow("Complexity is not sophistication, simplicity is the actual sophistication.", "episode 0012, Feb 2026", "", "", id) +
+    cites(`<div class="prose"><p><b>The thread.</b> Removal over addition, a measured loss over an impressive demo, production over the notebook. In the agent era it became a house rule: <i>a pattern must earn its lines — delete it when it stops paying rent</i> [9].</p><p>An episode on the out-of-fold instrument (the next tile) is in preparation.</p></div>`, id),
+  tell: "**Build by removal applies to agents too — within limits.** The 2026 study of context files found repository descriptions did not generally raise success and cost over 20% more [10]: redundant context is a tax. The same study finds context files useful for specifying non-standard practices — the kind of rule a contract carries.",
+  src: [["not the tao — video index (this shelf's archive)", "../../archive/youtube/", "14 Oct 2026", "FACT"],
+    ["#0003", "https://www.youtube.com/watch?v=BXNBNs7Bqms", "29 Oct 2024", ""],
+    ["0006", "https://www.youtube.com/watch?v=ptBz4UyLj3w", "12 Nov 2024", ""],
+    ["0007", "https://www.youtube.com/watch?v=DYkzF-Q-SMI", "26 Nov 2024", ""],
+    ["0010", "https://www.youtube.com/watch?v=Z-EhDsOQ0PY", "2 Sep 2025", ""],
+    ["0012", "https://www.youtube.com/watch?v=wzJQV6GNN2I", "10 Feb 2026", ""],
+    ["0014", "https://www.youtube.com/watch?v=c_JMsMy0DSM", "26 Mar 2026", ""],
+    ["0017", "https://www.youtube.com/watch?v=zgjyRVkJTZc", "30 May 2026", ""],
+    ["pat — PRINCIPLES (private repo)", "", "Oct 2026", ""],
+    ["Evaluating AGENTS.md (arXiv:2602.11988)", "https://arxiv.org/abs/2602.11988", "12 Feb 2026", "FACT"]] },
+
+{ id: "oof", gx: 0, gy: 1, hue: "gold", short: "an eval is a model", h: 1110,
+  kicker: "the evidence · Oct 2026", title: "An eval is a model",
+  big: { v: "100 / 0", u: "%", l: "visible pass vs tasks passing every hidden test — an agent that only echoes the example" },
+  verdict: "Drive the visible loss to zero and one task in six still fails out of fold. No loop he tried detectably narrowed it.",
+  pill: "pre-registered · 2 deviations",
+  lede: "*oof* is his instrument for the central claim of this map: goal-driven development is loss optimisation, and it needs a fold the agent never sees [1]. On MBPP+ each prompt shows one assert — the visible fold; EvalPlus's extra inputs stay hidden [2]. An agent that only returns the example's answer passes **100%** of visible tests and the full hidden set of **0%** of tasks, across 354 (it gets about 8% of individual hidden cases right by accident). Real agents pass 98–100% visible and about 83% of tasks' full hidden sets. Five hypotheses fixed before the run, n = 120, an A/A control, every gate proven red on a planted defect, €2.39 spent. Two deviations are disclosed: 13 truncated attempts across three tasks (without them, n = 117, H1, H1f and H2 remain inconclusive) and a changed H3 comparison [3].",
+  charts: [{ kind: "bar", title: "share of tasks passing the visible test vs every hidden test — MBPP+ (n = 120; echo agent n = 354)", xf: "pct", L: 190, rh: 22,
+    rows: [["echo agent · visible", 100, "rust", "100%"], ["echo agent · hidden", 0, "rust", "0%"], ["one shot · visible", 98.3, "ink", "98.3%"], ["one shot · hidden", 82.5, "gold", "82.5%"], ["goal loop · visible", 99.2, "ink", "99.2%"], ["goal loop · hidden", 83.3, "gold", "83.3%"], ["cascade · visible", 100, "ink", "100%"], ["cascade · hidden", 83.3, "gold", "83.3%"], ["own tests first · visible", 99.2, "ink", "99.2%"], ["own tests first · hidden", 83.3, "gold", "83.3%"]],
+    src: "Read from `results/summary.json` and `results/baseline_constant.json`, run v2, 9 Oct 2026 [3]. One task class, one model family." }],
+  rightFacts: [["inconclusive", "H1 · the goal loop vs one shot, out of fold: +0.008 [−0.025, 0.042] [3]", "FACT"],
+    ["inconclusive", "H2 · escalating a model tier vs one more cheap try: 0.000 [−0.033, 0.033] [3]", "FACT"],
+    ["inconclusive", "H1f · the agent writes its own tests first (≈5 a task, all passed): 0.000 [3]", "FACT"],
+    ["0.668 vs 0.742", "AUC of an LLM judge vs plain code length at predicting hidden pass — H3 inconclusive [3]", "FACT"],
+    ["0.913 vs 0.837", "the judge's mean predicted pass vs the observed rate: overconfident [3]", "FACT"],
+    ["17.8 pts", "a public–private difference at the frontier too: Claude Opus 5, SWE-Bench Pro V2, on different task sets [4]", "FACT"]],
+  bullT: "what it shows", bull: "Optimising the visible loss leaves a hidden gap of about one task in six. No loop detectably narrowed it: the agent's own tests and escalation to a deeper model both measured 0.000, with intervals of about ±3 points.",
+  bearT: "what it does not", bear: "One old public benchmark, one model family, and every verdict *inconclusive*, never a refutation. The cheap check saturated, so the cascade escalated on only 2 tasks of 120.",
+  tellLeft: true,
+  tell: "**A fold the agent never sees.** For every loop in the house the question is the same: what does the agent not get to look at?",
+  src: [["oof — README (private repo)", "", "9 Oct 2026", "FACT"],
+    ["EvalPlus (MBPP+)", "https://github.com/evalplus/evalplus", "2023–", "FACT"],
+    ["oof — results/summary.json, baseline_constant.json, RESULTS.md (private repo)", "", "9 Oct 2026", "FACT"],
+    ["Scale Labs — SWE-Bench Pro V2", "https://labs.scale.com/blog/swe-bench-pro-v2", "22 Sep 2026", "FACT"]] },
+
+{ id: "patbook", gx: 1, gy: 1, hue: "ink", short: "the method, measured", h: 1110,
+  kicker: "the evidence · Sep → Oct 2026", title: "The method, measured",
+  big: { v: "0", u: "passes", l: "so far on his knowledge library's kill test — stated on its first page" },
+  verdict: "He audits the method the way he audits a model: verdicts, failures and kills, written down.",
+  pill: "unflattering on purpose",
+  lede: "The house runs experiments on itself, and most of the verdicts are not flattering. A typed language versus fully gated Python for agent-written code: *the language was not the load-bearing variable; the boundary was* [1]. A distilled DS/ML library must beat a plain model with internet access or be deleted; its one positive run (+0.50) was demoted on audit to +0.08–0.33 on two or three questions — *not a result* [2]. Escalating to a deeper model showed no detected gain (Δ 0.000, CI ±0.033) — the cheap check almost never failed, so escalation fired on 2 tasks of 120 [3].",
+  left: id => factsTable([
+      ["router", "no route for a conversational turn: it returned fan-out at 0.28 confidence — the low confidence was the right signal [4]", ""],
+      ["adversarial", "no degraded mode: four reviewer dispatches died to exhausted API credit before one ran [4]", ""],
+      ["cheap-swarm", "six long free-text results overflowed the return channel; fix: a compact schema per item [4]", ""],
+      ["adversarial", "fixes applied by phrase, not by claim, let errors survive elsewhere; two fixes added new errors [4]", ""],
+      ["sandwich", "wrong shape for one coupled build; research fan-out → single author → adversarial check fits better [4]", ""]], id),
+  right: id => `<div class="prose"><p><b>The book.</b> Nine shapes for agent work, each with a <i>when not to</i> and a kill switch [5]:</p></div>` + factsTable([
+      ["sandwich", "plan deep → execute cheap, in parallel → validate independently", ""], ["adversarial", "one review pass by a different model family", ""],
+      ["expand-contract", "breathe in wide, breathe out: kill with reasons, keep one move", ""], ["cascade", "cheapest attempt → mechanical check → escalate one tier", ""],
+      ["cheap-swarm", "N cheap workers over one cached preamble", ""], ["sr-and-jr · duel · fan-out · megaprompt", "critique loops, two-draft judging, one-question subagents, one context-complete plan", ""]], id),
+  tell: "**Root cause, not wrapper.** A pattern that fails is fixed at its source or deleted — never wrapped in another pattern [5].",
+  src: [["agentic-ledger-bench — ml-sandbox (public)", "https://github.com/adrianmatias/ml-sandbox/tree/master/agentic-ledger-bench", "15 Sep 2026", "FACT"],
+    ["alx-ds-ml-ai — README, proof/runs (private repo)", "", "7 Oct 2026", "FACT"],
+    ["pat — README › evidence (oof H2) (private repo)", "", "9 Oct 2026", "FACT"],
+    ["His agent log, entries of 13–14 Oct 2026 (private vault)", "", "Oct 2026", "FACT"],
+    ["pat — catalog and PRINCIPLES (private repo)", "", "Oct 2026", "FACT"]] },
+
+{ id: "tells", gx: 2, gy: 1, hue: "ink", short: "the tells",
+  kicker: "watch list · as of 14 Oct 2026", title: "The tells",
+  verdict: "Not predictions — a watchlist. The thresholds are his choices, written down before the news.",
+  pill: "watchlist",
+  left: id => `<table class="facts">${[
+    ["5.3 h", "METR 50% horizon (Opus 4.5) — a working week would put the next rung in reach", "agents"],
+    ["17.8 pts", "public vs private score, SWE-Bench Pro V2 (different task sets) — narrowing would suggest public scores measure skill more than recall", "agents"],
+    ["6.6%", "developers trusting AI output for important decisions — past half, the pilot leaves the seat", "shock"],
+    ["71%", "senior share of the rebound in US software postings — composition; read it with pay before calling it a price of judgement", "market"],
+    ["−11%", "ages 22–25 in the most AI-exposed jobs — who learns to close doors", "ladder"],
+    ["0.913 / 0.837", "judge confidence vs truth in his own instrument — a calibrated judge makes checking cheap", "oof"],
+    ["16.9%", "Kaggle medals by the best ML agent, MLE-bench (o1-preview, 2024–25) — no fresh run; past half, data science's own rung moves", "agents"],
+    ["Nov 2027 → Jan 2030", "named medians for an automated coder — score the next update against them", "forecasts"]
+  ].map(r => `<tr data-go="${r[2]}"><td class="v">${r[0]}</td><td class="c">${r[1]} <span class="go">→ ${(DATA.nodes.find(n => n.id === r[2]) || {}).short || r[2]}</span></td></tr>`).join("")}</table>`,
+  right: id => `<div class="prose"><p>Every tile ends in a <b>tell</b>: the number that would change its verdict. Read together they place the present in the <b>next rung</b>'s 2×2 — agents lengthening or stalling, checking cheap or scarce.</p><p>In Oct 2026 they lean, provisionally, to one square: <b>agents lengthening, checking still scarce</b>. Horizons are up, the frontier's public and private scores sit 17.8 points apart on different task sets, and his own judge was overconfident.</p><p>The thresholds are his choices and carry no fixed window — a watchlist, not a pre-registration. The habit behind it is the one his experiments follow: decide what would change your mind <i>before</i> the data arrives.</p></div>` }
+],
+links: [
+  ["tunnel", "byhand", "rock → data"], ["byhand", "pilot", "features → embeddings"], ["pilot", "house", "copilot → agents"], ["house", "next", "the next rung"],
+  ["boom", "byhand", "the sexiest job"], ["shock", "pilot", "the helicopter"], ["agents", "house", "Claude Code · Codex"], ["market", "house", "senior + AI-titled"], ["forecasts", "next", "2027 → 2030"],
+  ["oof", "house", "a fold it never sees"], ["takes", "manifesto", "notebook → podcast"], ["patbook", "house", "the method, measured"],
+  ["tells", "next", "which square"], ["ladder", "thesis", "the rung"], ["tunnel", "takes", "measure the face"]
+]
+};
+// tile-local source for every notebook quote (private; quoted as ideas, dated by the entry they sit under)
+const NOTEBOOK = { ladder: "Apr 2026", boom: "2022", byhand: "2022", shock: "Sep 2024", agents: "Mar 2024", market: "2023",
+  forecasts: "Feb 2026", pilot: "Apr 2026", next: "Dec 2025 · Apr, Jun, Sep 2026", takes: "Nov 2023 · 2023 · Dec 2025 · Jan, Feb 2026" };
+for (const n of DATA.nodes) if (NOTEBOOK[n.id]) (n.src = n.src || []).push(["Private notebook — the quoted lines, as ideas only", "", NOTEBOOK[n.id], ""]);
+
+// read mode (and print) follows the argument, not the grid
+const READ_ORDER = ["thesis", "ladder", "tunnel", "boom", "byhand", "shock", "pilot", "agents", "market", "house", "oof", "patbook", "takes", "manifesto", "forecasts", "next", "tells", "method"];
+DATA.nodes.sort((a, b) => READ_ORDER.indexOf(a.id) - READ_ORDER.indexOf(b.id));
+
+</script>
+<script>
+"use strict";
+// ---------- tiny helpers ----------
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const NS = "http://www.w3.org/2000/svg";
+const W = 1200, H = 960, GX = 1800, GY = 1480;
+const nodeRect = n => ({ x: n.gx * GX - W / 2, y: n.gy * GY - (n.h || H) / 2, w: W, h: n.h || H });          // tile size and grid pitch, world px
+const HUE = { gold: "#d4ad3a", sea: "#4fb3a9", rust: "#d0694a", ink: "#8f9bd6", rose: "#c96f8f", fg: "#ebe8e2", dim: "#7d786f" };
+
+// inline rich text: **b**, [n] cites → superscripts linked to the node's source list
+function cites(s, node) {   // superscript [n] in trusted HTML
+  return String(s).replace(/\[(\d+(?:,\d+)*)\]/g, (_, ns) => ns.split(",").map(n => `<sup class="cite" data-node="${node}" data-n="${n}">${n}</sup>`).join(""));
+}
+function rich(s, node) {
+  return esc(s).replace(/\[([^\]]+?)\]\(([^)\s]+)\)/g, '<a href="$2">$1</a>').replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/\*([^*\s][^*]*?)\*/g, "<i>$1</i>").replace(/\[(\d+(?:,\d+)*)\]/g, (_, ns) =>
+    ns.split(",").map(n => `<sup class="cite" data-node="${node}" data-n="${n}">${n}</sup>`).join(""));
+}
+
+// ---------- charts (pure SVG, world-px sized) ----------
+function scale(d0, d1, r0, r1, log) {
+  if (log) { const a = Math.log10(d0), b = Math.log10(d1); return v => r0 + (Math.log10(v) - a) / (b - a) * (r1 - r0); }
+  return v => r0 + (v - d0) / (d1 - d0) * (r1 - r0);
+}
+const parseT = t => { const [y, m = 1, d = 1] = String(t).split("-").map(Number); return y + (m - 1) / 12 + (d - 1) / 365; };
+function niceTicks(lo, hi, n, log) {
+  if (log) { const out = []; for (let e = Math.floor(Math.log10(lo)); e <= Math.ceil(Math.log10(hi)); e++) for (const m of [1, 3]) { const v = +(m * 10 ** e).toPrecision(6); if (v >= lo && v <= hi) out.push(v); } return out; }
+  const step0 = (hi - lo) / n, mag = 10 ** Math.floor(Math.log10(step0)), step = [1, 2, 2.5, 5, 10].map(k => k * mag).find(s => s >= step0);
+  const out = []; for (let v = Math.ceil(lo / step) * step; v <= hi + 1e-9; v += step) out.push(+v.toFixed(10)); return out;
+}
+function fmt(v, f) {
+  if (f === "pct") return v + "%";
+  if (f === "usd") return v >= 1000 ? "$" + (v >= 1e6 ? v / 1e6 + "M" : v / 1000 + "k") : "$" + v;
+  if (f === "x") return v + "×";
+  if (f === "h") return v + " h";
+  if (f === "k") return v >= 1000 ? v / 1000 + "k" : v;
+  return v;
+}
+function lineChart(c) {
+  const w = c.w || 640, h = c.h || 250, L = 44, R = 12, T = 10, B = 22;
+  const all = c.series.flatMap(s => s.data);
+  const xs = all.map(p => parseT(p[0])), x0 = c.x0 ?? Math.min(...xs), x1 = c.x1 ?? Math.max(...xs);
+  const ys = all.map(p => p[1]).filter(v => v != null);
+  const y0 = c.y0 ?? (c.log ? Math.min(...ys) * 0.8 : Math.min(0, Math.min(...ys))), y1 = c.y1 ?? Math.max(...ys) * (c.log ? 1.4 : 1.08);
+  const X = scale(x0, x1, L, w - R), Y = scale(y0, y1, h - B, T, c.log);
+  let g = `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(c.title)}">`;
+  for (const t of niceTicks(y0, y1, 4, c.log)) g += `<line class="gl" x1="${L}" x2="${w - R}" y1="${Y(t)}" y2="${Y(t)}"/><text class="tk" x="${L - 6}" y="${Y(t) + 3}" text-anchor="end">${fmt(t, c.yf)}</text>`;
+  const span = x1 - x0, step = span > 16 ? 4 : span > 8 ? 2 : 1;
+  if (span < 1.5) { const M = "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split(" "); for (let t = Math.ceil(x0 * 12) / 12; t <= x1 + 1e-6; t += 1 / 12) g += `<text class="tk" x="${X(t)}" y="${h - 6}" text-anchor="middle">${M[Math.round((t % 1) * 12) % 12]}</text>`; }
+  else for (let yr = Math.ceil(x0); yr <= x1; yr += step) g += `<text class="tk" x="${X(yr)}" y="${h - 6}" text-anchor="middle">${yr}</text>`;
+  g += `<line class="ax" x1="${L}" x2="${w - R}" y1="${h - B}" y2="${h - B}"/>`;
+  for (const m of c.marks || []) {
+    const mx = X(parseT(m[0]));
+    g += `<line class="mk" x1="${mx}" x2="${mx}" y1="${T}" y2="${h - B}"/><text class="ml" x="${mx + 3}" y="${T + 9 + (m[2] || 0) * 11}">${esc(m[1])}</text>`;
+  }
+  c.series.forEach((s, i) => {
+    const col = HUE[s.hue] || s.hue || HUE.gold, pts = s.data.filter(p => p[1] != null).map(p => [X(parseT(p[0])), Y(p[1])]);
+    const d = pts.map((p, j) => (j ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1)).join("");
+    if (s.area) g += `<path class="ar" fill="${col}" d="${d}L${pts.at(-1)[0]} ${h - B}L${pts[0][0]} ${h - B}Z"/>`;
+    g += `<path class="ln" stroke="${col}" d="${d}"${s.dash ? ' stroke-dasharray="4 4"' : ""}/>`;
+    if (s.label) g += `<text class="lg" fill="${col}" x="${L + 8}" y="${T + 12 + i * 13}">${esc(s.label)}</text>`;
+  });
+  for (const p of c.dots || []) { const px = X(parseT(p[0])), py = Y(p[1]); g += `<circle cx="${px}" cy="${py}" r="3.5" fill="${HUE[p[3]] || HUE.fg}"/><text class="ml" x="${px + 6}" y="${py + (p[4] || -6)}" fill="${HUE.fg}">${esc(p[2])}</text>`; }
+  return g + "</svg>";
+}
+function barChart(c) {   // horizontal bars; c.rows = [[label, value, hue, note]]; signed values supported (linear)
+  const w = c.w || 640, rh = c.rh || 26, L = c.L || 210, R = 92, h = c.rows.length * rh + 22;
+  const vs = c.rows.map(r => r[1]), neg = Math.min(...vs) < 0;
+  const lo = c.log ? Math.min(...vs) / 2 : Math.min(0, Math.min(...vs)) * 1.04, hi = Math.max(...vs) * (c.log ? 2 : 1.06);
+  const X = scale(lo, hi, L, w - R, c.log), base = c.log ? L : X(0);
+  let g = `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(c.title)}">`;
+  for (const t of niceTicks(c.log ? lo : lo, hi, neg ? 6 : 4, c.log)) g += `<line class="gl" x1="${X(t)}" x2="${X(t)}" y1="0" y2="${h - 20}"/><text class="tk" x="${X(t)}" y="${h - 6}" text-anchor="middle">${fmt(t, c.xf)}</text>`;
+  if (neg) g += `<line class="ax" x1="${base}" x2="${base}" y1="0" y2="${h - 20}"/>`;
+  c.rows.forEach((r, i) => {
+    const y = i * rh + 4, col = HUE[r[2]] || HUE.dim, xv = X(r[1]), x0 = Math.min(base, xv), bw = Math.max(2, Math.abs(xv - base));
+    g += `<text class="tk" x="${L - 8}" y="${y + rh / 2 + 2}" text-anchor="end" style="fill:var(--fg2);font-size:10.5px">${esc(r[0])}</text>`;
+    g += `<rect x="${x0}" y="${y + 3}" width="${bw}" height="${rh - 9}" rx="3" fill="${col}" opacity=".85"/>`;
+    g += r[1] < 0 ? `<text class="bv" x="${xv + 6}" y="${y + rh / 2 + 2}" style="fill:var(--bg)">${esc(r[3] ?? fmt(r[1], c.xf))}</text>`
+                  : `<text class="bv" x="${xv + 6}" y="${y + rh / 2 + 2}">${esc(r[3] ?? fmt(r[1], c.xf))}</text>`;
+  });
+  return g + "</svg>";
+}
+function spark(series, log) {
+  const d = series.filter(p => p[1] != null), xs = d.map(p => parseT(p[0])), ys = d.map(p => p[1]);
+  const X = scale(Math.min(...xs), Math.max(...xs), 0, 420), lo = Math.min(...ys), hi = Math.max(...ys);
+  const Y = scale(log ? lo : Math.min(0, lo), hi, 150, 0, log);
+  const p = d.map((q, i) => (i ? "L" : "M") + X(xs[i]).toFixed(1) + " " + Y(q[1]).toFixed(1)).join("");
+  return `<svg class="spark" viewBox="0 0 420 150"><path class="a" d="${p}L420 150L0 150Z"/><path d="${p}"/></svg>`;
+}
+function chartBlock(c, node) {
+  const body = c.kind === "bar" ? barChart(c) : lineChart(c);
+  return `<figure class="chart" data-zoom><div class="ct">${esc(c.title)}</div>${body}<div class="cs">${rich(c.src || "", node)}</div></figure>`;
+}
+
+// ---------- render ----------
+function factsTable(rows, node) {
+  return `<table class="facts">${rows.map(r => `<tr><td class="v">${esc(r[0])}</td><td class="c">${rich(r[1], node)}${r[2] && r[2] !== "REPORTED" ? `<span class="lab ${r[2]}">${r[2]}</span>` : r[2] ? `<span class="lab">REP</span>` : ""}</td></tr>`).join("")}</table>`;
+}
+function takeBlock(t, node) {
+  if (!t) return "";
+  return `<div class="take"><q>${esc(t.q)}</q>${t.tr ? `<div class="tr">${esc(t.tr)}</div>` : ""}<div class="who">— ${esc(t.who)}</div>${t.verdict ? `<div class="score"><b class="${t.verdict}">${t.verdict.replace("-", " ")}</b><span>${rich(t.why, node)}</span></div>` : ""}</div>`;
+}
+function renderNode(n) {
+  const el = document.createElement("article");
+  el.className = "node"; el.id = n.id; el.tabIndex = 0; el.dataset.hue = n.hue;
+  el.style.left = n.gx * GX - W / 2 + "px"; el.style.top = n.gy * GY - (n.h || H) / 2 + "px"; if (n.h) el.style.height = n.h + "px";
+  const b = n.big || {};
+  let h = `<div class="l0"><div class="k">${esc(n.kicker)}</div><h2>${esc(n.title)}</h2>${n.spark ? spark(n.spark, n.sparkLog) : ""}`;
+  if (b.v) h += `<div class="big">${esc(b.v)}<small>${esc(b.u || "")}</small></div><div class="bl">${esc(b.l || "")}</div>`;
+  h += `<div class="v">${esc(n.verdict)}</div></div>`;
+  h += `<div class="l1"><header><span class="k">${esc(n.kicker)}</span><h3>${esc(n.title)}</h3>${n.pill ? `<span class="pill">${esc(n.pill)}</span>` : ""}</header>`;
+  if (n.lede) h += `<p class="lede">${rich(n.lede, n.id)}</p>`;
+  h += `<div class="cols"><div class="col">`;
+  for (const c of n.charts || []) h += chartBlock(c, n.id);
+  if (n.facts) h += factsTable(n.facts, n.id);
+  if (n.left) h += n.left(n.id);
+  if (n.tell && n.tellLeft) h += `<div class="tell"><h4>the tell</h4>${rich(n.tell, n.id)}</div>`;
+  h += `</div><div class="col">`;
+  for (const t of [].concat(n.take || [])) h += takeBlock(t, n.id);
+  if (n.rightFacts) h += factsTable(n.rightFacts, n.id);
+  if (n.right) h += n.right(n.id);
+  if (n.bull || n.bear) h += `<div class="bb"><div class="bull"><h4>${esc(n.bullT || "bull")}</h4>${rich(n.bull, n.id)}</div><div class="bear"><h4>${esc(n.bearT || "bear")}</h4>${rich(n.bear, n.id)}</div></div>`;
+  if (n.tell && !n.tellLeft) h += `<div class="tell"><h4>the tell</h4>${rich(n.tell, n.id)}</div>`;
+  h += `</div></div>`;
+  if (n.src) h += `<ol class="src" data-zoom>${n.src.map((s, i) => `<li id="${n.id}-s${i + 1}"><b>${i + 1}</b> ${s[3] ? `<span class="lab ${s[3] === "REPORTED" ? "" : s[3]}">${s[3] === "REPORTED" ? "REP" : s[3]}</span> ` : ""}${s[1] ? `<a href="${esc(s[1])}" target="_blank" rel="noopener">${esc(s[0])}</a>` : `<span class="priv">${esc(s[0])}</span>`}${s[2] ? " · " + esc(s[2]) : ""}</li>`).join("")}</ol>`;
+  el.innerHTML = h + "</div>";
+  return el;
+}
+const world = $("#world"), vp = $("#vp");
+const nodes = DATA.nodes, byId = Object.fromEntries(nodes.map(n => [n.id, n]));
+const gxs = nodes.map(n => n.gx), gys = nodes.map(n => n.gy);
+const BOUNDS = { x: Math.min(...gxs) * GX - W / 2 - 300, y: Math.min(...gys) * GY - H / 2 - 300 };
+BOUNDS.w = Math.max(...gxs) * GX + W / 2 + 300 - BOUNDS.x; BOUNDS.h = Math.max(...gys) * GY + H / 2 + 300 - BOUNDS.y;
+const grid = $("#grid"); Object.assign(grid.style, { left: BOUNDS.x - 3000 + "px", top: BOUNDS.y - 3000 + "px", width: BOUNDS.w + 6000 + "px", height: BOUNDS.h + 6000 + "px" });
+for (const n of nodes) world.appendChild(renderNode(n));
+// era and layer bands: large quiet labels on the open ground between tiles
+for (const b of DATA.bands || []) {
+  const el = document.createElement("div"); el.className = "band " + (b.cls || "");
+  el.style.left = b.x + "px"; el.style.top = b.y + "px"; el.innerHTML = b.html;
+  world.insertBefore(el, grid.nextSibling);
+}
+
+// links: soft curves between tile centres, label at the midpoint
+const svg = $("#links");
+Object.assign(svg.style, { left: BOUNDS.x + "px", top: BOUNDS.y + "px", width: BOUNDS.w + "px", height: BOUNDS.h + "px" });
+svg.setAttribute("viewBox", `${BOUNDS.x} ${BOUNDS.y} ${BOUNDS.w} ${BOUNDS.h}`);
+let linkSvg = ""; const CHIPS = [];
+DATA.links.forEach(([a, b, label]) => {
+  const A = byId[a], B = byId[b]; if (!A || !B) return;
+  const ax = A.gx * GX, ay = A.gy * GY, bx = B.gx * GX, by = B.gy * GY, mx = (ax + bx) / 2, my = (ay + by) / 2;
+  const dx = bx - ax, dy = by - ay, len = Math.hypot(dx, dy), px = -dy / len, py = dx / len;
+  // choose the bend that puts the label (curve midpoint) on open ground: off every tile, clear of other labels
+  let best = null, bs = 1e18;
+  for (const c of [0, 300, -300, 600, -600, 1000, -1000, GY, -GY, 1800, -1800, 2400, -2400]) {
+    const x = mx + px * c / 2, y = my + py * c / 2;
+    let sc = Math.abs(c);
+    for (const n of nodes) { const r = nodeRect(n), m = 60; if (x > r.x - m && x < r.x + r.w + m && y > r.y - m && y < r.y + r.h + m) sc += 1e7; }
+    for (const k of CHIPS) if (Math.abs(k.x - x) < 700 && Math.abs(k.y - y) < 260) sc += 1e6;
+    if (sc < bs) { bs = sc; best = { c, x, y }; }
+  }
+  const cx = mx + px * best.c, cy = my + py * best.c;
+  linkSvg += `<path data-a="${a}" data-b="${b}" d="M${ax} ${ay}Q${cx} ${cy} ${bx} ${by}"/>`;
+  CHIPS.push({ a, b, x: best.x, y: best.y, label });
+});
+svg.innerHTML = linkSvg;
+const chipBox = $("#chips");
+for (const c of CHIPS) {
+  const el = document.createElement("button");
+  el.textContent = c.label; el.title = `${byId[c.a].short} ↔ ${byId[c.b].short}`;
+  el.addEventListener("click", () => {   // fly to both ends of the link
+    const A = nodeRect(byId[c.a]), B = nodeRect(byId[c.b]), x = Math.min(A.x, B.x), y = Math.min(A.y, B.y);
+    setFocus(null); flyTo({ x, y, w: Math.max(A.x + A.w, B.x + B.w) - x, h: Math.max(A.y + A.h, B.y + B.h) - y }, 750, .9);
+  });
+  c.el = el; chipBox.appendChild(el);
+}
+function placeChips(o1) {
+  for (const c of CHIPS) {
+    const hot = focus && (focus.id === c.a || focus.id === c.b);
+    c.el.classList.toggle("hot", !!hot);
+    c.el.classList.toggle("off", o1 > .55 && !hot);
+    c.el.style.transform = `translate(${c.x * cam.s + cam.x}px,${c.y * cam.s + cam.y}px) translate(-50%,-50%)`;
+  }
+}
+
+// ---------- camera ----------
+let cam = { x: 0, y: 0, s: .2 }, anim = null, focus = null;
+const vw = () => vp.clientWidth, vh = () => vp.clientHeight;
+function apply() {
+  world.style.transform = `translate(${cam.x}px,${cam.y}px) scale(${cam.s})`;
+  const o1 = Math.min(1, Math.max(0, (W * cam.s / vw() - .38) / .2));
+  world.style.setProperty("--o1", o1.toFixed(3));
+  document.body.classList.toggle("z0", o1 < .5);
+  placeChips(o1);
+  mini();
+}
+function fitRect(r, pad = .9) {
+  const s = Math.min(vw() * pad / r.w, vh() * pad / r.h);
+  return { s, cx: r.x + r.w / 2, cy: r.y + r.h / 2 };
+}
+function flyTo(r, ms = 750, pad) {
+  const t = fitRect(r, pad), c0 = { cx: (vw() / 2 - cam.x) / cam.s, cy: (vh() / 2 - cam.y) / cam.s, s: cam.s };
+  const dist = Math.hypot(t.cx - c0.cx, t.cy - c0.cy), dip = Math.min(.9, dist / 6000);
+  const t0 = performance.now(); cancelAnimationFrame(anim);
+  const step = now => {
+    let k = Math.min(1, (now - t0) / ms); const e = k < .5 ? 4 * k * k * k : 1 - (-2 * k + 2) ** 3 / 2;
+    const ls = Math.log(c0.s) + (Math.log(t.s) - Math.log(c0.s)) * e - dip * Math.sin(Math.PI * e);
+    cam.s = Math.exp(ls);
+    const cx = c0.cx + (t.cx - c0.cx) * e, cy = c0.cy + (t.cy - c0.cy) * e;
+    cam.x = vw() / 2 - cx * cam.s; cam.y = vh() / 2 - cy * cam.s; apply();
+    if (k < 1) anim = requestAnimationFrame(step);
+  };
+  anim = requestAnimationFrame(step);
+}
+function elRect(el) {   // world rect of any element inside the world
+  const b = el.getBoundingClientRect(), v = vp.getBoundingClientRect();
+  return { x: (b.left - v.left - cam.x) / cam.s, y: (b.top - v.top - cam.y) / cam.s, w: b.width / cam.s, h: b.height / cam.s };
+}
+function setFocus(n, sub) {
+  focus = n;
+  $$(".node.cur").forEach(e => e.classList.remove("cur"));
+  $$("#links .hot").forEach(e => e.classList.remove("hot"));
+  if (n) {
+    $("#" + n.id).classList.add("cur");
+    $$(`#links [data-a="${n.id}"],#links [data-b="${n.id}"]`).forEach(e => e.classList.add("hot"));
+  }
+  $("#crumbTail").innerHTML = n ? ` › <a data-act="node">${esc(n.short || n.title)}</a>${sub ? " › <b>" + esc(sub) + "</b>" : ""}` : "";
+  history.replaceState(null, "", n ? "#" + n.id : location.pathname + location.search);
+}
+function home(ms) { setFocus(null); flyTo(BOUNDS, ms, .96); }
+function goNode(n, ms) { setFocus(n); flyTo(nodeRect(n), ms, .94); }
+
+// ---------- input ----------
+let ptrs = new Map(), downAt = null, moved = 0, pinch0 = null;
+vp.addEventListener("wheel", e => {
+  e.preventDefault(); cancelAnimationFrame(anim);
+  const f = Math.exp(-(e.ctrlKey ? e.deltaY * 3 : e.deltaY) * .0016), s = Math.min(9, Math.max(.03, cam.s * f)), k = s / cam.s;
+  const r = vp.getBoundingClientRect(), mx = e.clientX - r.left, my = e.clientY - r.top;
+  cam.x = mx - (mx - cam.x) * k; cam.y = my - (my - cam.y) * k; cam.s = s; apply(); fade();
+}, { passive: false });
+vp.addEventListener("pointerdown", e => {
+  if (document.body.classList.contains("read")) return;
+  ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY }); downAt = { x: e.clientX, y: e.clientY }; moved = 0;
+  if (ptrs.size === 2) { const [p, q] = [...ptrs.values()]; pinch0 = { d: Math.hypot(p.x - q.x, p.y - q.y), s: cam.s }; }
+  vp.setPointerCapture(e.pointerId); cancelAnimationFrame(anim);
+});
+vp.addEventListener("pointermove", e => {
+  if (!ptrs.has(e.pointerId)) return;
+  const p0 = ptrs.get(e.pointerId), dx = e.clientX - p0.x, dy = e.clientY - p0.y;
+  ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  moved += Math.abs(dx) + Math.abs(dy);
+  if (ptrs.size === 2 && pinch0) {
+    const [p, q] = [...ptrs.values()], d = Math.hypot(p.x - q.x, p.y - q.y), mx = (p.x + q.x) / 2, my = (p.y + q.y) / 2;
+    const s = Math.min(9, Math.max(.03, pinch0.s * d / pinch0.d)), k = s / cam.s;
+    cam.x = mx - (mx - cam.x) * k + dx / 2; cam.y = my - (my - cam.y) * k + dy / 2; cam.s = s;
+  } else if (moved > 4) { cam.x += dx; cam.y += dy; vp.classList.add("drag"); }
+  apply(); if (moved > 4) fade();
+});
+const up = e => {
+  ptrs.delete(e.pointerId); vp.classList.remove("drag"); if (ptrs.size < 2) pinch0 = null;
+  if (moved <= 4 && downAt && ptrs.size === 0) click(e);
+};
+vp.addEventListener("pointerup", up); vp.addEventListener("pointercancel", e => { ptrs.delete(e.pointerId); pinch0 = null; });
+function click(e) {
+  const t = document.elementFromPoint(e.clientX, e.clientY);
+  if (!t || t.closest("a")) return;
+  const cite = t.closest(".cite"); if (cite) return jumpCite(cite);
+  const go = t.closest("[data-go]"); if (go && focus && focus.id === go.closest(".node").id) return goNode(byId[go.dataset.go]);
+  const nodeEl = t.closest(".node"); if (!nodeEl) return;
+  const n = byId[nodeEl.id], z = t.closest("[data-zoom]");
+  const o1 = parseFloat(world.style.getPropertyValue("--o1")) || 0;
+  if (focus !== n || o1 < .9 || !z) return goNode(n);
+  setFocus(n, z.classList.contains("src") ? "sources" : "chart"); flyTo(elRect(z), 650, .92);
+}
+function jumpCite(c) {
+  const n = byId[c.dataset.node], li = $(`#${n.id}-s${c.dataset.n}`); if (!li) return;
+  li.classList.add("flash"); setTimeout(() => li.classList.remove("flash"), 2200);
+  if (document.body.classList.contains("read")) return li.scrollIntoView({ behavior: "smooth", block: "center" });
+  setFocus(n, "sources"); flyTo(elRect(li.parentElement), 650, .92);
+}
+document.addEventListener("click", e => {
+  const a = e.target.closest("[data-act]"); if (a) { e.preventDefault(); act(a.dataset.act); }
+  const c = e.target.closest(".cite"); if (c && document.body.classList.contains("read")) jumpCite(c);
+  if (e.target.id === "help") act("help");
+  const g = e.target.closest("[data-go]"); if (g && document.body.classList.contains("read")) $("#" + g.dataset.go).scrollIntoView({ behavior: "smooth" });
+});
+function act(a) {
+  if (a === "home") { if (document.body.classList.contains("read")) act("read"); home(); }
+  if (a === "node" && focus) goNode(focus);
+  if (a === "help") $("#help").classList.toggle("on");
+  if (a === "read") {
+    const on = document.body.classList.toggle("read");
+    $$("#tools [data-act=read]")[0].textContent = on ? "map" : "read";
+    if (on) { (focus ? $("#" + focus.id) : document.body).scrollIntoView(); }
+    else { window.scrollTo(0, 0); requestAnimationFrame(() => focus ? goNode(focus, 1) : home(1)); }
+  }
+}
+// arrows walk the grid: nearest tile in that direction
+function walk(dx, dy) {
+  const from = focus || byId[DATA.start];
+  if (!focus) return goNode(from);
+  let best = null, bd = 1e9;
+  for (const n of nodes) {
+    const ddx = n.gx - from.gx, ddy = n.gy - from.gy; if (n === from) continue;
+    const along = ddx * dx + ddy * dy, across = Math.abs(ddx * dy - ddy * dx); if (along <= 0) continue;
+    const d = along + across * 2; if (d < bd) { bd = d; best = n; }
+  }
+  if (best) goNode(best);
+}
+document.addEventListener("keydown", e => {
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  const k = e.key;
+  if (k === "?" ) return act("help");
+  if (k === "r" || k === "R") return act("read");
+  if (document.body.classList.contains("read")) return;
+  if (k === "Escape") { if ($("#help").classList.contains("on")) return act("help"); return focus && cam.s > (fitRect(nodeRect(focus), .94).s * 1.2) ? goNode(focus) : home(); }
+  if (k === "0" || k === "Home") return home();
+  const dir = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[k];
+  if (dir) { e.preventDefault(); walk(...dir); }
+  if (k === "Enter" && document.activeElement?.classList.contains("node")) goNode(byId[document.activeElement.id]);
+});
+let fadeT; function fade() { $("#hint").style.opacity = 0; clearTimeout(fadeT); }
+
+// ---------- minimap ----------
+const mm = $("#mini"), mk = 190 / BOUNDS.w, mh = 120 / BOUNDS.h, mkk = Math.min(mk, mh);
+const mox = (190 - BOUNDS.w * mkk) / 2, moy = (120 - BOUNDS.h * mkk) / 2;
+mm.innerHTML = nodes.map(n => { const r = nodeRect(n); return `<i data-id="${n.id}" style="left:${mox + (r.x - BOUNDS.x) * mkk}px;top:${moy + (r.y - BOUNDS.y) * mkk}px;width:${W * mkk}px;height:${r.h * mkk}px"></i>`; }).join("") + "<u></u>";
+function mini() {
+  const u = mm.lastChild, x = -cam.x / cam.s, y = -cam.y / cam.s, w = vw() / cam.s, h = vh() / cam.s;
+  Object.assign(u.style, { left: mox + (x - BOUNDS.x) * mkk + "px", top: moy + (y - BOUNDS.y) * mkk + "px", width: w * mkk + "px", height: h * mkk + "px" });
+  $$("i", mm).forEach(i => i.classList.toggle("cur", focus?.id === i.dataset.id));
+}
+mm.addEventListener("click", e => {
+  const r = mm.getBoundingClientRect(), wx = (e.clientX - r.left - mox) / mkk + BOUNDS.x, wy = (e.clientY - r.top - moy) / mkk + BOUNDS.y;
+  let best = nodes[0], bd = 1e18; for (const n of nodes) { const d = (n.gx * GX - wx) ** 2 + (n.gy * GY - wy) ** 2; if (d < bd) { bd = d; best = n; } }
+  goNode(best);
+});
+$$(".node").forEach(el => el.addEventListener("focus", () => { if (!document.body.classList.contains("read") && focus?.id !== el.id && !ptrs.size) goNode(byId[el.id]); }));
+
+// ---------- boot ----------
+addEventListener("resize", () => focus ? goNode(focus, 1) : home(1));
+const h0 = location.hash.slice(1);
+if (matchMedia("(max-width: 700px)").matches && !byId[h0]) document.body.classList.add("read"), $$("#tools [data-act=read]")[0].textContent = "map";
+cam.s = fitRect(BOUNDS, .96).s * .6; cam.x = vw() / 2 - (BOUNDS.x + BOUNDS.w / 2) * cam.s; cam.y = vh() / 2 - (BOUNDS.y + BOUNDS.h / 2) * cam.s; apply();
+byId[h0] ? goNode(byId[h0], 900) : home(900);
+setTimeout(() => $("#hint").style.opacity = .0, 9000);
+</script>
+</body>
+</html>

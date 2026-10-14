@@ -1,0 +1,21 @@
+/* ---------- closing doors: additions ---------- */
+.band{position:absolute;width:1200px;pointer-events:none;text-align:center;white-space:nowrap;
+  font-family:var(--serif);font-size:118px;line-height:1;letter-spacing:-.01em;color:rgba(235,232,226,.15);
+  opacity:calc(1 - var(--o1) * .8)}
+.band small{display:block;margin-top:14px;font-family:var(--mono);font-size:34px;letter-spacing:.3em;text-transform:uppercase;color:rgba(235,232,226,.22)}
+.band.layer{text-align:left;font-family:var(--mono);font-size:40px;letter-spacing:.32em;text-transform:uppercase;color:rgba(212,173,58,.32)}
+.band.now{color:rgba(212,173,58,.26)}
+body.read .band{display:none}
+.priv{color:var(--fg3)}
+svg .dg{font-family:var(--sans);font-size:12px;fill:var(--fg2)}
+svg .dgb{font-family:var(--serif);font-size:15px;fill:var(--fg)}
+svg .dgm{font-family:var(--mono);font-size:9.5px;fill:var(--fg3);letter-spacing:.04em}
+svg .box{fill:var(--bg2);stroke:var(--line2);stroke-width:1}
+svg .box.h{stroke:var(--gold2)}
+svg .ar2{fill:none;stroke:var(--fg4);stroke-width:1.3}
+svg .ar2.h{stroke:var(--gold)}
+.ep{display:grid;grid-template-columns:58px 1fr;gap:2px 12px;font-size:13px;line-height:1.38;padding:6px 0;border-bottom:1px solid var(--line)}
+.ep b{font-family:var(--mono);font-weight:500;font-size:11px;color:var(--h);padding-top:2px}
+.ep i{color:var(--fg);font-style:normal;font-family:var(--serif);font-size:15px}
+.ep span{display:block;color:var(--fg3)}
+code{font-family:var(--mono);font-size:.88em;color:var(--fg)}

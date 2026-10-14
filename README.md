@@ -33,6 +33,7 @@ AGENTS.md                   agent contract
 
 | date | piece | what |
 |---|---|---|
+| 2026-10-14 | [Closing Doors](infog/closing-doors/) | data science in the age of agents — the tunnel face, classic ML, the copilot years, agent orchestration and the next rung on one zoomable map, his own experiments and takes scored |
 | 2026-10-14 | [Tsunami & Printing Press](infog/tsunami-and-printing-press/) | money in the age of AI — bitcoin, zcash, bonds, equity, housing, the yen carry trade, quantum FUD and the AI capex sink, on one zoomable map with every number sourced |
 
 ## rules
