@@ -23,3 +23,10 @@
 - Why there was no preview: the pages had a `<title>` and nothing else. LinkedIn and Telegram build the card from `og:title`, `og:description` and `og:image`, and the image needs an **absolute** URL.
 - Added: `og:*`, `twitter:*` (`summary_large_image`) and `canonical` on the home page, the piece and all 68 archive pages (`tools/render.py` now writes them; descriptions come from each page's opening text). New images: `og.png` (the pub card) and `infog/tsunami-and-printing-press/og.png` (the map with the title over it), both 1200×630 PNG. AGENTS records the one exception to relative links (preview metadata is absolute, `https://taoaieng.io/pub/…`).
 - Caches: LinkedIn and Telegram keep the first, empty result they fetched. Refresh LinkedIn at https://www.linkedin.com/post-inspector/ (paste the URL, *Inspect*), and Telegram by sending the URL to @WebpageBot. Sharing `https://taoaieng.io/pub/` with the trailing slash skips one redirect.
+
+## reply — the piece links back to pub, and the map's link labels are readable at every zoom
+
+- **Parent link:** the breadcrumb now starts with `pub ›` (→ `../../`, i.e. `taoaieng.io/pub/`), on the map and in read mode.
+- **Readable links:** the labels were SVG text inside the world, 34 world-px — about 6 screen-px on the whole-map view. They are now screen-space chips (10 px mono on a dark pill) that follow the map and stay the same size at any zoom. When you zoom into a tile, only that tile's links stay lit. Clicking a chip flies to the two tiles it connects.
+- **Placement:** each label sits where its curve crosses open ground. For every link the bend is chosen so the midpoint lands off every tile and clear of other labels. The grid pitch went from 1500 × 1200 to 1800 × 1480, so the gaps can hold a label; the lines got a little more contrast. Long links now arc around the tiles instead of running under them.
+- `og.png` re-rendered on the new layout. Checked headless on the whole-map, tile and link-click views.

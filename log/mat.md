@@ -30,3 +30,8 @@ https://taoaieng.io/pub does not serve pub yet
 live now
 - i tried to share the [link](https://taoaieng.io/pub) at linkedin and telegram but renders no preview img or txt
 - try to provide them
+
+## prompt
+
+- https://taoaieng.io/pub/infog/tsunami-and-printing-press/ should have a link to the parent site /pub.
+- there are some nice links between cards in the map, but they are not readeable.
