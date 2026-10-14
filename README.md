@@ -2,7 +2,7 @@
 
 **The public shelf.** What Adrian Matias makes to be read by strangers — infographics, essays, the
 archive of what he already published elsewhere — in one repo that is also the website
-[taoaieng.io](https://taoaieng.io).
+[taoaieng.io/pub](https://taoaieng.io/pub/).
 
 3-char, like the rest of the house (`pat`, `oof`, `opo`, `dsp`): `pub` is the outward half. The
 vaults stay private and breathe in; `pub` breathes out.
@@ -17,7 +17,7 @@ it opens from disk in twenty years exactly as it opens today.
 ## layout
 
 ```
-index.html                  the home page (taoaieng.io): pieces, archive, links
+index.html                  the home page (taoaieng.io/pub): pieces, archive, links
 infog/<slug>/index.html     one infographic per folder, self-contained (data, charts and sources inline)
 archive/                    what was published elsewhere, pulled and kept
   blog/                     delightfulobservaciones.blogspot.com — every post as markdown + its images
@@ -46,12 +46,18 @@ AGENTS.md                   agent contract
 ## publish
 
 GitHub Pages serves the repo root (`master`, `/`, `.nojekyll` — no build). Push to `master` and it is
-live at `adrianmatias.github.io/pub/`; with the DNS step below it is also `taoaieng.io`.
+live at `adrianmatias.github.io/pub/`.
 
-Custom domain, once: in Cloudflare (DNS for `taoaieng.io`) replace the apex records that point to
-Squarespace with `CNAME @ → adrianmatias.github.io`, **DNS only** (grey cloud); then
-`gh api -X PUT repos/adrianmatias/pub/pages -f cname=taoaieng.io` and tick *Enforce HTTPS* once the
-certificate is issued. `opo.taoaieng.io` is a separate record and is not affected.
+`taoaieng.io/pub/` comes from the **user site**, not from this repo: a project site is served under
+its owner's custom domain, so setting `taoaieng.io` on `adrianmatias.github.io` maps this repo to
+`taoaieng.io/pub/` (and the CV site to `taoaieng.io/`). This repo must keep **no** custom domain of
+its own — a `cname` here would claim the apex and drop the `/pub` path. Order matters:
+
+1. DNS first (Cloudflare, zone `taoaieng.io`): replace the apex records that point to Squarespace with
+   `CNAME @ → adrianmatias.github.io`, **DNS only** (grey cloud); same for `www`. `opo` is untouched.
+2. Then `gh api -X PUT repos/adrianmatias/adrianmatias.github.io/pages -f cname=taoaieng.io`, and
+   *Enforce HTTPS* once the certificate is issued. Doing step 2 before step 1 redirects the CV site
+   to the Squarespace page.
 
 ## license
 

@@ -25,7 +25,8 @@ served as a website: everything committed is published the moment it is pushed.
   before they ship; the findings and their fixes go in `log/agt.md`.
 - Archive by re-running `tools/` scripts, not by hand-editing `archive/`. Archived text stays as
   published.
-- Relative links only: the site is served both at `taoaieng.io/` and `adrianmatias.github.io/pub/`.
+- Relative links only: the site is served at `adrianmatias.github.io/pub/` and `taoaieng.io/pub/`.
+- Never set a custom domain on this repo; `taoaieng.io` belongs to the user site (see README › publish).
 - English for pieces and logs; quotes keep their original language with a translation beside them.
 
 ## don't

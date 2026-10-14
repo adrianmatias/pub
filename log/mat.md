@@ -14,3 +14,7 @@
 	- any source linked at https://adrianmatias.github.io/
 	- https://delightfulobservaciones.blogspot.com/
 - once there, use them as context extend it with this one and go ahead with the new infog artifact
+
+## prompt
+
+serve https://adrianmatias.github.io/pub/ from https://taoaieng.io/pub
