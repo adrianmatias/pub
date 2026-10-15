@@ -50,7 +50,8 @@ function lineChart(c) {
   g += `<line class="ax" x1="${L}" x2="${w - R}" y1="${h - B}" y2="${h - B}"/>`;
   for (const m of c.marks || []) {
     const mx = X(parseT(m[0]));
-    g += `<line class="mk" x1="${mx}" x2="${mx}" y1="${T}" y2="${h - B}"/><text class="ml" x="${mx + 3}" y="${T + 9 + (m[2] || 0) * 11}">${esc(m[1])}</text>`;
+    const r = mx > w * .62;   // labels near the right edge grow leftwards
+    g += `<line class="mk" x1="${mx}" x2="${mx}" y1="${T}" y2="${h - B}"/><text class="ml" x="${r ? mx - 3 : mx + 3}" y="${T + 9 + (m[2] || 0) * 11}"${r ? ' text-anchor="end"' : ""}>${esc(m[1])}</text>`;
   }
   c.series.forEach((s, i) => {
     const col = HUE[s.hue] || s.hue || HUE.gold, pts = s.data.filter(p => p[1] != null).map(p => [X(parseT(p[0])), Y(p[1])]);
@@ -87,17 +88,20 @@ function spark(series, log) {
   const p = d.map((q, i) => (i ? "L" : "M") + X(xs[i]).toFixed(1) + " " + Y(q[1]).toFixed(1)).join("");
   return `<svg class="spark" viewBox="0 0 420 150"><path class="a" d="${p}L420 150L0 150Z"/><path d="${p}"/></svg>`;
 }
-function barNarrow(c) {   // phone: the label on its own line, the bar under it
-  const w = 340, rh = 36, h = c.rows.length * rh + 6, vs = c.rows.map(r => r[1]), neg = Math.min(...vs) < 0;
+function barNarrow(c) {   // phone: the label on its own line, the bar under it; a long value drops below the bar
+  const w = 340, vs = c.rows.map(r => r[1]), neg = Math.min(...vs) < 0;
   const lo = c.log ? Math.min(...vs) / 2 : Math.min(0, Math.min(...vs)) * 1.04, hi = Math.max(...vs) * (c.log ? 2 : 1.06);
   const X = scale(lo, hi, 4, w - 70, c.log), base = c.log ? 4 : X(0);
-  let g = `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(c.title)}">`;
-  if (neg) g += `<line class="ax" x1="${base}" x2="${base}" y1="14" y2="${h}"/>`;
-  c.rows.forEach((r, i) => {
-    const y = i * rh, col = HUE[r[2]] || HUE.dim, xv = X(r[1]), x0 = Math.min(base, xv), bw = Math.max(2, Math.abs(xv - base));
-    g += `<text class="nl" x="4" y="${y + 12}">${esc(r[0])}</text><rect x="${x0}" y="${y + 17}" width="${bw}" height="11" rx="3" fill="${col}" opacity=".85"/><text class="nv" x="${Math.max(xv, base) + 6}" y="${y + 27}">${esc(r[3] ?? fmt(r[1], c.xf))}</text>`;
-  });
-  return g + "</svg>";
+  let body = "", y = 0;
+  for (const r of c.rows) {
+    const col = HUE[r[2]] || HUE.dim, xv = X(r[1]), x0 = Math.min(base, xv), bw = Math.max(2, Math.abs(xv - base));
+    const v = String(r[3] ?? fmt(r[1], c.xf)), vx = Math.max(xv, base) + 6, fits = vx + v.length * 6.7 < w;
+    body += `<text class="nl" x="4" y="${y + 12}">${esc(r[0])}</text><rect x="${x0}" y="${y + 17}" width="${bw}" height="11" rx="3" fill="${col}" opacity=".85"/>` +
+      (fits ? `<text class="nv" x="${vx}" y="${y + 27}">${esc(v)}</text>` : `<text class="nv" x="${w - 2}" y="${y + 41}" text-anchor="end">${esc(v)}</text>`);
+    y += fits ? 36 : 50;
+  }
+  const h = y + 6;
+  return `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(c.title)}">${neg ? `<line class="ax" x1="${base}" x2="${base}" y1="14" y2="${h}"/>` : ""}${body}</svg>`;
 }
 function chartBlock(c, node, nw) {
   const body = c.kind === "bar" ? (nw ? barNarrow(c) : barChart(c)) : lineChart(nw ? { ...c, w: 340, h: 236 } : c);
@@ -373,17 +377,19 @@ function cardHTML(n, open) {
     (b.v ? `<div class="fbig">${esc(b.v)}<small>${esc(b.u || "")}</small></div><div class="fbl">${esc(b.l || "")}</div>` : "") +
     `<p class="fv">${esc(n.feedVerdict ?? n.verdict)}</p><span class="fm"></span></summary><div class="l1 fl1">${n.pill ? `<span class="pill">${esc(n.pill)}</span>` : ""}${bodyHTML(n, true)}</div></details>`;
 }
-function buildFeed() {
+function buildFeed() {   // DATA.sections (an argument order) or DATA.eras (one group per grid column)
   if (feedBuilt) return; feedBuilt = true;
-  const top = nodes.filter(n => n.gy === DATA.topRow), first = top.filter(n => n.gx < DATA.lastTopX), last = top.filter(n => n.gx >= DATA.lastTopX);
-  first.sort((a, b) => (a.id === DATA.start ? -1 : b.id === DATA.start ? 1 : a.gx - b.gx));
+  const top = nodes.filter(n => n.gy === DATA.topRow);
+  const lead = DATA.lead ? DATA.lead.map(id => byId[id]) : top.filter(n => n.gx < DATA.lastTopX).sort((a, b) => (a.id === DATA.start ? -1 : b.id === DATA.start ? 1 : a.gx - b.gx));
+  const tail = DATA.tail ? DATA.tail.map(id => byId[id]) : top.filter(n => n.gx >= DATA.lastTopX);
+  const used = new Set([...lead, ...tail]);
+  const groups = DATA.sections ? DATA.sections.map(g => ({ ...g, ns: g.ids.map(id => byId[id]) }))
+    : DATA.eras.map(g => ({ ...g, ns: nodes.filter(n => !used.has(n) && Math.round(n.gx) === g.gx).sort((a, b) => a.gy - b.gy) }));
   let h = `<header class="fh"><div class="k">${esc(DATA.kicker)}</div><h1>${esc(DATA.title)}</h1><p>${esc(DATA.subtitle)}</p><p class="fhint">${esc(DATA.feedHint)}</p></header>`;
-  h += first.map(n => cardHTML(n, n.id === DATA.start)).join("");
-  for (const e of DATA.eras) {
-    const ns = nodes.filter(n => n.gy !== DATA.topRow && Math.round(n.gx) === e.gx).sort((a, b) => a.gy - b.gy);
-    if (ns.length) h += `<section class="era${e.now ? " now" : ""}"><div class="eh"><b>${esc(e.t)}</b><span>${esc(e.s)}</span><em>${esc(e.span)}</em></div>${ns.map(n => cardHTML(n)).join("")}</section>`;
-  }
-  h += last.map(n => cardHTML(n)).join("");
+  h += lead.map(n => cardHTML(n, n.id === DATA.start)).join("");
+  for (const g of groups) if (g.ns.length)
+    h += `<section class="era${g.now ? " now" : ""}"><div class="eh"><b>${esc(g.t)}</b><span>${esc(g.s)}</span>${g.span ? `<em>${esc(g.span)}</em>` : ""}</div>${g.ns.map(n => cardHTML(n)).join("")}</section>`;
+  h += tail.map(n => cardHTML(n)).join("");
   $("#feed").innerHTML = h;
 }
 

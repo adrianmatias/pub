@@ -47,3 +47,9 @@ live now
 - neat and insightful closing-doors
 - focus more on 2026
 - both this and tsunami-and-printing-press are great in desktop, but poor in the phone. any idea, try it in closing-doors. if chronology is the main pattern, that should drive the map structure. but a different pattern might be main one.
+
+## prompt
+
+ok
+- apply the same phone-friendly traits to https://taoaieng.io/pub/infog/tsunami-and-printing-press/
+- push both updated infog to the repo to serve them at https://taoaieng.io/pub

@@ -206,12 +206,126 @@ body.read .chart{cursor:auto}
   .hud,#help{display:none!important}
 }
 noscript{display:block;padding:40px;font-family:var(--serif);font-size:20px}
+/* ---------- closing doors: additions ---------- */
+.band{position:absolute;width:1200px;pointer-events:none;text-align:center;white-space:nowrap;
+  font-family:var(--serif);font-size:118px;line-height:1;letter-spacing:-.01em;color:rgba(235,232,226,.15);
+  opacity:calc(1 - var(--o1) * .8)}
+.band small{display:block;margin-top:14px;font-family:var(--mono);font-size:34px;letter-spacing:.3em;text-transform:uppercase;color:rgba(235,232,226,.22)}
+.band.layer{text-align:left;font-family:var(--mono);font-size:40px;letter-spacing:.32em;text-transform:uppercase;color:rgba(212,173,58,.32)}
+.band.now{color:rgba(212,173,58,.26)}
+body.read .band{display:none}
+.priv{color:var(--fg3)}
+svg .dg{font-family:var(--sans);font-size:12px;fill:var(--fg2)}
+svg .dgb{font-family:var(--serif);font-size:15px;fill:var(--fg)}
+svg .dgm{font-family:var(--mono);font-size:9.5px;fill:var(--fg3);letter-spacing:.04em}
+svg .box{fill:var(--bg2);stroke:var(--line2);stroke-width:1}
+svg .box.h{stroke:var(--gold2)}
+svg .ar2{fill:none;stroke:var(--fg4);stroke-width:1.3}
+svg .ar2.h{stroke:var(--gold)}
+.ep{display:grid;grid-template-columns:58px 1fr;gap:2px 12px;font-size:13px;line-height:1.38;padding:6px 0;border-bottom:1px solid var(--line)}
+.ep b{font-family:var(--mono);font-weight:500;font-size:11px;color:var(--h);padding-top:2px}
+.ep i{color:var(--fg);font-style:normal;font-family:var(--serif);font-size:15px}
+.ep span{display:block;color:var(--fg3)}
+code{font-family:var(--mono);font-size:.88em;color:var(--fg)}
+svg .nl{font-family:var(--mono);font-size:11px;fill:var(--fg2)}
+svg .nv{font-family:var(--mono);font-size:11px;fill:var(--fg)}
+
+/* ---------- the feed: phones, read mode, print ---------- */
+#feed{display:none}
+body.read #vp,body.read #chips,body.read #mini,body.read #hint{display:none!important}
+body.read{overflow:auto}
+body.read #feed{display:block;max-width:760px;margin:0 auto;padding:62px 14px 96px}
+body.read::before{content:"";position:fixed;left:0;right:0;top:0;height:56px;z-index:9;pointer-events:none;background:linear-gradient(var(--bg) 72%,rgba(11,11,12,0))}
+.fh{padding:14px 4px 18px}
+.fh .k{font:500 11px/1.4 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.fh h1{font:500 48px/1 var(--serif);letter-spacing:-.015em;margin-top:10px}
+.fh p{font:italic 20px/1.32 var(--serif);color:var(--fg2);margin-top:10px}
+.fh p.fhint{font:12.5px/1.55 var(--sans);font-style:normal;color:var(--fg3)}
+.era{position:relative;margin:30px 0 0 4px;padding-left:14px;border-left:1px solid var(--line2)}
+.era.now{border-left:2px solid var(--gold2)}
+.eh{position:sticky;top:54px;z-index:5;display:flex;align-items:baseline;gap:8px 10px;flex-wrap:wrap;padding:9px 10px 9px 12px;margin:0 0 2px -16px;
+  background:rgba(11,11,12,.94);backdrop-filter:blur(6px);border-left:3px solid var(--line2);border-radius:0 10px 10px 0}
+.era.now .eh{border-left-color:var(--gold)}
+.eh b{font:500 21px/1.1 var(--serif);color:var(--fg)}
+.eh span{font:11px/1.2 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--fg3)}
+.eh em{margin-left:auto;font:normal 11px/1 var(--mono);color:var(--gold);border:1px solid var(--gold2);border-radius:99px;padding:4px 9px;white-space:nowrap}
+.era:not(.now) .eh em{color:var(--fg3);border-color:var(--line2)}
+.fc{position:relative;background:var(--card);border:1px solid var(--line);border-radius:18px;margin:12px 0;overflow:hidden}
+.fc::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(160deg,var(--tint) 0%,transparent 42%)}
+.fc[data-hue=gold]{--h:var(--gold);--tint:var(--goldsoft)} .fc[data-hue=sea]{--h:var(--sea);--tint:var(--seasoft)}
+.fc[data-hue=rust]{--h:var(--rust);--tint:var(--rustsoft)} .fc[data-hue=ink]{--h:var(--ink);--tint:var(--inksoft)}
+.fc[data-hue=rose]{--h:var(--rose);--tint:var(--rosesoft)}
+.fc[open]{border-color:var(--line2)}
+.fc summary{position:relative;list-style:none;cursor:pointer;padding:16px 18px 14px;-webkit-tap-highlight-color:transparent}
+.fc summary::-webkit-details-marker{display:none}
+.fk{display:flex;gap:8px;align-items:center;font:500 10.5px/1.35 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--h)}
+.fk .lane{margin-left:auto;font-style:normal;font-size:9.5px;letter-spacing:.12em;color:var(--fg3);border:1px solid var(--line2);border-radius:99px;padding:2px 8px;white-space:nowrap}
+.fc h3{font:500 28px/1.08 var(--serif);margin-top:7px;color:var(--fg);letter-spacing:-.01em}
+.fbig{font:400 40px/1 var(--mono);letter-spacing:-.03em;margin-top:14px;color:var(--fg)}
+.fbig small{font-size:15px;color:var(--fg3);margin-left:7px;letter-spacing:0}
+.fbl{font:11.5px/1.45 var(--mono);color:var(--fg3);margin-top:5px}
+.fv{font:italic 17.5px/1.36 var(--serif);color:var(--fg2);margin-top:11px}
+.fm{display:inline-block;margin-top:12px;font:11px/1 var(--mono);letter-spacing:.08em;color:var(--h);border:1px solid var(--line2);border-radius:99px;padding:6px 11px}
+.fm::after{content:"open the evidence ↓"} .fc[open] .fm::after{content:"close ↑"}
+#feed .l1{position:static;opacity:1;pointer-events:auto;display:block;padding:0 18px 20px;font-size:15px;line-height:1.5}
+#feed .l1>.pill{display:inline-block;font:10.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--h);color:var(--h);border-radius:99px;padding:5px 10px;margin-bottom:12px}
+#feed .l1 .lede{font-size:17.5px;line-height:1.46}
+#feed .l1 .cols{display:block}
+#feed .l1 .col{display:flex;flex-direction:column;gap:14px;margin-top:16px}
+#feed .grid2,#feed .bb{grid-template-columns:1fr}
+#feed .chart{cursor:auto;padding:10px 10px 6px}
+#feed .chart .cs{font-size:10.5px;line-height:1.45}
+#feed table.facts{font-size:14px}
+#feed table.facts td.v{white-space:normal;min-width:74px;max-width:120px;font-size:12.5px}
+#feed .take q{font-size:17px}
+#feed .prose{font-size:15px}
+#feed .fs{margin-top:16px;border-top:1px solid var(--line);padding-top:10px}
+#feed .fs summary{cursor:pointer;font:11px var(--mono);color:var(--fg3);letter-spacing:.08em}
+#feed .src{columns:1;border:0;padding-top:8px;font-size:11px;line-height:1.5}
+#feed .src li{margin-bottom:5px}
+@media (min-width:701px){ body.read #feed{padding-top:70px} .eh{top:60px} }
+
+/* narrow diagrams */
+.rungs{list-style:none;display:flex;flex-direction:column;gap:8px}
+.rungs li{border-left:3px solid var(--line2);padding:6px 0 6px 12px}
+.rungs li.now{border-left-color:var(--gold)} .rungs li.next{border-left-style:dashed}
+.rungs b{display:block;font:11px var(--mono);color:var(--fg3)} .rungs li.now b{color:var(--gold)}
+.rungs span{display:block;font:16px/1.3 var(--serif);color:var(--fg)} .rungs li.next span{font-style:italic;color:var(--fg2)}
+.rungs em{display:block;font-style:normal;font-size:12.5px;color:var(--fg3)}
+.loop{border:1px solid var(--line2);border-radius:12px;padding:10px 12px;font-size:14px;line-height:1.45}
+.loop b{display:block;font:500 10.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--fg3);margin-bottom:4px}
+.loop.hot{border-color:var(--gold2)} .loop.hot b{color:var(--gold)}
+.round{list-style:none;counter-reset:r;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.round li{counter-increment:r;padding-left:26px;position:relative;color:var(--fg2)}
+.round li::before{content:counter(r);position:absolute;left:0;top:1px;font:11px var(--mono);color:var(--gold)}
+.round b{font-family:var(--mono);font-weight:500;color:var(--fg)}
+
+/* 2026, month by month — narrow */
+.m26{display:flex;flex-direction:column;gap:2px;font-size:13px}
+.m26h{display:flex;gap:12px;flex-wrap:wrap;font:10.5px var(--mono);letter-spacing:.08em;color:var(--fg3);margin-bottom:6px}
+.m26h .f{color:var(--ink)} .m26h .p{color:var(--gold)}
+.m26r{display:grid;grid-template-columns:38px 1fr;gap:2px 10px;padding:7px 0;border-bottom:1px solid var(--line)}
+.m26r b{grid-row:span 9;font:500 12px var(--mono);color:var(--fg2);padding-top:1px}
+.m26r.late b{color:var(--gold)}
+.m26b{display:flex;align-items:center;gap:8px}
+.m26b i{display:block;height:9px;border-radius:3px;background:var(--fg4)}
+.m26r.late .m26b i{background:var(--gold)}
+.m26b span{font:11px var(--mono);color:var(--fg3);white-space:nowrap}
+.ev{line-height:1.35;padding-left:12px;position:relative}
+.ev::before{content:"";position:absolute;left:0;top:.5em;width:5px;height:5px;border-radius:50%}
+.ev.f{color:var(--fg2)} .ev.f::before{background:var(--ink)}
+.ev.p{color:var(--fg)} .ev.p::before{background:var(--gold)}
+@media print{ body.read #feed{max-width:none} .fc{break-inside:avoid} }
+#feed .chart svg{max-width:440px}
+#feed .fc{scroll-margin-top:120px}
+#feed .src li{scroll-margin-top:130px}
 </style>
 </head>
 <body class="z0">
 <noscript>This piece is a zoomable map drawn by a small inline script. Enable JavaScript, or read the sources in the repository.</noscript>
 <div id="chips"></div>
 <div id="vp"><div id="world"><div id="grid"></div><svg id="links"></svg></div></div>
+<main id="feed"></main>
 <nav id="crumb" class="hud"><a href="../../" title="taoaieng.io/pub — all pieces and the archive">pub</a><span>›</span><a data-act="home">tsunami &amp; printing press</a><span id="crumbTail"></span></nav>
 <div id="tools" class="hud"><button data-act="home" title="whole map (0)">map</button><button data-act="read" title="read as an article (R)">read</button><button data-act="help" title="how to move (?)">?</button></div>
 <div id="hint" class="hud">scroll or pinch to zoom · drag to pan · click a tile · ← → walk · R read · ? help</div>
@@ -232,6 +346,16 @@ const cell = (h, q, body, meta, lean, id) => `<div class="cell${lean ? " lean" :
 const scoreRow = (v, t, id) => `<div class="score"><b class="${v}">${v.replace("-", " ")}</b><span>${id ? cites(t, id) : t}</span></div>`;
 
 const DATA = {
+kicker: "money in the age of AI · 14 Oct 2026",
+title: "Tsunami & Printing Press",
+subtitle: "AI is deflationary in what it sells and inflationary in what it buys. The press has not been called — yet.",
+feedHint: "The map, read in the order of its argument: the two forces, the hard money between them, what else they move, and where that leaves us. Open any card for the chart, the facts and every source.",
+lead: ["thesis"], tail: ["method"],
+sections: [
+  { t: "The two forces", s: "tsunami · printing press", ids: ["aidefl", "aisink", "bonds", "austrian"] },
+  { t: "Hard money", s: "bitcoin · zcash · quantum", ids: ["btc", "y2013", "zec", "quantum"] },
+  { t: "What else they move", s: "equity · housing · the yen", ids: ["equity", "realestate", "carry"] },
+  { t: "Where it leaves us", s: "four futures · the tells", ids: ["scen", "tells"] }],
 start: "thesis",
 nodes: [
 
@@ -690,7 +814,7 @@ function cites(s, node) {   // superscript [n] in trusted HTML
   return String(s).replace(/\[(\d+(?:,\d+)*)\]/g, (_, ns) => ns.split(",").map(n => `<sup class="cite" data-node="${node}" data-n="${n}">${n}</sup>`).join(""));
 }
 function rich(s, node) {
-  return esc(s).replace(/\[([^\]]+?)\]\(([^)\s]+)\)/g, '<a href="$2">$1</a>').replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/\*([^*\s][^*]*?)\*/g, "<i>$1</i>").replace(/\[(\d+(?:,\d+)*)\]/g, (_, ns) =>
+  return esc(s).replace(/\[([^\]]+?)\]\(([^)\s]+)\)/g, '<a href="$2">$1</a>').replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/\*([^*\s][^*]*?)\*/g, "<i>$1</i>").replace(/\[(\d+(?:,\d+)*)\]/g, (_, ns) =>
     ns.split(",").map(n => `<sup class="cite" data-node="${node}" data-n="${n}">${n}</sup>`).join(""));
 }
 
@@ -701,7 +825,7 @@ function scale(d0, d1, r0, r1, log) {
 }
 const parseT = t => { const [y, m = 1, d = 1] = String(t).split("-").map(Number); return y + (m - 1) / 12 + (d - 1) / 365; };
 function niceTicks(lo, hi, n, log) {
-  if (log) { const out = []; for (let e = Math.floor(Math.log10(lo)); e <= Math.ceil(Math.log10(hi)); e++) for (const m of [1, 3]) { const v = m * 10 ** e; if (v >= lo && v <= hi) out.push(v); } return out; }
+  if (log) { const out = []; for (let e = Math.floor(Math.log10(lo)); e <= Math.ceil(Math.log10(hi)); e++) for (const m of [1, 3]) { const v = +(m * 10 ** e).toPrecision(6); if (v >= lo && v <= hi) out.push(v); } return out; }
   const step0 = (hi - lo) / n, mag = 10 ** Math.floor(Math.log10(step0)), step = [1, 2, 2.5, 5, 10].map(k => k * mag).find(s => s >= step0);
   const out = []; for (let v = Math.ceil(lo / step) * step; v <= hi + 1e-9; v += step) out.push(+v.toFixed(10)); return out;
 }
@@ -709,6 +833,7 @@ function fmt(v, f) {
   if (f === "pct") return v + "%";
   if (f === "usd") return v >= 1000 ? "$" + (v >= 1e6 ? v / 1e6 + "M" : v / 1000 + "k") : "$" + v;
   if (f === "x") return v + "×";
+  if (f === "h") return v + " h";
   if (f === "k") return v >= 1000 ? v / 1000 + "k" : v;
   return v;
 }
@@ -727,7 +852,8 @@ function lineChart(c) {
   g += `<line class="ax" x1="${L}" x2="${w - R}" y1="${h - B}" y2="${h - B}"/>`;
   for (const m of c.marks || []) {
     const mx = X(parseT(m[0]));
-    g += `<line class="mk" x1="${mx}" x2="${mx}" y1="${T}" y2="${h - B}"/><text class="ml" x="${mx + 3}" y="${T + 9 + (m[2] || 0) * 11}">${esc(m[1])}</text>`;
+    const r = mx > w * .62;   // labels near the right edge grow leftwards
+    g += `<line class="mk" x1="${mx}" x2="${mx}" y1="${T}" y2="${h - B}"/><text class="ml" x="${r ? mx - 3 : mx + 3}" y="${T + 9 + (m[2] || 0) * 11}"${r ? ' text-anchor="end"' : ""}>${esc(m[1])}</text>`;
   }
   c.series.forEach((s, i) => {
     const col = HUE[s.hue] || s.hue || HUE.gold, pts = s.data.filter(p => p[1] != null).map(p => [X(parseT(p[0])), Y(p[1])]);
@@ -736,7 +862,8 @@ function lineChart(c) {
     g += `<path class="ln" stroke="${col}" d="${d}"${s.dash ? ' stroke-dasharray="4 4"' : ""}/>`;
     if (s.label) g += `<text class="lg" fill="${col}" x="${L + 8}" y="${T + 12 + i * 13}">${esc(s.label)}</text>`;
   });
-  for (const p of c.dots || []) { const px = X(parseT(p[0])), py = Y(p[1]); g += `<circle cx="${px}" cy="${py}" r="3.5" fill="${HUE[p[3]] || HUE.fg}"/><text class="ml" x="${px + 6}" y="${py + (p[4] || -6)}" fill="${HUE.fg}">${esc(p[2])}</text>`; }
+  for (const p of c.dots || []) { const px = X(parseT(p[0])), py = Y(p[1]), r = px > w * .62;   // labels near the right edge grow leftwards
+    g += `<circle cx="${px}" cy="${py}" r="3.5" fill="${HUE[p[3]] || HUE.fg}"/><text class="ml" x="${r ? px - 6 : px + 6}" y="${py + (p[4] || -6)}" fill="${HUE.fg}"${r ? ' text-anchor="end"' : ""}>${esc(p[2])}</text>`; }
   return g + "</svg>";
 }
 function barChart(c) {   // horizontal bars; c.rows = [[label, value, hue, note]]; signed values supported (linear)
@@ -763,9 +890,24 @@ function spark(series, log) {
   const p = d.map((q, i) => (i ? "L" : "M") + X(xs[i]).toFixed(1) + " " + Y(q[1]).toFixed(1)).join("");
   return `<svg class="spark" viewBox="0 0 420 150"><path class="a" d="${p}L420 150L0 150Z"/><path d="${p}"/></svg>`;
 }
-function chartBlock(c, node) {
-  const body = c.kind === "bar" ? barChart(c) : lineChart(c);
-  return `<figure class="chart" data-zoom><div class="ct">${esc(c.title)}</div>${body}<div class="cs">${rich(c.src || "", node)}</div></figure>`;
+function barNarrow(c) {   // phone: the label on its own line, the bar under it; a long value drops below the bar
+  const w = 340, vs = c.rows.map(r => r[1]), neg = Math.min(...vs) < 0;
+  const lo = c.log ? Math.min(...vs) / 2 : Math.min(0, Math.min(...vs)) * 1.04, hi = Math.max(...vs) * (c.log ? 2 : 1.06);
+  const X = scale(lo, hi, 4, w - 70, c.log), base = c.log ? 4 : X(0);
+  let body = "", y = 0;
+  for (const r of c.rows) {
+    const col = HUE[r[2]] || HUE.dim, xv = X(r[1]), x0 = Math.min(base, xv), bw = Math.max(2, Math.abs(xv - base));
+    const v = String(r[3] ?? fmt(r[1], c.xf)), vx = Math.max(xv, base) + 6, fits = vx + v.length * 6.7 < w;
+    body += `<text class="nl" x="4" y="${y + 12}">${esc(r[0])}</text><rect x="${x0}" y="${y + 17}" width="${bw}" height="11" rx="3" fill="${col}" opacity=".85"/>` +
+      (fits ? `<text class="nv" x="${vx}" y="${y + 27}">${esc(v)}</text>` : `<text class="nv" x="${w - 2}" y="${y + 41}" text-anchor="end">${esc(v)}</text>`);
+    y += fits ? 36 : 50;
+  }
+  const h = y + 6;
+  return `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(c.title)}">${neg ? `<line class="ax" x1="${base}" x2="${base}" y1="14" y2="${h}"/>` : ""}${body}</svg>`;
+}
+function chartBlock(c, node, nw) {
+  const body = c.kind === "bar" ? (nw ? barNarrow(c) : barChart(c)) : lineChart(nw ? { ...c, w: 340, h: 236 } : c);
+  return `<figure class="chart"${nw ? "" : " data-zoom"}><div class="ct">${esc(c.title)}</div>${body}<div class="cs">${rich(c.src || "", node)}</div></figure>`;
 }
 
 // ---------- render ----------
@@ -776,6 +918,26 @@ function takeBlock(t, node) {
   if (!t) return "";
   return `<div class="take"><q>${esc(t.q)}</q>${t.tr ? `<div class="tr">${esc(t.tr)}</div>` : ""}<div class="who">— ${esc(t.who)}</div>${t.verdict ? `<div class="score"><b class="${t.verdict}">${t.verdict.replace("-", " ")}</b><span>${rich(t.why, node)}</span></div>` : ""}</div>`;
 }
+function srcList(n, nw) {
+  if (!n.src) return "";
+  const li = n.src.map((s, i) => `<li${nw ? "" : ` id="${n.id}-s${i + 1}"`}><b>${i + 1}</b> ${s[3] ? `<span class="lab ${s[3] === "REPORTED" ? "" : s[3]}">${s[3] === "REPORTED" ? "REP" : s[3]}</span> ` : ""}${s[1] ? `<a href="${esc(s[1])}" target="_blank" rel="noopener">${esc(s[0])}</a>` : `<span class="priv">${esc(s[0])}</span>`}${s[2] ? " · " + esc(s[2]) : ""}</li>`).join("");
+  return nw ? `<details class="fs"><summary>sources · ${n.src.length}</summary><ol class="src">${li}</ol></details>` : `<ol class="src" data-zoom>${li}</ol>`;
+}
+function bodyHTML(n, nw) {   // the reading face; nw = narrow (phone feed)
+  let h = n.lede ? `<p class="lede">${rich(n.lede, n.id)}</p>` : "";
+  h += `<div class="cols"><div class="col">`;
+  for (const c of n.charts || []) h += chartBlock(c, n.id, nw);
+  if (n.facts) h += factsTable(n.facts, n.id);
+  if (n.left) h += n.left(n.id, nw);
+  if (n.tell && n.tellLeft) h += `<div class="tell"><h4>the tell</h4>${rich(n.tell, n.id)}</div>`;
+  h += `</div><div class="col">`;
+  for (const t of [].concat(n.take || [])) h += takeBlock(t, n.id);
+  if (n.rightFacts) h += factsTable(n.rightFacts, n.id);
+  if (n.right) h += n.right(n.id, nw);
+  if (n.bull || n.bear) h += `<div class="bb"><div class="bull"><h4>${esc(n.bullT || "bull")}</h4>${rich(n.bull, n.id)}</div><div class="bear"><h4>${esc(n.bearT || "bear")}</h4>${rich(n.bear, n.id)}</div></div>`;
+  if (n.tell && !n.tellLeft) h += `<div class="tell"><h4>the tell</h4>${rich(n.tell, n.id)}</div>`;
+  return h + `</div></div>` + srcList(n, nw);
+}
 function renderNode(n) {
   const el = document.createElement("article");
   el.className = "node"; el.id = n.id; el.tabIndex = 0; el.dataset.hue = n.hue;
@@ -785,21 +947,7 @@ function renderNode(n) {
   if (b.v) h += `<div class="big">${esc(b.v)}<small>${esc(b.u || "")}</small></div><div class="bl">${esc(b.l || "")}</div>`;
   h += `<div class="v">${esc(n.verdict)}</div></div>`;
   h += `<div class="l1"><header><span class="k">${esc(n.kicker)}</span><h3>${esc(n.title)}</h3>${n.pill ? `<span class="pill">${esc(n.pill)}</span>` : ""}</header>`;
-  if (n.lede) h += `<p class="lede">${rich(n.lede, n.id)}</p>`;
-  h += `<div class="cols"><div class="col">`;
-  for (const c of n.charts || []) h += chartBlock(c, n.id);
-  if (n.facts) h += factsTable(n.facts, n.id);
-  if (n.left) h += n.left(n.id);
-  if (n.tell && n.tellLeft) h += `<div class="tell"><h4>the tell</h4>${rich(n.tell, n.id)}</div>`;
-  h += `</div><div class="col">`;
-  for (const t of [].concat(n.take || [])) h += takeBlock(t, n.id);
-  if (n.rightFacts) h += factsTable(n.rightFacts, n.id);
-  if (n.right) h += n.right(n.id);
-  if (n.bull || n.bear) h += `<div class="bb"><div class="bull"><h4>${esc(n.bullT || "bull")}</h4>${rich(n.bull, n.id)}</div><div class="bear"><h4>${esc(n.bearT || "bear")}</h4>${rich(n.bear, n.id)}</div></div>`;
-  if (n.tell && !n.tellLeft) h += `<div class="tell"><h4>the tell</h4>${rich(n.tell, n.id)}</div>`;
-  h += `</div></div>`;
-  if (n.src) h += `<ol class="src" data-zoom>${n.src.map((s, i) => `<li id="${n.id}-s${i + 1}"><b>${i + 1}</b> ${s[3] ? `<span class="lab ${s[3] === "REPORTED" ? "" : s[3]}">${s[3] === "REPORTED" ? "REP" : s[3]}</span> ` : ""}<a href="${esc(s[1])}" target="_blank" rel="noopener">${esc(s[0])}</a>${s[2] ? " · " + esc(s[2]) : ""}</li>`).join("")}</ol>`;
-  el.innerHTML = h + "</div>";
+  el.innerHTML = h + bodyHTML(n, false) + "</div>";
   return el;
 }
 const world = $("#world"), vp = $("#vp");
@@ -809,6 +957,12 @@ const BOUNDS = { x: Math.min(...gxs) * GX - W / 2 - 300, y: Math.min(...gys) * G
 BOUNDS.w = Math.max(...gxs) * GX + W / 2 + 300 - BOUNDS.x; BOUNDS.h = Math.max(...gys) * GY + H / 2 + 300 - BOUNDS.y;
 const grid = $("#grid"); Object.assign(grid.style, { left: BOUNDS.x - 3000 + "px", top: BOUNDS.y - 3000 + "px", width: BOUNDS.w + 6000 + "px", height: BOUNDS.h + 6000 + "px" });
 for (const n of nodes) world.appendChild(renderNode(n));
+// era and layer bands: large quiet labels on the open ground between tiles
+for (const b of DATA.bands || []) {
+  const el = document.createElement("div"); el.className = "band " + (b.cls || "");
+  el.style.left = b.x + "px"; el.style.top = b.y + "px"; el.innerHTML = b.html;
+  world.insertBefore(el, grid.nextSibling);
+}
 
 // links: soft curves between tile centres, label at the midpoint
 const svg = $("#links");
@@ -942,16 +1096,25 @@ function click(e) {
   setFocus(n, z.classList.contains("src") ? "sources" : "chart"); flyTo(elRect(z), 650, .92);
 }
 function jumpCite(c) {
+  if (document.body.classList.contains("read")) {   // feed: open this card's sources and flash the line
+    const card = c.closest(".fc"), fs = card && card.querySelector(".fs"); if (!fs) return;
+    fs.open = true; const li = fs.querySelectorAll("li")[c.dataset.n - 1]; if (!li) return;
+    li.classList.add("flash"); setTimeout(() => li.classList.remove("flash"), 2200);
+    return li.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
   const n = byId[c.dataset.node], li = $(`#${n.id}-s${c.dataset.n}`); if (!li) return;
   li.classList.add("flash"); setTimeout(() => li.classList.remove("flash"), 2200);
-  if (document.body.classList.contains("read")) return li.scrollIntoView({ behavior: "smooth", block: "center" });
   setFocus(n, "sources"); flyTo(elRect(li.parentElement), 650, .92);
+}
+function openCard(id, smooth = true) {
+  const d = $("#c-" + id); if (!d) return;
+  d.open = true; requestAnimationFrame(() => d.scrollIntoView({ behavior: smooth ? "smooth" : "auto", block: "start" }));
 }
 document.addEventListener("click", e => {
   const a = e.target.closest("[data-act]"); if (a) { e.preventDefault(); act(a.dataset.act); }
-  const c = e.target.closest(".cite"); if (c && document.body.classList.contains("read")) jumpCite(c);
+  const c = e.target.closest(".cite"); if (c && document.body.classList.contains("read")) { e.preventDefault(); jumpCite(c); }
   if (e.target.id === "help") act("help");
-  const g = e.target.closest("[data-go]"); if (g && document.body.classList.contains("read")) $("#" + g.dataset.go).scrollIntoView({ behavior: "smooth" });
+  const g = e.target.closest("[data-go]"); if (g && document.body.classList.contains("read")) openCard(g.dataset.go);
 });
 function act(a) {
   if (a === "home") { if (document.body.classList.contains("read")) act("read"); home(); }
@@ -960,7 +1123,7 @@ function act(a) {
   if (a === "read") {
     const on = document.body.classList.toggle("read");
     $$("#tools [data-act=read]")[0].textContent = on ? "map" : "read";
-    if (on) { (focus ? $("#" + focus.id) : document.body).scrollIntoView(); }
+    if (on) { buildFeed(); focus ? openCard(focus.id, false) : window.scrollTo(0, 0); }
     else { window.scrollTo(0, 0); requestAnimationFrame(() => focus ? goNode(focus, 1) : home(1)); }
   }
 }
@@ -1006,12 +1169,40 @@ mm.addEventListener("click", e => {
 });
 $$(".node").forEach(el => el.addEventListener("focus", () => { if (!document.body.classList.contains("read") && focus?.id !== el.id && !ptrs.size) goNode(byId[el.id]); }));
 
+
+// ---------- the feed: the same tiles as a chronological column (phones, read mode, print) ----------
+let feedBuilt = false;
+function cardHTML(n, open) {
+  const b = n.big || {}, lane = n.lane || "";
+  return `<details class="fc" data-hue="${n.hue}" id="c-${n.id}"${open ? " open" : ""}><summary>` +
+    `<div class="fk"><span>${esc(n.feedKicker ?? n.kicker.replace(/^(the field|his practice|the evidence) · /, ""))}</span>${lane ? `<i class="lane ${lane}">${lane}</i>` : ""}</div><h3>${esc(n.feedTitle || n.title)}</h3>` +
+    (b.v ? `<div class="fbig">${esc(b.v)}<small>${esc(b.u || "")}</small></div><div class="fbl">${esc(b.l || "")}</div>` : "") +
+    `<p class="fv">${esc(n.feedVerdict ?? n.verdict)}</p><span class="fm"></span></summary><div class="l1 fl1">${n.pill ? `<span class="pill">${esc(n.pill)}</span>` : ""}${bodyHTML(n, true)}</div></details>`;
+}
+function buildFeed() {   // DATA.sections (an argument order) or DATA.eras (one group per grid column)
+  if (feedBuilt) return; feedBuilt = true;
+  const top = nodes.filter(n => n.gy === DATA.topRow);
+  const lead = DATA.lead ? DATA.lead.map(id => byId[id]) : top.filter(n => n.gx < DATA.lastTopX).sort((a, b) => (a.id === DATA.start ? -1 : b.id === DATA.start ? 1 : a.gx - b.gx));
+  const tail = DATA.tail ? DATA.tail.map(id => byId[id]) : top.filter(n => n.gx >= DATA.lastTopX);
+  const used = new Set([...lead, ...tail]);
+  const groups = DATA.sections ? DATA.sections.map(g => ({ ...g, ns: g.ids.map(id => byId[id]) }))
+    : DATA.eras.map(g => ({ ...g, ns: nodes.filter(n => !used.has(n) && Math.round(n.gx) === g.gx).sort((a, b) => a.gy - b.gy) }));
+  let h = `<header class="fh"><div class="k">${esc(DATA.kicker)}</div><h1>${esc(DATA.title)}</h1><p>${esc(DATA.subtitle)}</p><p class="fhint">${esc(DATA.feedHint)}</p></header>`;
+  h += lead.map(n => cardHTML(n, n.id === DATA.start)).join("");
+  for (const g of groups) if (g.ns.length)
+    h += `<section class="era${g.now ? " now" : ""}"><div class="eh"><b>${esc(g.t)}</b><span>${esc(g.s)}</span>${g.span ? `<em>${esc(g.span)}</em>` : ""}</div>${g.ns.map(n => cardHTML(n)).join("")}</section>`;
+  h += tail.map(n => cardHTML(n)).join("");
+  $("#feed").innerHTML = h;
+}
+
+addEventListener("beforeprint", () => { if (!document.body.classList.contains("read")) act("read"); $$("#feed details").forEach(d => d.open = true); });
 // ---------- boot ----------
 addEventListener("resize", () => focus ? goNode(focus, 1) : home(1));
 const h0 = location.hash.slice(1);
-if (matchMedia("(max-width: 700px)").matches && !byId[h0]) document.body.classList.add("read"), $$("#tools [data-act=read]")[0].textContent = "map";
+const phone = matchMedia("(max-width: 700px)").matches;
+if (phone) { document.body.classList.add("read"); $$("#tools [data-act=read]")[0].textContent = "map"; buildFeed(); if (byId[h0]) openCard(h0, false); }
 cam.s = fitRect(BOUNDS, .96).s * .6; cam.x = vw() / 2 - (BOUNDS.x + BOUNDS.w / 2) * cam.s; cam.y = vh() / 2 - (BOUNDS.y + BOUNDS.h / 2) * cam.s; apply();
-byId[h0] ? goNode(byId[h0], 900) : home(900);
+if (!phone) byId[h0] ? goNode(byId[h0], 900) : home(900);
 setTimeout(() => $("#hint").style.opacity = .0, 9000);
 </script>
 </body>

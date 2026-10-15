@@ -18,7 +18,6 @@ head = f"""<!DOCTYPE html>
 <title>{TITLE} · October 2026</title>
 <meta name="description" content="{DESC}">
 <meta name="theme-color" content="#0b0b0c">
-<meta name="robots" content="noindex">
 <link rel="canonical" href="{URL}">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="tao · ai · eng">

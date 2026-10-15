@@ -43,3 +43,11 @@
 - **Phone:** under 700 px (and in read mode) the same tiles become a chronological feed. Each era has a sticky header showing its span; each card shows its headline number and opens to the evidence. Charts and diagrams are redrawn narrow, and sources fold away.
 - **Review:** the same reviewer as before, different family from the author. Round 3 FAIL with 9 blockers; round 4 PASS, 15 of 15 resolved. See `research/review.md`.
 - Still offline: this branch is not pushed.
+
+# 2026-10-15
+
+## reply — both pieces live with the phone feed: Tsunami & Printing Press ported to the shared engine, Closing Doors published
+
+- **Tsunami:** the same engine as *Closing Doors*. On phones it reads as a feed in the order of its argument: the two forces → hard money → what else they move → where it leaves us. The content, data and sources are byte-identical, and the desktop map is unchanged.
+- **Closing Doors:** `noindex` and the "draft · offline" pill removed; merged into `master` with its two draft commits.
+- Home page card and meta updated; AGENTS records the shared engine and the two checks (desktop clipping, 390 px phone overflow).
