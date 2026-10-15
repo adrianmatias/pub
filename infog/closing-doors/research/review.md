@@ -26,3 +26,28 @@ not only where the flagged phrase was.
 unconditional "partly memory" headline, a misread of the context-file paper's positive finding, an
 unqualified "no notebooks", and a sensitivity claim covering three hypotheses written as if it covered all
 five. All were fixed and checked by phrase search against the built file. No clipped tile, no JS error.
+
+## Rounds 3–4: the 2026 rebuild (15 Oct 2026)
+
+The map was rebuilt along a time axis that speeds up (8 years, 7, 3, then 3, 4 and 2 months of 2026, then 2
+weeks), with five new 2026 tiles, a month-by-month strip of 2026, and a phone layout as a chronological feed. The
+same reviewer checked only the new and changed content.
+
+**Round 3: FAIL, 9 blockers and 6 should-fix.**
+
+- **Unsourced and miscounted:** an unsourced GPT-6 event; October commits had become 199 after this piece's own
+  commit, so 198 is now a labelled snapshot taken before it.
+- **METR misread:** "no control arm" / "nobody will work without AI" misstated METR — the study still ran (57
+  developers, 800+ tasks); the problem is selection.
+- **Ledger bench overstated:** its pydantic boundary probe was attributed to the dependency-free arm, and its
+  verdict was generalised beyond a one-agent-per-arm case study.
+- **House dates:** repository start dates read as achievement dates.
+- **RAG runs:** two reruns treated as judge noise.
+- **Missing tile-local sources:** episode 0011 and the 99.4% figure lacked one.
+- **Should-fix:** the cloud comparison was scoped as local; the memorisation study was quoted without model,
+  metric and its third set; judge agreement on preference benchmarks was generalised; the thesis wording claimed
+  a "way of working" and productivity; the time buckets did not match card coverage; the context-file result was
+  stated without its version or its scope.
+
+**Round 4 (re-check of the fixes only): PASS, 15 of 15 resolved, no new errors.** A note to cite both episodes in
+the wiki lede was also applied.

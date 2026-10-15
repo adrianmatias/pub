@@ -36,3 +36,10 @@
 - **Piece:** `infog/closing-doors/` — 18 tiles on the same zoomable engine. Columns are eras (2007 → 2030); rows are the field, his practice and the evidence. Each tile has sources inline. `research/` holds what the four research slices could not establish, the adversarial review, and `src/` (the readable data plus `build.py`).
 - **Review:** `openai/gpt-6.1-sol`, a different model family from the author. Round 1 FAIL: 11 blockers and 14 should-fix. Round 2 (re-check of the fixes only): 21 resolved, 4 partly, 1 new; all five were then fixed. See `research/review.md`.
 - **Offline:** only the branch exists, nothing is pushed, and the piece carries `noindex` and a "draft · offline" pill. To publish: drop both, merge into `master`, push.
+
+## reply — Closing Doors rebuilt: chronology drives the map, the clock speeds up, 2026 gets four columns, and phones get a chronological feed instead of a shrunken map
+
+- **Map:** columns are eras whose spans shrink — 8 years, 7, 3, then Jan–Mar, Apr–Jul and Aug–Sep 2026, then Oct 1–14, then 2027–30. The rows stay field / practice / evidence. There are five new 2026 tiles (*the yardsticks bend*, *one GPU, one wiki*, *relevant or faithful*, *the contract*, *the boundary, not the language*), and the thesis carries a month-by-month 2026 strip.
+- **Phone:** under 700 px (and in read mode) the same tiles become a chronological feed. Each era has a sticky header showing its span; each card shows its headline number and opens to the evidence. Charts and diagrams are redrawn narrow, and sources fold away.
+- **Review:** the same reviewer as before, different family from the author. Round 3 FAIL with 9 blockers; round 4 PASS, 15 of 15 resolved. See `research/review.md`.
+- Still offline: this branch is not pushed.

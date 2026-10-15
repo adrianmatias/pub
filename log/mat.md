@@ -41,3 +41,9 @@ live now
 - the prev infog is amazing
 - i would like to have a second one about how i work as ds/m/ai in the era of the agents, how it has evolved, how it could become in the future. wide perspective, details too.
 - keep if offline for now
+
+## prompt
+
+- neat and insightful closing-doors
+- focus more on 2026
+- both this and tsunami-and-printing-press are great in desktop, but poor in the phone. any idea, try it in closing-doors. if chronology is the main pattern, that should drive the map structure. but a different pattern might be main one.

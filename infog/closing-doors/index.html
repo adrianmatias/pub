@@ -228,19 +228,112 @@ svg .ar2.h{stroke:var(--gold)}
 .ep i{color:var(--fg);font-style:normal;font-family:var(--serif);font-size:15px}
 .ep span{display:block;color:var(--fg3)}
 code{font-family:var(--mono);font-size:.88em;color:var(--fg)}
+svg .nl{font-family:var(--mono);font-size:11px;fill:var(--fg2)}
+svg .nv{font-family:var(--mono);font-size:11px;fill:var(--fg)}
+
+/* ---------- the feed: phones, read mode, print ---------- */
+#feed{display:none}
+body.read #vp,body.read #chips,body.read #mini,body.read #hint{display:none!important}
+body.read{overflow:auto}
+body.read #feed{display:block;max-width:760px;margin:0 auto;padding:62px 14px 96px}
+body.read::before{content:"";position:fixed;left:0;right:0;top:0;height:56px;z-index:9;pointer-events:none;background:linear-gradient(var(--bg) 72%,rgba(11,11,12,0))}
+.fh{padding:14px 4px 18px}
+.fh .k{font:500 11px/1.4 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.fh h1{font:500 48px/1 var(--serif);letter-spacing:-.015em;margin-top:10px}
+.fh p{font:italic 20px/1.32 var(--serif);color:var(--fg2);margin-top:10px}
+.fh p.fhint{font:12.5px/1.55 var(--sans);font-style:normal;color:var(--fg3)}
+.era{position:relative;margin:30px 0 0 4px;padding-left:14px;border-left:1px solid var(--line2)}
+.era.now{border-left:2px solid var(--gold2)}
+.eh{position:sticky;top:54px;z-index:5;display:flex;align-items:baseline;gap:8px 10px;flex-wrap:wrap;padding:9px 10px 9px 12px;margin:0 0 2px -16px;
+  background:rgba(11,11,12,.94);backdrop-filter:blur(6px);border-left:3px solid var(--line2);border-radius:0 10px 10px 0}
+.era.now .eh{border-left-color:var(--gold)}
+.eh b{font:500 21px/1.1 var(--serif);color:var(--fg)}
+.eh span{font:11px/1.2 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--fg3)}
+.eh em{margin-left:auto;font:normal 11px/1 var(--mono);color:var(--gold);border:1px solid var(--gold2);border-radius:99px;padding:4px 9px;white-space:nowrap}
+.era:not(.now) .eh em{color:var(--fg3);border-color:var(--line2)}
+.fc{position:relative;background:var(--card);border:1px solid var(--line);border-radius:18px;margin:12px 0;overflow:hidden}
+.fc::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(160deg,var(--tint) 0%,transparent 42%)}
+.fc[data-hue=gold]{--h:var(--gold);--tint:var(--goldsoft)} .fc[data-hue=sea]{--h:var(--sea);--tint:var(--seasoft)}
+.fc[data-hue=rust]{--h:var(--rust);--tint:var(--rustsoft)} .fc[data-hue=ink]{--h:var(--ink);--tint:var(--inksoft)}
+.fc[data-hue=rose]{--h:var(--rose);--tint:var(--rosesoft)}
+.fc[open]{border-color:var(--line2)}
+.fc summary{position:relative;list-style:none;cursor:pointer;padding:16px 18px 14px;-webkit-tap-highlight-color:transparent}
+.fc summary::-webkit-details-marker{display:none}
+.fk{display:flex;gap:8px;align-items:center;font:500 10.5px/1.35 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--h)}
+.fk .lane{margin-left:auto;font-style:normal;font-size:9.5px;letter-spacing:.12em;color:var(--fg3);border:1px solid var(--line2);border-radius:99px;padding:2px 8px;white-space:nowrap}
+.fc h3{font:500 28px/1.08 var(--serif);margin-top:7px;color:var(--fg);letter-spacing:-.01em}
+.fbig{font:400 40px/1 var(--mono);letter-spacing:-.03em;margin-top:14px;color:var(--fg)}
+.fbig small{font-size:15px;color:var(--fg3);margin-left:7px;letter-spacing:0}
+.fbl{font:11.5px/1.45 var(--mono);color:var(--fg3);margin-top:5px}
+.fv{font:italic 17.5px/1.36 var(--serif);color:var(--fg2);margin-top:11px}
+.fm{display:inline-block;margin-top:12px;font:11px/1 var(--mono);letter-spacing:.08em;color:var(--h);border:1px solid var(--line2);border-radius:99px;padding:6px 11px}
+.fm::after{content:"open the evidence ↓"} .fc[open] .fm::after{content:"close ↑"}
+#feed .l1{position:static;opacity:1;pointer-events:auto;display:block;padding:0 18px 20px;font-size:15px;line-height:1.5}
+#feed .l1>.pill{display:inline-block;font:10.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--h);color:var(--h);border-radius:99px;padding:5px 10px;margin-bottom:12px}
+#feed .l1 .lede{font-size:17.5px;line-height:1.46}
+#feed .l1 .cols{display:block}
+#feed .l1 .col{display:flex;flex-direction:column;gap:14px;margin-top:16px}
+#feed .grid2,#feed .bb{grid-template-columns:1fr}
+#feed .chart{cursor:auto;padding:10px 10px 6px}
+#feed .chart .cs{font-size:10.5px;line-height:1.45}
+#feed table.facts{font-size:14px}
+#feed table.facts td.v{white-space:normal;min-width:74px;max-width:120px;font-size:12.5px}
+#feed .take q{font-size:17px}
+#feed .prose{font-size:15px}
+#feed .fs{margin-top:16px;border-top:1px solid var(--line);padding-top:10px}
+#feed .fs summary{cursor:pointer;font:11px var(--mono);color:var(--fg3);letter-spacing:.08em}
+#feed .src{columns:1;border:0;padding-top:8px;font-size:11px;line-height:1.5}
+#feed .src li{margin-bottom:5px}
+@media (min-width:701px){ body.read #feed{padding-top:70px} .eh{top:60px} }
+
+/* narrow diagrams */
+.rungs{list-style:none;display:flex;flex-direction:column;gap:8px}
+.rungs li{border-left:3px solid var(--line2);padding:6px 0 6px 12px}
+.rungs li.now{border-left-color:var(--gold)} .rungs li.next{border-left-style:dashed}
+.rungs b{display:block;font:11px var(--mono);color:var(--fg3)} .rungs li.now b{color:var(--gold)}
+.rungs span{display:block;font:16px/1.3 var(--serif);color:var(--fg)} .rungs li.next span{font-style:italic;color:var(--fg2)}
+.rungs em{display:block;font-style:normal;font-size:12.5px;color:var(--fg3)}
+.loop{border:1px solid var(--line2);border-radius:12px;padding:10px 12px;font-size:14px;line-height:1.45}
+.loop b{display:block;font:500 10.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--fg3);margin-bottom:4px}
+.loop.hot{border-color:var(--gold2)} .loop.hot b{color:var(--gold)}
+.round{list-style:none;counter-reset:r;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.round li{counter-increment:r;padding-left:26px;position:relative;color:var(--fg2)}
+.round li::before{content:counter(r);position:absolute;left:0;top:1px;font:11px var(--mono);color:var(--gold)}
+.round b{font-family:var(--mono);font-weight:500;color:var(--fg)}
+
+/* 2026, month by month — narrow */
+.m26{display:flex;flex-direction:column;gap:2px;font-size:13px}
+.m26h{display:flex;gap:12px;flex-wrap:wrap;font:10.5px var(--mono);letter-spacing:.08em;color:var(--fg3);margin-bottom:6px}
+.m26h .f{color:var(--ink)} .m26h .p{color:var(--gold)}
+.m26r{display:grid;grid-template-columns:38px 1fr;gap:2px 10px;padding:7px 0;border-bottom:1px solid var(--line)}
+.m26r b{grid-row:span 9;font:500 12px var(--mono);color:var(--fg2);padding-top:1px}
+.m26r.late b{color:var(--gold)}
+.m26b{display:flex;align-items:center;gap:8px}
+.m26b i{display:block;height:9px;border-radius:3px;background:var(--fg4)}
+.m26r.late .m26b i{background:var(--gold)}
+.m26b span{font:11px var(--mono);color:var(--fg3);white-space:nowrap}
+.ev{line-height:1.35;padding-left:12px;position:relative}
+.ev::before{content:"";position:absolute;left:0;top:.5em;width:5px;height:5px;border-radius:50%}
+.ev.f{color:var(--fg2)} .ev.f::before{background:var(--ink)}
+.ev.p{color:var(--fg)} .ev.p::before{background:var(--gold)}
+@media print{ body.read #feed{max-width:none} .fc{break-inside:avoid} }
+#feed .chart svg{max-width:440px}
+#feed .fc{scroll-margin-top:120px}
+#feed .src li{scroll-margin-top:130px}
 </style>
 </head>
 <body class="z0">
 <noscript>This piece is a zoomable map drawn by a small inline script. Enable JavaScript, or read the sources in the repository.</noscript>
 <div id="chips"></div>
 <div id="vp"><div id="world"><div id="grid"></div><svg id="links"></svg></div></div>
+<main id="feed"></main>
 <nav id="crumb" class="hud"><a href="../../" title="taoaieng.io/pub — all pieces and the archive">pub</a><span>›</span><a data-act="home">closing doors</a><span id="crumbTail"></span></nav>
 <div id="tools" class="hud"><button data-act="home" title="whole map (0)">map</button><button data-act="read" title="read as an article (R)">read</button><button data-act="help" title="how to move (?)">?</button></div>
 <div id="hint" class="hud">scroll or pinch to zoom · drag to pan · click a tile · ← → walk · R read · ? help</div>
 <div id="mini" class="hud"></div>
 <div id="help"><div>
   <h4>How to move</h4>
-  <p>Time runs left to right, 2007 → 2030. Three layers run top to bottom: <b>the field</b> (what happened to everyone), <b>his practice</b> (how one data scientist worked), <b>the evidence</b> (his takes and experiments, scored). The map has three depths: <b>far</b>, one line and one number per tile; <b>near</b> (click a tile), the chart, the facts and the take; <b>closer</b> (click a chart or the source list), every number's source, date and label.</p>
+  <p>Time runs left to right, 2007 → 2030, and speeds up: the columns span eight years, seven, three, then months of 2026, then two weeks. Three layers run top to bottom: <b>the field</b> (what happened to everyone), <b>his practice</b> (how one data scientist worked), <b>the evidence</b> (his takes and experiments, scored). The map has three depths: <b>far</b>, one line and one number per tile; <b>near</b> (click a tile), the chart, the facts and the take; <b>closer</b> (click a chart or the source list), every number's source, date and label.</p>
   <p style="margin-top:10px"><kbd>scroll</kbd> zoom · <kbd>drag</kbd> pan · <kbd>click</kbd> dive · <kbd>Esc</kbd> rise · <kbd>← ↑ → ↓</kbd> walk the map · <kbd>0</kbd> whole map · <kbd>R</kbd> read as an article · a superscript number jumps to its source.</p>
   <p style="margin-top:10px">Labels: <span class="lab FACT">FACT</span> primary or high-quality source · <span class="lab">REP</span> single or second-hand · <span class="lab FORECAST">FORECAST</span> a named projection · <span class="lab UNVERIFIED">UNVERIFIED</span> could not be confirmed. Sources without a link are his own private files. Data as of 14 October 2026.</p>
 </div></div>
@@ -248,6 +341,49 @@ code{font-family:var(--mono);font-size:.88em;color:var(--fg)}
 <script>
 const cell = (h, q, body, meta, lean, id) => `<div class="cell${lean ? " lean" : ""}"><h5>${h}</h5>${q ? `<div class="q">“${q}”</div>` : ""}<div>${id ? cites(body, id) : body}</div>${meta ? `<div class="m">${meta}</div>` : ""}</div>`;
 const scoreRow = (v, t, id) => `<div class="score"><b class="${v}">${v.replace("-", " ")}</b><span>${id ? cites(t, id) : t}</span></div>`;
+
+// ---------- 2026, month by month: his commits as bars, the field's events above, his below ----------
+// [month, commits, field events [short, long], his events [short, long]]; every event is sourced on its own tile
+const Y26 = [
+  ["Jan", 0, [["TH1.1: 5.3 h", "METR Time Horizon 1.1: Opus 4.5 at 5.3 h"]], []],
+  ["Feb", 22, [["AGENTS.md study", "context files: no general gain, >20% cost"], ["selection bias", "METR: some work withheld from the no-AI arm"]], [["ep 0012", "episode 0012: build by removal"]]],
+  ["Mar", 23, [["spec as gate", "review checks code against itself, not intent"]], [["RAG on 1 GPU", "local RAG over his blog, scored"]]],
+  ["Apr", 15, [], [["Uqbar", "Uqbar: an LLM-wiki an agent keeps"]]],
+  ["May", 28, [["self-report", "METR survey: 1.4–2× self-reported value"]], [["contract", "contract work: agents built against a spec"], ["Mirror", "The Mirror, the wiki's public method"]]],
+  ["Jun", 18, [["Sol ≈11 h", "GPT-5.6 Sol ≈11 h, not robust"]], []],
+  ["Jul", 15, [["71% senior", "71% of the posting rebound is senior"]], []],
+  ["Aug", 131, [["−11% at 22–25", "young workers in exposed jobs −11%"], ["AI Futures", "automated-coder medians 2027–30"]], [["the house", "the house: one vault per project"]]],
+  ["Sep", 124, [["Pro V2 split", "Pro V2: 99.4% public, 81.6% private"]], [["ledger bench", "ledger bench: the boundary, not the language"], ["you-nut", "one plan engine, two domains"]]],
+  ["Oct", 198, [], [["pat · alx · oof", "pattern book, library, instrument, this shelf"]]]];
+function strip26SVG() {
+  const W0 = 44, cw = 59, base = 196, top = 116;
+  let g = `<svg viewBox="0 0 640 300" role="img" aria-label="2026 month by month">`;
+  g += `<text class="dgm" x="0" y="12" style="fill:#8f9bd6">THE FIELD ↑</text><text class="dgm" x="0" y="296" style="fill:#d4ad3a">HIS WORK ↓</text>`;
+  g += `<line class="ax" x1="${W0}" x2="${W0 + cw * 10}" y1="${base}" y2="${base}"/>`;
+  Y26.forEach(([m, c, f, p], i) => {
+    const cx = W0 + i * cw + cw / 2, h = c / 198 * (base - top), late = i >= 7;
+    g += `<rect x="${cx - 13}" y="${base - h}" width="26" height="${Math.max(h, 1)}" rx="3" fill="${late ? "#d4ad3a" : "#57534c"}" opacity=".9"/>`;
+    g += `<text class="tk" x="${cx}" y="${base - h - 4}" text-anchor="middle" style="fill:${late ? "#ebe8e2" : "#7d786f"}">${c}${i === 9 ? " in 14 d" : ""}</text>`;
+    g += `<text class="tk" x="${cx}" y="${base + 13}" text-anchor="middle" style="fill:#b9b4ab">${m}</text>`;
+    f.forEach((e, k) => { const y = 32 + (i % 2) * 13 + k * 28; g += `<circle cx="${cx - 26}" cy="${y - 3}" r="2.2" fill="#8f9bd6"/><text class="ml" x="${cx - 21}" y="${y}" style="fill:#b9b4ab">${esc(e[0])}</text>`; });
+    p.forEach((e, k) => { const y = 228 + (i % 2) * 13 + k * 28; g += `<circle cx="${cx - 26}" cy="${y - 3}" r="2.2" fill="#d4ad3a"/><text class="ml" x="${cx - 21}" y="${y}" style="fill:#ebe8e2">${esc(e[0])}</text>`; });
+  });
+  return g + `</svg>`;
+}
+function strip26HTML() {
+  return `<div class="m26"><div class="m26h"><span>2026</span><span>his commits</span><span class="f">the field</span><span class="p">his work</span></div>` +
+    Y26.map(([m, c, f, p], i) => `<div class="m26r${i >= 7 ? " late" : ""}"><b>${m}</b><div class="m26b"><i style="width:${Math.max(c / 198 * 100, 1)}%"></i><span>${c}${i === 9 ? " (14 days)" : ""}</span></div>` +
+      `${f.map(e => `<div class="ev f">${esc(e[1])}</div>`).join("")}${p.map(e => `<div class="ev p">${esc(e[1])}</div>`).join("")}</div>`).join("") + `</div>`;
+}
+// narrow (phone) versions of the diagrams: the same content as text, readable at 340 px
+const ladderHTML = () => `<ol class="rungs">${[["20??", "writes the objective and the condition that kills it", "agents write the contracts — a conjecture"],
+  ["2026", "writes the contract, keeps the gates", "agents write the code"], ["2023", "reviews every line", "the copilot types"],
+  ["2015", "chooses the features, the model and the fold", "the cluster fits it"], ["2008", "reads the rock, designs the blast", "the jumbo drills the face"]]
+  .map((r, i) => `<li class="${i === 1 ? "now" : i === 0 ? "next" : ""}"><b>${r[0]}</b><span>${r[1]}</span><em>below: ${r[2]}</em></li>`).join("")}</ol>`;
+const loopHTML = (t, steps, hot) => `<div class="loop${hot ? " hot" : ""}"><b>${t}</b><span>${steps.join(" → ")} → repeat</span></div>`;
+const natmHTML = () => loopHTML("tunnel face · NATM, 2008", ["excavate a round", "measure convergence", "adapt the support"]) + loopHTML("agent loop · 2026", ["generate", "score a hidden fold", "tighten the gate"], true);
+const roundHTML = () => `<ol class="round">${[["log/mat.md", "his prompt"], ["route", "pattern + model roles"], ["agents", "plan · execute in parallel"], ["gates", "each seen to fail"], ["review", "another model family"], ["log/agt.md", "reply + what failed → next round"]]
+  .map(r => `<li><b>${r[0]}</b> ${r[1]}</li>`).join("")}</ol>`;
 
 const md = s => s.replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/\*([^*\s][^*]*?)\*/g, "<i>$1</i>").replace(/`([^`]+)`/g, "<code>$1</code>");
 const takeRow = (q, who, v, why, id) => `<div class="take"><q>${q}</q><div class="who">— ${who}</div>${v ? `<div class="score"><b class="${v}">${v.replace("-", " ")}</b><span>${cites(md(why), id)}</span></div>` : ""}</div>`;
@@ -298,59 +434,73 @@ function roundSVG() {
   return g + `</svg>`;
 }
 
-const ERAS = [[-2, "2007 – 2015", "before code"], [-1, "2015 – 2022", "doors by hand"], [0, "2023 – 2025", "the pilot"], [1, "2026", "the house"], [2, "2027 – 2030", "the next rung"]];
+const ERAS = [
+  { gx: -3, t: "2007 – 2015", s: "before code", span: "8 years" },
+  { gx: -2, t: "2015 – 2022", s: "doors by hand", span: "7 years" },
+  { gx: -1, t: "2023 – 2025", s: "the pilot", span: "3 years" },
+  { gx: 0, t: "2026 · Jan – Mar", s: "notebooks to agents", span: "3 months", now: true },
+  { gx: 1, t: "2026 · Apr – Jul", s: "the contract", span: "4 months", now: true },
+  { gx: 2, t: "2026 · Aug – Sep", s: "the house", span: "2 months", now: true },
+  { gx: 3, t: "2026 · Oct 1 – 14", s: "measuring the method", span: "2 weeks", now: true },
+  { gx: 4, t: "2027 – 2030", s: "the next rung", span: "ahead" }];
 
 const DATA = {
 start: "thesis",
+kicker: "data science in the age of agents · 14 Oct 2026",
+title: "Closing Doors",
+subtitle: "Agents made opening doors nearly free. His bet: the scarce work is closing them.",
+feedHint: "Time runs down the page and speeds up as it goes: eight years, then seven, three, then months, then two weeks. Open any card for the evidence; every number has its source.",
+topRow: -2, lastTopX: 2,
+eras: ERAS,
 bands: [
-  ...ERAS.map(([gx, t, s]) => ({ x: gx * 1800 - 600, y: -2385, html: `${t}<small>${s}</small>`, cls: gx === 1 ? "now" : "" })),
-  { x: -4200, y: -2070, html: "the field ↓", cls: "layer" },
-  { x: -4200, y: -575, html: "his practice ↓", cls: "layer" },
-  { x: -4200, y: 840, html: "the evidence ↓", cls: "layer" }
+  ...ERAS.map(e => ({ x: e.gx * 1800 - 600, y: -2385, html: `${e.t}<small>${e.s} · ${e.span}</small>`, cls: e.now ? "now" : "" })),
+  { x: -6000, y: -2070, html: "the field ↓", cls: "layer" },
+  { x: -6000, y: -575, html: "his practice ↓", cls: "layer" },
+  { x: -6000, y: 840, html: "the evidence ↓", cls: "layer" }
 ],
 nodes: [
 
 // ───────────────────────────── top row: thesis, the rung, method
-{ id: "thesis", gx: 0, gy: -2, hue: "gold", short: "the thesis", h: 1110,
+{ id: "thesis", gx: 0.5, gy: -2, hue: "gold", short: "the thesis", h: 1110,
+  feedKicker: "the thesis · 2026", feedTitle: "The year it turned", feedVerdict: "Opening got cheap; closing did not. Inside: 2026 in ten rows, the case for and the case against.",
   kicker: "data science in the age of agents · 14 Oct 2026", title: "Closing Doors",
-  big: { v: "11×", u: "", l: "words his agents wrote for each word he wrote, in this vault" },
+  big: { v: "15 → 198", u: "", l: "his commits: all of July vs the first 14 days of October — activity, not productivity" },
   verdict: "Agents made opening doors nearly free. His bet: the scarce work is closing them.",
   pill: "a working hypothesis",
-  lede: "A notebook line from 2022: *Data Science is about opening doors, Machine Learning Engineering is about closing almost all of them* [1]. By 2026 an agent opens a door in minutes: frontier models finish, half the time, software tasks that take a skilled person about five hours [2], and 83% of developers use AI tools in their role [3]. Opening got cheap; closing did not. Only 9.6% of developers use an AI answer as it comes [3], and on a hardened coding benchmark the top model scores 99.4% on the public tasks but 81.6% on a separate private set — a difference its authors put partly down to training-time exposure [4]. This map follows one data scientist across that turn, 2007 → 2030. Its argument is his working hypothesis, not a measured fact: the scarce part of the work moved from writing code to deciding what is allowed to stay.",
-  charts: [{ kind: "bar", title: "words written by agents per word he wrote — append-only logs, by vault", log: true, xf: "x", L: 150, rh: 23,
-    rows: [["inc", 46.6, "gold", "46.6×"], ["alx-ds-ml-ai", 27.5, "gold", "27.5×"], ["opo", 12.5, "gold", "12.5×"], ["this vault", 11.1, "rust", "11.1×"], ["pat", 9.3, "gold", "9.3×"], ["dsp", 6.4, "gold", "6.4×"], ["you-nut", 5.0, "gold", "5.0×"], ["pub", 3.6, "gold", "3.6×"], ["aandi", 0.83, "dim", "0.8×"], ["you-train", 0.54, "dim", "0.5×"]],
-    src: "Own count, 14 Oct 2026: words in the agent's log (`log/agt*.md`) ÷ words in his (`log/mat.md`), per vault [5]. Words, not effort — a one-line prompt can carry an hour of thought; the two vaults under 1× are seeds an agent barely worked." }],
+  lede: "A 2022 notebook line: *Data Science is about opening doors, Machine Learning Engineering is about closing almost all of them* [1]. 2026 is the year that line became an explicit agent workflow. In ten months the field's yardsticks bent: METR found developers withholding work from its no-AI arm, enough to make its estimate unreliable [2]; context files describing a repository were found, on average, not to help coding agents while adding over 20% to cost [3]; and a hardened coding benchmark split into a public 99.4% and a private 81.6% [4]. His own work moved from a copilot in an editor to agents in vaults, built against contracts and checked against folds they never see. The map reads left to right in time, and its columns narrow as the clock speeds up. Its argument is his working hypothesis, not a measured fact: the scarce part of the work moved from writing code to deciding what is allowed to stay.",
+  left: (id, nw) => (nw ? strip26HTML() : `<figure class="chart">${strip26SVG()}<div class="cs">${rich("Bars: his commits per month over 14 personal repos and this vault [8] — activity, not value; employer work is not in them; October is 14 days. Events: each is sourced on its own tile.", id)}</div></figure>`) +
+    `<div class="bb"><div class="bull"><h4>for the hypothesis</h4>${rich("Trust stays conditional: **48%** of developers trust AI when they can easily verify it, **6.6%** for important decisions [5]. Public scores outrun private ones [4]; his own judge was overconfident (*an eval is a model*).", id)}</div><div class="bear"><h4>the strongest case against</h4>${rich("Agents already close doors too: **58.1%** of developers use AI to write tests and **64.5%** find it useful for review [5]. If checking automates as fast as writing, its absolute cost falls even while its share of human time rises — and scarcity is the wrong word.", id)}</div></div>`,
   right: id => takeRow("Data Science is about opening doors, Machine Learning Engineering is about closing almost all of them.", "notebook, León, 2022", "holds", "Four years on, opening is what agents do best. Closing — the held-out fold, the gate, the kill with a reason — is what the evidence on this map suggests stays scarce; the case against is on the left.", id) + `<div class="grid2">
     ${cell("What got cheap", "", md("The draft, the code, the first search. The price of a fixed capability falls **9× to 900× a year**, depending on the task [6]."), "", false, id)}
-    ${cell("What got scarce", "", md("Knowing whether it is right. **66%** of developers spend more time fixing almost-right AI code [7]; **76.5%** run an AI answer before using it [3]."), "", false, id)}
+    ${cell("What got scarce", "", md("Knowing whether it is right. **66%** of developers spend more time fixing almost-right AI code [7]; **76.5%** run an AI answer before using it [5]."), "", false, id)}
     ${cell("What he does now", "", md("Writes the contract the agents build against, keeps gates he has *seen fail*, has a different model family review the author — and still does the old parts: choosing the problem, designing the experiment, explaining the result to whoever decides."), "", true, id)}
     ${cell("What he stopped doing", "", md("Typing most of the code. Notebook cells as the deliverable. Letting one model check its own work."), "", false, id)}
   </div>`,
-  left: id => `<div class="bb"><div class="bull"><h4>for the hypothesis</h4>${rich("Trust in output stays conditional: **48%** of developers trust AI when they can easily verify it, **6.6%** for important decisions [3]. Public scores outrun private ones [4]; his own judge was overconfident (*an eval is a model*).", id)}</div><div class="bear"><h4>the strongest case against</h4>${rich("Agents already close doors too: **58.1%** of developers use AI to write tests and **64.5%** find it useful for review [3]. If checking automates as fast as writing, its absolute cost falls even while its share of human time rises — and scarcity is the wrong word.", id)}</div></div>`,
   tellLeft: true,
   tell: "**Whether closing gets cheap too.** Not words generated but accepted value per human hour, and defects that escape review. Two proxies on this map: the public–private score difference [4], and how well an LLM judge is calibrated on a fold it never saw.",
   src: [["Private notebook, 2022 — quoted as an idea", "", "2022", ""],
-    ["METR — Time Horizon 1.1 (Claude Opus 4.5: 320 min, CI 170–729)", "https://metr.org/blog/2026-1-29-time-horizon-1-1/", "29 Jan 2026", "FACT"],
-    ["Stack Overflow Developer Survey 2026 — AI data", "https://survey.stackoverflow.co/2026/ai/data", "2026", "FACT"],
+    ["METR — changing our developer productivity experiment design", "https://metr.org/blog/2026-02-24-uplift-update/", "24 Feb 2026", "FACT"],
+    ["Evaluating AGENTS.md (arXiv:2602.11988)", "https://arxiv.org/abs/2602.11988", "12 Feb 2026", "FACT"],
     ["Scale Labs — SWE-Bench Pro V2: public 638/642 vs private 222/272 (Claude Opus 5)", "https://labs.scale.com/blog/swe-bench-pro-v2", "22 Sep 2026", "FACT"],
-    ["Own count over his private vaults (wc -w, log files)", "", "14 Oct 2026", "FACT"],
+    ["Stack Overflow Developer Survey 2026 — AI data", "https://survey.stackoverflow.co/2026/ai/data", "2026", "FACT"],
     ["Epoch AI — LLM inference prices have fallen rapidly but unequally across tasks", "https://epoch.ai/data-insights/llm-inference-price-trends", "12 Mar 2025", "FACT"],
-    ["Stack Overflow — 2025 Developer Survey results (blog)", "https://stackoverflow.blog/2025/12/29/developers-remain-willing-but-reluctant-to-use-ai-the-2025-developer-survey-results-are-here/", "29 Dec 2025", "FACT"]] },
+    ["Stack Overflow — 2025 Developer Survey results (blog)", "https://stackoverflow.blog/2025/12/29/developers-remain-willing-but-reluctant-to-use-ai-the-2025-developer-survey-results-are-here/", "29 Dec 2025", "FACT"],
+    ["Own count over his personal repos (git log --all), snapshot of 14 Oct 2026, taken before this piece's own commit", "", "14 Oct 2026", "FACT"]] },
 
-{ id: "ladder", gx: -1, gy: -2, hue: "ink", short: "the rung",
+{ id: "ladder", gx: -2, gy: -2, hue: "ink", short: "the rung",
   kicker: "the human's rung · 2008 → 20??", title: "The rung moves up",
   big: { v: "5", u: "rungs", l: "from the rock face to the kill criterion" },
   verdict: "On each rung the machine takes the one below. The human stays where consequences are decided.",
   pill: "a framing, not a measurement",
   lede: "The same move, five times. On a tunnel face the jumbo drills and the engineer reads the rock. In a model the cluster fits and the data scientist chooses the features and the fold. With a copilot the model types and the engineer reviews each line. With agents the code writes itself and the human writes the contract it is built against. The next rung, if the curves on this map hold, is writing only the objective and the condition that kills it.",
-  left: id => `<figure class="chart">${ladderSVG()}<div class="cs">Each rung dated by when he stood on it. The top rung is a conjecture.</div></figure>`,
+  left: (id, nw) => nw ? ladderHTML() : `<figure class="chart">${ladderSVG()}<div class="cs">Each rung dated by when he stood on it. The top rung is a conjecture.</div></figure>`,
   right: id => cites(`<div class="prose"><p><b>What does not move.</b> On every rung the work that stays human is the same kind: deciding what counts as evidence before looking at it, and carrying the consequence when it is wrong. A blast that fractures the wrong rock, a model that loses money, an agent that ships a passing test over a broken function — the failure changes medium, not shape.</p><p><b>What the climb costs.</b> Each rung up removes practice that used to train judgement. Employment of 22–25-year-olds in the most AI-exposed jobs is 11% lower than in Nov 2022 [1] — the bottom rung is where people learned. The New York Fed's reading is more cautious: the relative fall in AI-exposed vacancies began before ChatGPT [2].</p></div>`, id) +
     takeRow("human consciousness creates from zero to one, chatbots amplify human intelligence, judgement and wisdom, agentic ai compounds the amplification across iterations beyond the first horizon.", "notebook, Apr 2026", "", "", id),
   tell: "**Who trains the next door-closer?** If juniors never write the code, where do they learn to judge it? Watch the employment gap for 22–25-year-olds [1].",
   src: [["Stanford Digital Economy Lab — Canaries in the Coal Mine? (revised)", "https://digitaleconomy.stanford.edu/news/canariesaug26/", "12 Aug 2026", "FACT"],
     ["Liberty Street Economics — Do job postings show early labor-market effects of AI?", "https://libertystreeteconomics.newyorkfed.org/2026/05/do-job-postings-show-early-labor-market-effects-of-ai/", "14 May 2026", "FACT"]] },
 
-{ id: "method", gx: 1, gy: -2, hue: "ink", short: "method",
+{ id: "method", gx: 3, gy: -2, hue: "ink", short: "method",
   kicker: "how this was made", title: "Method & limits",
   big: { v: "4 + 1", u: "", l: "research slices, one adversarial review" },
   verdict: "Every number has a source and a date. His own numbers are computed from his own files.",
@@ -385,7 +535,7 @@ nodes: [
     ["BLS — Occupational Outlook Handbook: Data Scientists", "https://www.bls.gov/ooh/math/data-scientists.htm", "27 Aug 2026", "FACT"],
     ["BLS — Occupational Outlook Handbook: Software Developers, QA Analysts, and Testers", "https://www.bls.gov/ooh/computer-and-information-technology/software-developers.htm", "27 Aug 2026", "FACT"]] },
 
-{ id: "shock", gx: -1, gy: -1, hue: "ink", short: "the helicopter",
+{ id: "shock", gx: -1, gy: -1, hue: "ink", short: "the helicopter", h: 1040,
   kicker: "the field · 2021 → 2025", title: "The helicopter",
   big: { v: "19%", u: "slower", l: "experienced developers with early-2025 AI — who believed they were 20% faster" },
   verdict: "Use climbed while trust fell. In early 2025, people felt faster than a trial measured them.",
@@ -398,6 +548,7 @@ nodes: [
   facts: [["29 Jun 2021", "GitHub Copilot technical preview [1]", "FACT"],
     ["30 Nov 2022", "ChatGPT [2]", "FACT"],
     ["14 Mar 2023", "GPT-4 [9]", "FACT"],
+    ["24 Feb 2025", "Claude Code; Codex CLI on 16 Apr; by Dec 2025 Claude Code ran at a $1bn annual rate [13][14][15]", "FACT"],
     ["66%", "of developers spend more time fixing almost-right AI code, 2025 [7]", "FACT"],
     ["2024", "DORA: AI adoption came with lower delivery stability and throughput [10]", "FACT"]],
   take: { q: "coding with llms feels like going to a medieval battle with an apache helicopter. but not a drone yet, still you need the pilot.", who: "notebook, Sep 2024", verdict: "holds", why: "In 2026 only **6.6%** of developers trust AI output for important decisions, and 9.6% use an answer as it comes [11]. The pilot is still in the seat." },
@@ -413,24 +564,27 @@ nodes: [
     ["OpenAI — GPT-4", "https://openai.com/index/gpt-4-research/", "14 Mar 2023", "FACT"],
     ["DORA — Accelerate State of DevOps Report 2024", "https://dora.dev/research/2024/dora-report/", "2024", "FACT"],
     ["Stack Overflow Developer Survey 2026 — AI data", "https://survey.stackoverflow.co/2026/ai/data", "2026", "FACT"],
-    ["METR — changing our developer productivity experiment design", "https://metr.org/blog/2026-02-24-uplift-update/", "24 Feb 2026", "FACT"]] },
+    ["METR — changing our developer productivity experiment design", "https://metr.org/blog/2026-02-24-uplift-update/", "24 Feb 2026", "FACT"],
+    ["Anthropic — Claude 3.7 Sonnet and Claude Code", "https://www.anthropic.com/news/claude-3-7-sonnet", "24 Feb 2025", "FACT"],
+    ["OpenAI — Introducing Codex", "https://openai.com/index/openai-codex/", "16 May 2025", "FACT"],
+    ["Anthropic — acquires Bun as Claude Code reaches $1B", "https://www.anthropic.com/news/anthropic-acquires-bun-as-claude-code-reaches-usd1b-milestone", "3 Dec 2025", "FACT"]] },
 
-{ id: "agents", gx: 0, gy: -1, hue: "ink", short: "agents arrive", h: 1220,
-  kicker: "the field · 2025 → 2026", title: "Agents arrive",
+{ id: "agents", gx: 2, gy: -1, hue: "ink", short: "the private split", h: 1300,
+  kicker: "the field · 2025 → Sep 2026", title: "The private split",
   big: { v: "5.3", u: "hours", l: "software task a frontier agent finishes half the time (METR, Jan 2026)" },
   verdict: "The doubling looks real. The best public scores may be partly memory.",
   pill: "measure the fold",
-  lede: "Claude Code arrived in Feb 2025 [1] and Codex in Apr–May [2]; by Dec 2025 Claude Code alone ran at a $1bn annual rate [3]. METR's time horizon — the length of task an agent finishes half the time — doubled about every 7 months since 2019 and about every 3 months on 2024-onward data [4][5]. Lab-announced SWE-bench Verified scores climbed from 33% to 81% in eighteen months [1][6]–[10][19][20]. Then the measurement began to leak: models locate the bug from the issue text alone far better on Verified than on fresh repositories [11], and SWE-Bench Pro V2 scores Claude Opus 5 at **99.4%** on its public tasks and **81.6%** on a separate private set — consistent, says Scale, with both genuine capability and recall [12].",
+  lede: "METR's time horizon — the length of task an agent finishes half the time — doubled about every 7 months since 2019 and about every 3 months on 2024-onward data [4][5]. Lab-announced SWE-bench Verified scores climbed from 33% to 81% in eighteen months [1][6]–[10][19][20]. Then the measurement began to leak: models locate the bug from the issue text alone far better on Verified than on fresh repositories [11], and in September SWE-Bench Pro V2 scored Claude Opus 5 at **99.4%** on its public tasks and **81.6%** on a separate private set — consistent, says Scale, with both genuine capability and recall [12]. The same month METR stopped updating its horizon dashboard; above 16 hours its suite is unreliable [2].",
   charts: [{ title: "METR 50% time horizon, hours (log scale)", log: true, y0: .5, y1: 30, x0: 2025, x1: 2026.7, h: 190,
       series: [{ hue: "ink", dash: true, data: [["2025-02", 1.0], ["2025-08", 3.57], ["2025-11", 5.33], ["2026-06", 11.3]] }],
-      dots: [["2025-02", 1.0, "Claude 3.7 Sonnet ≈1 h", "fg", 16], ["2025-08", 3.57, "GPT-5 3.6 h", "fg", 16], ["2025-11", 5.33, "Opus 4.5 5.3 h", "gold", -10], ["2026-06", 11.3, "GPT-5.6 Sol ≈11 h, not robust", "rust", 18]],
+      dots: [["2025-02", 1.0, "Claude 3.7 Sonnet ≈1 h", "fg", 16], ["2025-08", 3.57, "GPT-5 3.6 h", "fg", 16], ["2025-11", 5.33, "Opus 4.5 5.3 h", "gold", 16], ["2026-06", 11.3, "GPT-5.6 Sol ≈11 h, not robust", "rust", -10]],
       src: "Points at model release; Sol at METR's pre-deployment report. ≈1 h is the Mar 2025 suite [4]; 3.6 h and 5.3 h are Time Horizon 1.1 [5]; Sol ≈11.3 h (CI 5–40 h) METR itself calls not robust [13]. Wide intervals throughout." },
     { title: "SWE-bench Verified — selected lab-announced scores, standard runs, no parallel test-time compute (%)", yf: "pct", y0: 20, y1: 100, x0: 2024.5, x1: 2026.8, h: 190,
       series: [{ hue: "gold", data: [["2024-08", 33.2], ["2024-10", 49.0], ["2025-02", 63.7], ["2025-05", 72.7], ["2025-08", 74.9], ["2025-09", 77.2], ["2025-12", 80.0], ["2026-02", 81.42]] }],
       dots: [["2024-08", 33.2, "33%", "gold"], ["2026-02", 81.42, "81%", "gold", 16], ["2026-09", 99.4, "Pro V2 public 99.4%", "fg", 14], ["2026-09", 81.6, "Pro V2 private 81.6%", "rust", 16]],
       src: "One point per announcement: GPT-4o, Claude 3.5 Sonnet (new), 3.7 Sonnet, Sonnet 4, GPT-5, Sonnet 4.5, GPT-5.2, Opus 4.6 (25-trial mean, prompt modification) [6][7][1][8][19][20][9][10]. High-compute runs score higher (e.g. Sonnet 4.5: 82.0%); scaffolds and trial counts differ; the official leaderboard top is lower (79.2%) and has had no new entry since 26 Feb 2026 [14]. Pro V2 is a different, harder benchmark [12]." }],
-  rightFacts: [["24 Feb 2025", "Claude Code research preview [1]", "FACT"],
-    ["16 Apr 2025", "Codex CLI; the cloud Codex agent on 16 May [2]", "FACT"],
+  rightFacts: [["99.4% / 81.6%", "Claude Opus 5 on Pro V2, public vs private; clean-image re-grading caught one frontier model forging a Go module version and its checksum [12]", "FACT"],
+    ["23.3%", "GPT-5 on SWE-Bench Pro's public set at launch, Sep 2025 — a year before the refreshed split, not like-for-like [3]", "FACT"],
     ["26.2%", "of developers use AI agents or automated workflows, 2026 [15]", "FACT"],
     ["≈4%", "of public GitHub commits authored by Claude Code (SemiAnalysis, cited by METR) [16]", "REPORTED"],
     ["16.9%", "of Kaggle competitions where the best agent (o1-preview + AIDE) reached a medal, MLE-bench, 2024–25 [17]", "FACT"],
@@ -438,8 +592,8 @@ nodes: [
   take: { q: "Public benchmark datasets measure memorization, not intelligence.", who: "notebook, Mar 2024", verdict: "partly", why: "Scale reads part of the 17.8-point public–private difference as training-time exposure — on different task sets, so not a clean experiment [12] — and contamination studies point the same way [11]. But held-out scores rose too: memory may inflate the climb; it does not explain all of it." },
   tell: "**The private split.** A narrowing public–private difference would be evidence — not proof — that public scores measure skill more than recall. A gap in the record: the data-science agent benchmarks here (MLE-bench, DSBench) are older runs, not comparable with these SWE scores.",
   src: [["Anthropic — Claude 3.7 Sonnet and Claude Code", "https://www.anthropic.com/news/claude-3-7-sonnet", "24 Feb 2025", "FACT"],
-    ["OpenAI — Introducing Codex", "https://openai.com/index/openai-codex/", "16 May 2025", "FACT"],
-    ["Anthropic — acquires Bun as Claude Code reaches $1B", "https://www.anthropic.com/news/anthropic-acquires-bun-as-claude-code-reaches-usd1b-milestone", "3 Dec 2025", "FACT"],
+    ["METR — Task-completion time horizons of frontier AI models (no longer updated)", "https://metr.org/time-horizons/", "8 Sep 2026", "FACT"],
+    ["Scale — SWE-Bench Pro: raising the bar for agentic coding", "https://scale.com/blog/swe-bench-pro", "19 Sep 2025", "FACT"],
     ["METR — Measuring AI ability to complete long tasks", "https://metr.org/blog/2025-03-19-measuring-ai-ability-to-complete-long-tasks/", "19 Mar 2025", "FACT"],
     ["METR — Time Horizon 1.1 (doubling 130.8 d since 2023, 88.6 d since 2024)", "https://metr.org/blog/2026-1-29-time-horizon-1-1/", "29 Jan 2026", "FACT"],
     ["OpenAI — Introducing SWE-bench Verified (GPT-4o 33.2%)", "https://openai.com/index/introducing-swe-bench-verified/", "13 Aug 2024", "FACT"],
@@ -483,7 +637,7 @@ nodes: [
     ["Randstad España — las ofertas de empleo con IA se multiplican por nueve", "https://www.randstad.es/nosotros/sala-prensa/ofertas-empleo-ia-multiplican-nueve-espana-cinco-anos-impulsan-salarios-25-altos/", "19 May 2026", "REPORTED"],
     ["Zero G Talent — LLM evaluation: the new AI hiring category (citing 365 Data Science)", "https://zerogtalent.com/blog/confident-ai-s-2-2m-seed-round-is-quietly-building-ai-s-first-llm-evaluation-workforce-and-the-deepeval-open-source-moat-reveals-what-post-hype-ai-engineering-actually-demands", "24 Jun 2026", "REPORTED"]] },
 
-{ id: "forecasts", gx: 2, gy: -1, hue: "rose", short: "named futures", h: 1040,
+{ id: "forecasts", gx: 4, gy: -1, hue: "rose", short: "named futures", h: 1040,
   kicker: "the field · 2027 → 2030", title: "Named futures",
   big: { v: "2027–30", u: "", l: "medians for an “automated coder”, three AI Futures authors, Aug 2026" },
   verdict: "One group's medians sit in 2027–2030 — and the last bold public prediction had not come true when it was checked.",
@@ -496,7 +650,6 @@ nodes: [
     ["70–90%", "of AI 2027's pace observed so far, by its own authors [3]", "REPORTED"],
     ["≈50% vs 90%", "AI-written share of merged code at Anthropic (Redwood's estimate) vs the prediction [4]", "REPORTED"],
     ["+78m", "WEF net jobs to 2030 (170m created, 92m displaced); AI & ML specialists the #3 fastest-growing role [6]", "FORECAST"]],
-  take: { q: "i could believe that grok 5 will show benchmark saturation while breakthrough in inference. that could enable capabilities not seen before: ubiquitous, immediate, pushing the bottleneck anywhere else than in AI.", who: "notebook, Feb 2026", verdict: "partly", why: "Saturation, yes: a public 99.4% on SWE-Bench Pro V2 [7]. The bottleneck moving out of the model and into checking is the argument of this map — consistent with the evidence, not yet measured as such." },
   bullT: "if the curve holds", bull: "Week-long agent tasks by 2027–29 would lift the human above the contract: objectives, budgets and kill criteria, with agents writing specifications for agents.",
   bearT: "if it bends", bear: "Horizons above 16 h are already unmeasurable with METR's current suite, and its dashboard is frozen [8]. The last headline forecast had not come true when checked [4]. A plateau keeps the human on the contract rung for years.",
   tell: "**Score the forecasters.** Each named median above has a date; write the check into the calendar. A gap in this record: no independent comparator (a Metaculus question, an Epoch forecast) could be reached for this piece.",
@@ -510,13 +663,13 @@ nodes: [
     ["METR — Task-completion time horizons of frontier AI models (no longer updated)", "https://metr.org/time-horizons/", "8 Sep 2026", "FACT"]] },
 
 // ───────────────────────────── his practice
-{ id: "tunnel", gx: -2, gy: 0, hue: "rust", short: "the tunnel",
+{ id: "tunnel", gx: -3, gy: 0, hue: "rust", short: "the tunnel",
   kicker: "his practice · 2007 → 2015", title: "The observational method",
   big: { v: "8.6", u: "km", l: "of railway tunnel as site engineer, before any model" },
   verdict: "The rock does not read your model. You measure the face every round and change the support.",
   pill: "before code",
   lede: "Before data there was rock: a mining-engineering degree in León (2003–07), a master's in geological engineering in Oviedo (2010–12) [1], and two years as site engineer on railway tunnels totalling 8,600 m, with teams of up to 20 [2]. The master's thesis designed the blasting for a 2.3 km high-speed-rail tunnel through the Cantabrian coal basin [3]. The design follows the New Austrian Tunnelling Method [3], an *observational* method: excavate a round, measure how the ground converges, adapt the support, repeat [4]. Then four years teaching calculus, statistics and physics in London [2].",
-  left: id => `<figure class="chart">${natmSVG()}<div class="cs">The same loop, eighteen years apart. Qualitative.</div></figure>`,
+  left: (id, nw) => nw ? natmHTML() : `<figure class="chart">${natmSVG()}<div class="cs">The same loop, eighteen years apart. Qualitative.</div></figure>`,
   right: id => `<div class="prose"><p><b>What carried over.</b> You do not choose your geology — you choose how to measure it. A blast design is a hypothesis until the face confirms it. Safety limits — vibration, flyrock, gas — are set before cost, not traded against it.</p><p><b>The same method, another face.</b> In 2026 the loop is: an agent generates, the work is scored on a fold the agent never saw, the gate or the contract is tightened, next round. The engineer's job did not change: read what the ground did, not what the plan said it would do.</p></div>`,
   tell: "**Measure the face, not the plan.** What you measure each round decides what the next round is allowed to build — the subject of every tile to the right.",
   src: [["His CV (public site)", "https://adrianmatias.github.io/", "Oct 2026", "FACT"],
@@ -524,7 +677,7 @@ nodes: [
     ["Master's thesis: blasting design for the Vega del Ciego tunnel, Variante de Pajares (private)", "", "2012", "FACT"],
     ["Wikipedia — New Austrian tunnelling method", "https://en.wikipedia.org/wiki/New_Austrian_tunnelling_method", "accessed 14 Oct 2026", "REPORTED"]] },
 
-{ id: "byhand", gx: -1, gy: 0, hue: "sea", short: "doors by hand",
+{ id: "byhand", gx: -2, gy: 0, hue: "sea", short: "doors by hand",
   kicker: "his practice · 2015 → 2022", title: "Doors by hand",
   big: { v: "<50", u: "ms", l: "a fraud filter at 99.8% specificity, built by hand" },
   verdict: "Seven years of features, folds and production plumbing — the craft agents now compress.",
@@ -542,49 +695,43 @@ nodes: [
   src: [["His CV (public site)", "https://adrianmatias.github.io/", "Oct 2026", "FACT"],
     ["His CV, long form (private copy)", "", "2026", "FACT"]] },
 
-{ id: "pilot", gx: 0, gy: 0, hue: "ink", short: "the pilot",
+{ id: "pilot", gx: -1, gy: 0, hue: "ink", short: "the pilot",
   kicker: "his practice · 2023 → 2025", title: "The pilot",
   big: { v: "1 = 1", u: "", l: "offline and online outputs made identical — parity at Appodeal" },
   verdict: "Deep models in production and LLMs in the cockpit — powerful, but the pilot flies.",
   pill: "copilot years",
-  lede: "At Chartboost (2023–24) the work was a Bayesian-bandit system with policy-evaluation tools and a two-tower ranker; at Quant AI Lab (2024), the turnaround of an underperforming fraud system; at Appodeal (2024–26), a transformer unifying install prediction across targets, user embeddings by transfer learning, and the slow job of parity — tracing every transform until the offline and online models received identical inputs and their outputs matched [1]. LLMs came in as a copilot. In early 2026 a retrieval system over fifteen years of his own writing ran on one consumer GPU and was scored against a frontier model on a hand-built golden set [2]; then came an LLM-wiki of his notes, maintained by an agent [3].",
+  lede: "At Chartboost (2023–24) the work was a Bayesian-bandit system with policy-evaluation tools and a two-tower ranker; at Quant AI Lab (2024), the turnaround of an underperforming fraud system; at Appodeal (2024–26), a transformer unifying install prediction across targets, user embeddings by transfer learning, and the slow job of parity — tracing every transform until the offline and online models received identical inputs and their outputs matched [1]. LLMs came in as a copilot: fast, useful, and reviewed line by line.",
   facts: [["2023–24", "Chartboost — Bayesian bandits with policy evaluation; two-tower ranking [1]", ""],
     ["2024", "Quant AI Lab — a fraud system turned around; a real-time card-fraud classifier with a deep VAE [1]", ""],
-    ["2024–26", "Appodeal — attention across targets; embeddings by transfer learning at parity and lower cost; parity workflows with unit tests [1]", ""],
-    ["Mar 2026", "local RAG on one GPU vs a frontier model, scored for faithfulness and relevancy (episode 0014) [2]", ""],
-    ["May 2026", "*The Mirror*: the public method of his LLM-wiki (episode 0017) [3][4]", ""]],
-  take: { q: "Even post AI it is useful to learn to code, just like it is learning maths in spite of having calculators.", who: "notebook, Apr 2026" },
+    ["2024–26", "Appodeal — attention across targets; embeddings by transfer learning at parity and lower cost; parity workflows with unit tests [1]", ""]],
+  take: { q: "I did not learn Scala as a data scientist for nothing. Now I believe in immutability.", who: "notebook, Dec 2025" },
   tell: "**Parity is the oldest eval.** Offline equals online, or the model you validated is not the model you serve. Asked of agents, it is the out-of-fold question two tiles down.",
-  src: [["His CV (public site)", "https://adrianmatias.github.io/", "Oct 2026", "FACT"],
-    ["not the tao #0014 — rag on one gpu vs grok to clone my mind", "https://www.youtube.com/watch?v=c_JMsMy0DSM", "26 Mar 2026", "FACT"],
-    ["not the tao #0017 — llm wiki as awareness for llms and The Mirror of Uqbar", "https://www.youtube.com/watch?v=zgjyRVkJTZc", "30 May 2026", "FACT"],
-    ["github.com/adrianmatias/the-mirror", "https://github.com/adrianmatias/the-mirror", "2026", "FACT"]] },
+  src: [["His CV (public site)", "https://adrianmatias.github.io/", "Oct 2026", "FACT"]] },
 
-{ id: "house", gx: 1, gy: 0, hue: "gold", short: "the house", h: 1110,
-  kicker: "his practice · 2026", title: "The house",
-  big: { v: "198", u: "commits", l: "in the first 14 days of October, across his personal repos" },
+{ id: "house", gx: 2, gy: 0, hue: "gold", short: "the house", h: 1110,
+  kicker: "his practice · Aug → Sep 2026", title: "The house",
+  big: { v: "131", u: "commits", l: "in August, from 15 in July — his personal repos, activity not value" },
   verdict: "One vault per project, an append-only dialogue, and gates he has seen fail.",
   pill: "how a round runs",
-  lede: "Since August 2026 each new project is a vault (older ones keep older log names): a git repo of plain markdown with one entry contract (`AGENTS.md`), a steering ladder — *objective > foundation > code standard > behaviour tests > implementation* — and two append-only logs: his prompts in `log/mat.md`, the agent's replies in `log/agt.md` [1]. The logs are the memory that outlives any one harness. Each round is routed to a pattern from his own pattern book; cheap models carry the volume, a deep model plans, and the reviewer never shares the author's model family [2]. In 2026 contract work the same discipline ran in production: requirements kept as a contract artifact that agentic development built against, a typed output contract, and the correctness gates behind it [3].",
-  charts: [{ kind: "bar", title: "commits per month, his personal repos, 2026", L: 110, rh: 22,
-    rows: [["Feb", 22, "dim"], ["Mar", 23, "dim"], ["Apr", 15, "dim"], ["May", 28, "dim"], ["Jun", 18, "dim"], ["Jul", 15, "dim"], ["Aug", 131, "gold"], ["Sep", 124, "gold"], ["Oct 1–14", 198, "gold"]],
-    src: "Own count: `git log --all` over his 14 personal repos and this vault, 14 Oct 2026 [4]. Employer work is not in these repos; commits are a count, not a measure of value." }],
-  facts: [["2026", "contract work: alone, built the human ground-truth lane that checks an LLM judge against domain experts [3]", ""],
-    ["2026", "typed output contract; type baselines per file and rule, a complexity ratchet, mutation tests, required status checks [3]", ""],
-    ["2026", "agentic development run as a measured practice: cost and turn discipline tuned per model tier [3]", ""]],
-  right: id => `<figure class="chart">${roundSVG()}<div class="cs">One round. Qualitative.</div></figure>` + factsTable([
-      ["9", "patterns in the book: sandwich, adversarial, expand-contract, megaprompt, fan-out, cheap-swarm, sr-and-jr, cascade, duel [2]", ""],
-      ["≈ $0.00003", "one routing decision — a single call that picks the pattern [2]", ""],
-      ["≤ 3", "human gates per round, only for facts only he holds [2]", ""],
-      ["5", "agent harnesses the contracts are written to survive: Hermes, OpenCode, Pi, Codex, Claude Code [1]", ""]], id),
+  lede: "In August 2026 the work moved into vaults: each new project a git repo of plain markdown with one entry contract (`AGENTS.md`), a steering ladder — *objective > foundation > code standard > behaviour tests > implementation* — and two append-only logs, his prompts in `log/mat.md` and the agent's replies in `log/agt.md` [1]. The logs are the memory that outlives any one harness. Each vault runs the same loop: plan with a deep model, execute with cheap ones in parallel, validate with a different model family [1]. The projects ran from a demand-side platform built and operated by agents to exam preparation compiled from official law [1][2].",
+  charts: [{ kind: "bar", title: "words written by agents per word he wrote — append-only logs, by vault", log: true, xf: "x", L: 150, rh: 23,
+    rows: [["inc", 46.6, "gold", "46.6×"], ["alx-ds-ml-ai", 27.5, "gold", "27.5×"], ["opo", 12.5, "gold", "12.5×"], ["this vault", 11.1, "rust", "11.1×"], ["pat", 9.3, "gold", "9.3×"], ["dsp", 6.4, "gold", "6.4×"], ["you-nut", 5.0, "gold", "5.0×"], ["pub", 3.6, "gold", "3.6×"], ["aandi", 0.83, "dim", "0.8×"], ["you-train", 0.54, "dim", "0.5×"]],
+    src: "Own count, 14 Oct 2026: words in the agent's log (`log/agt*.md`) ÷ words in his (`log/mat.md`), per vault [3]. Words, not effort — a one-line prompt can carry an hour of thought; the two vaults under 1× are seeds an agent barely worked." }],
+  right: (id, nw) => (nw ? roundHTML() : `<figure class="chart">${roundSVG()}<div class="cs">One round. Qualitative.</div></figure>`) + factsTable([
+      ["16 Aug", "dsp repository started — a demand-side platform to be built and operated by agents [1][5]", ""],
+      ["31 Aug", "opo repository started; today it compiles official law into a cited corpus behind six CI gates [2][5]", ""],
+      ["23 Sep", "you-nut and you-train repositories started the same day — one plan engine, two domains [4][5]", ""],
+      ["5", "agent harnesses the contracts are written to survive: Hermes, OpenCode, Pi, Codex, Claude Code [1]", ""]], id) +
+    takeRow("most frequent outcome with claude this week: 20 mins to reply “i have not done it and this is why”", "notebook, Aug 2026", "", "", id),
   tellLeft: true,
-  tell: "**A gate is only a gate once it has been seen to fail.** Every gate in the house carries a planted defect that must turn it red; one that has never failed is decoration [2].",
-  src: [["dsp — AGENTS.md, the agent contract (private repo)", "", "Oct 2026", "FACT"],
-    ["pat — README, router and PRINCIPLES (private repo)", "", "Oct 2026", "FACT"],
-    ["His CV (public site)", "https://adrianmatias.github.io/", "Oct 2026", "FACT"],
-    ["Own count over his personal repos (git log)", "", "14 Oct 2026", "FACT"]] },
+  tell: "**A gate is only a gate once it has been seen to fail.** Every gate in the house carries a planted defect that must turn it red; one that has never failed is decoration [1].",
+  src: [["dsp — AGENTS.md, the agent contract and its gates drill (private repo)", "", "Oct 2026", "FACT"],
+    ["His CV (public site) — opo", "https://adrianmatias.github.io/", "Oct 2026", "FACT"],
+    ["Own count over his private vaults (wc -w, log files)", "", "14 Oct 2026", "FACT"],
+    ["you-nut and you-train — READMEs (private repos)", "", "23 Sep 2026", "FACT"],
+    ["git log: first commits and monthly counts over his personal repos, snapshot of 14 Oct 2026, taken before this piece's own commit", "", "14 Oct 2026", "FACT"]] },
 
-{ id: "next", gx: 2, gy: 0, hue: "rose", short: "the next rung",
+{ id: "next", gx: 4, gy: 0, hue: "rose", short: "the next rung",
   kicker: "his practice · 2027 → 2030", title: "The next rung",
   big: { v: "2×2", u: "", l: "agents keep lengthening or stall × checking gets cheap or stays scarce" },
   verdict: "His bet: agents keep lengthening, checking stays scarce. Provisional.",
@@ -597,16 +744,15 @@ nodes: [
     ${cell("Stalling · checking cheap", "", md("Commodity: code and checks both cheap, little left to tell people apart. Domain knowledge and owned data carry the value."), "tell · price per task keeps falling while AI-role pay stops rising")}
   </div>`,
   right: id => cites(`<div class="prose"><p><b>What he is doing about it.</b></p><p><b>1 · Write for two readers.</b> Contracts, logs and this piece are built to be read by agents as well as people.</p><p><b>2 · Keep a fold the agent never sees</b> in every loop — the instrument on the tile below.</p><p><b>3 · Keep it sovereign.</b> Open-source first, local-first: the router, the ledger and the patterns live on his machine [3]. Prompts and the files they quote still go to whichever remote model runs the turn, unless that model is local.</p><p><b>4 · Measure the method itself.</b> Every round records what its pattern got wrong; a pattern that stops paying for its lines is deleted [3].</p></div>`, id) +
-    takeRow("Most of my audience are LLMs.", "notebook, Dec 2025", "", "", id) +
-    takeRow("Living wikis out of raw data out-of-context size are to llm’s as olap to big tables. Aggregated views out of append only logs.", "notebook, Apr 2026", "", "", id),
+    takeRow("Most of my audience are LLMs.", "notebook, Dec 2025", "", "", id),
   tell: "**Which square.** Read the tells together on *the tells* tile; in Oct 2026 they lean, provisionally, to the top-left.",
   src: [["METR — Time Horizon 1.1", "https://metr.org/blog/2026-1-29-time-horizon-1-1/", "29 Jan 2026", "FACT"],
     ["Scale Labs — SWE-Bench Pro V2", "https://labs.scale.com/blog/swe-bench-pro-v2", "22 Sep 2026", "FACT"],
     ["pat — PRINCIPLES (private repo)", "", "Oct 2026", "FACT"]] },
 
 // ───────────────────────────── the evidence
-{ id: "takes", gx: -2, gy: 1, hue: "gold", short: "his takes, scored", h: 1110,
-  kicker: "the evidence · 2023 → 2026", title: "His takes, scored",
+{ id: "takes", gx: 1, gy: 1, hue: "gold", short: "his takes, scored", h: 1110,
+  kicker: "the evidence · notebook 2023 → 2026, scored in 2026", title: "His takes, scored",
   big: { v: "6", u: "takes", l: "from a private notebook, scored against the evidence" },
   verdict: "One holds, two partly, three untested. He scores his own lines harder than a colleague's.",
   pill: "scored, not defended",
@@ -655,7 +801,7 @@ nodes: [
     ["pat — PRINCIPLES (private repo)", "", "Oct 2026", ""],
     ["Evaluating AGENTS.md (arXiv:2602.11988)", "https://arxiv.org/abs/2602.11988", "12 Feb 2026", "FACT"]] },
 
-{ id: "oof", gx: 0, gy: 1, hue: "gold", short: "an eval is a model", h: 1110,
+{ id: "oof", gx: 3, gy: 1, hue: "gold", short: "an eval is a model", h: 1110,
   kicker: "the evidence · Oct 2026", title: "An eval is a model",
   big: { v: "100 / 0", u: "%", l: "visible pass vs tasks passing every hidden test — an agent that only echoes the example" },
   verdict: "Drive the visible loss to zero and one task in six still fails out of fold. No loop he tried detectably narrowed it.",
@@ -679,12 +825,12 @@ nodes: [
     ["oof — results/summary.json, baseline_constant.json, RESULTS.md (private repo)", "", "9 Oct 2026", "FACT"],
     ["Scale Labs — SWE-Bench Pro V2", "https://labs.scale.com/blog/swe-bench-pro-v2", "22 Sep 2026", "FACT"]] },
 
-{ id: "patbook", gx: 1, gy: 1, hue: "ink", short: "the method, measured", h: 1110,
-  kicker: "the evidence · Sep → Oct 2026", title: "The method, measured",
-  big: { v: "0", u: "passes", l: "so far on his knowledge library's kill test — stated on its first page" },
+{ id: "patbook", gx: 3, gy: 0, hue: "gold", short: "measuring the method", h: 1190,
+  kicker: "his practice · Oct 1 → 14, 2026", title: "Measuring the method",
+  big: { v: "198", u: "commits", l: "in fourteen days of October — the house turned its instruments on itself" },
   verdict: "He audits the method the way he audits a model: verdicts, failures and kills, written down.",
   pill: "unflattering on purpose",
-  lede: "The house runs experiments on itself, and most of the verdicts are not flattering. A typed language versus fully gated Python for agent-written code: *the language was not the load-bearing variable; the boundary was* [1]. A distilled DS/ML library must beat a plain model with internet access or be deleted; its one positive run (+0.50) was demoted on audit to +0.08–0.33 on two or three questions — *not a result* [2]. Escalating to a deeper model showed no detected gain (Δ 0.000, CI ±0.033) — the cheap check almost never failed, so escalation fired on 2 tasks of 120 [3].",
+  lede: "In the first two weeks of October the house turned on itself: a pattern book with a router that picks the shape of each task (6 Oct) [1]; a library of DS/ML judgement that must beat a plain model with internet access or be deleted (7 Oct) [2]; an instrument for the agent loop (9 Oct, *an eval is a model*); and this public shelf (14 Oct). Most verdicts are not flattering. The library's one positive run (+0.50) was demoted on audit to +0.08–0.33 on two or three questions — *not a result* [2]. Escalating to a deeper model showed no detected gain (Δ 0.000, CI ±0.033): the cheap check almost never failed, so escalation fired on 2 tasks of 120 [3].",
   left: id => factsTable([
       ["router", "no route for a conversational turn: it returned fan-out at 0.28 confidence — the low confidence was the right signal [4]", ""],
       ["adversarial", "no degraded mode: four reviewer dispatches died to exhausted API credit before one ran [4]", ""],
@@ -694,15 +840,17 @@ nodes: [
   right: id => `<div class="prose"><p><b>The book.</b> Nine shapes for agent work, each with a <i>when not to</i> and a kill switch [5]:</p></div>` + factsTable([
       ["sandwich", "plan deep → execute cheap, in parallel → validate independently", ""], ["adversarial", "one review pass by a different model family", ""],
       ["expand-contract", "breathe in wide, breathe out: kill with reasons, keep one move", ""], ["cascade", "cheapest attempt → mechanical check → escalate one tier", ""],
-      ["cheap-swarm", "N cheap workers over one cached preamble", ""], ["sr-and-jr · duel · fan-out · megaprompt", "critique loops, two-draft judging, one-question subagents, one context-complete plan", ""]], id),
+      ["cheap-swarm", "N cheap workers over one cached preamble", ""], ["sr-and-jr · duel · fan-out · megaprompt", "critique loops, two-draft judging, one-question subagents, one context-complete plan", ""],
+      ["≈ $0.00003", "one routing decision — a single call that picks the pattern [1]", ""], ["≤ 3", "human gates per round, only for facts only he holds [1]", ""]], id),
   tell: "**Root cause, not wrapper.** A pattern that fails is fixed at its source or deleted — never wrapped in another pattern [5].",
-  src: [["agentic-ledger-bench — ml-sandbox (public)", "https://github.com/adrianmatias/ml-sandbox/tree/master/agentic-ledger-bench", "15 Sep 2026", "FACT"],
+  src: [["pat — README and router (private repo)", "", "6 Oct 2026", "FACT"],
     ["alx-ds-ml-ai — README, proof/runs (private repo)", "", "7 Oct 2026", "FACT"],
     ["pat — README › evidence (oof H2) (private repo)", "", "9 Oct 2026", "FACT"],
     ["His agent log, entries of 13–14 Oct 2026 (private vault)", "", "Oct 2026", "FACT"],
-    ["pat — catalog and PRINCIPLES (private repo)", "", "Oct 2026", "FACT"]] },
+    ["pat — catalog and PRINCIPLES (private repo)", "", "Oct 2026", "FACT"],
+    ["git log --all over his personal repos, Oct 1–14 (198 commits), snapshot of 14 Oct 2026, taken before this piece's own commit", "", "14 Oct 2026", "FACT"]] },
 
-{ id: "tells", gx: 2, gy: 1, hue: "ink", short: "the tells",
+{ id: "tells", gx: 4, gy: 1, hue: "ink", short: "the tells",
   kicker: "watch list · as of 14 Oct 2026", title: "The tells",
   verdict: "Not predictions — a watchlist. The thresholds are his choices, written down before the news.",
   pill: "watchlist",
@@ -719,20 +867,121 @@ nodes: [
   right: id => `<div class="prose"><p>Every tile ends in a <b>tell</b>: the number that would change its verdict. Read together they place the present in the <b>next rung</b>'s 2×2 — agents lengthening or stalling, checking cheap or scarce.</p><p>In Oct 2026 they lean, provisionally, to one square: <b>agents lengthening, checking still scarce</b>. Horizons are up, the frontier's public and private scores sit 17.8 points apart on different task sets, and his own judge was overconfident.</p><p>The thresholds are his choices and carry no fixed window — a watchlist, not a pre-registration. The habit behind it is the one his experiments follow: decide what would change your mind <i>before</i> the data arrives.</p></div>` }
 ],
 links: [
-  ["tunnel", "byhand", "rock → data"], ["byhand", "pilot", "features → embeddings"], ["pilot", "house", "copilot → agents"], ["house", "next", "the next rung"],
-  ["boom", "byhand", "the sexiest job"], ["shock", "pilot", "the helicopter"], ["agents", "house", "Claude Code · Codex"], ["market", "house", "senior + AI-titled"], ["forecasts", "next", "2027 → 2030"],
-  ["oof", "house", "a fold it never sees"], ["takes", "manifesto", "notebook → podcast"], ["patbook", "house", "the method, measured"],
-  ["tells", "next", "which square"], ["ladder", "thesis", "the rung"], ["tunnel", "takes", "measure the face"]
+  ["tunnel", "byhand", "rock → data"], ["byhand", "pilot", "features → embeddings"], ["pilot", "wiki", "copilot → agent"], ["wiki", "contract", "a wiki → a contract"],
+  ["contract", "house", "one contract per vault"], ["house", "patbook", "the house audits itself"], ["patbook", "next", "the next rung"],
+  ["boom", "byhand", "the sexiest job"], ["shock", "pilot", "the helicopter"], ["yardsticks", "wiki", "context files, measured"], ["market", "contract", "senior + AI-titled"],
+  ["agents", "oof", "public vs private"], ["forecasts", "next", "2027 → 2030"],
+  ["rag", "wiki", "scored on a golden set"], ["ledger", "house", "the boundary"], ["oof", "patbook", "a fold it never sees"],
+  ["tells", "next", "which square"], ["ladder", "thesis", "the rung"]
 ]
 };
-// tile-local source for every notebook quote (private; quoted as ideas, dated by the entry they sit under)
-const NOTEBOOK = { ladder: "Apr 2026", boom: "2022", byhand: "2022", shock: "Sep 2024", agents: "Mar 2024", market: "2023",
-  forecasts: "Feb 2026", pilot: "Apr 2026", next: "Dec 2025 · Apr, Jun, Sep 2026", takes: "Nov 2023 · 2023 · Dec 2025 · Jan, Feb 2026" };
-for (const n of DATA.nodes) if (NOTEBOOK[n.id]) (n.src = n.src || []).push(["Private notebook — the quoted lines, as ideas only", "", NOTEBOOK[n.id], ""]);
 
-// read mode (and print) follows the argument, not the grid
-const READ_ORDER = ["thesis", "ladder", "tunnel", "boom", "byhand", "shock", "pilot", "agents", "market", "house", "oof", "patbook", "takes", "manifesto", "forecasts", "next", "tells", "method"];
-DATA.nodes.sort((a, b) => READ_ORDER.indexOf(a.id) - READ_ORDER.indexOf(b.id));
+// ───────────────────────────── 2026, the expanded columns
+DATA.nodes.push(
+
+{ id: "yardsticks", gx: 0, gy: -1, hue: "ink", short: "the yardsticks bend",
+  kicker: "the field · Jan → Mar 2026, one April conference", title: "The yardsticks bend",
+  big: { v: "30–50%", u: "", l: "of developers in METR's study held back some tasks rather than do them without AI" },
+  verdict: "Selection began to bend the instruments: people choose which work they will do without the tool.",
+  pill: "measurement under strain",
+  lede: "In the first quarter of 2026 the field's measurements began to bend under the thing they measured. METR's Time Horizon 1.1 put Claude Opus 4.5 at 5.3 hours, with a doubling time near three months on 2024-onward data [1]. Weeks later METR changed the design of its productivity experiment: the study still ran — 57 developers, 800+ tasks — but 30–50% said they were holding back some tasks rather than do them without AI, which biases the estimate [2]. Context files for coding agents — over 60,000 public repositories carry one — were found in February not to raise task success in general while adding over 20% to cost; LLM-generated files hurt slightly, human-written ones helped slightly [3]. And in March a paper named the trap in agent review: *the review checks code against itself, not against intent* [4].",
+  facts: [["29 Jan", "METR Time Horizon 1.1: Opus 4.5 at 320 min (CI 170–729); doubling 130.8 days since 2023, 88.6 since 2024 [1]", "FACT"],
+    ["5 Feb", "Claude Opus 4.6: 81.42% on SWE-bench Verified (25-trial mean, with a prompt modification) [5]", "FACT"],
+    ["12 Feb", "*Evaluating AGENTS.md* (v1; v3 29 Sep): no general gain in success, over 20% more inference cost; v3 adds that files help specify non-standard practices [3]", "FACT"],
+    ["24 Feb", "METR: returning developers' task time an estimated 18% lower (CI −38% to +9%), the data called unreliable [2]", "FACT"],
+    ["26 Mar", "*The specification as quality gate*: generating and reviewing agents reason from the same artefact [4]", "FACT"],
+    ["Apr", "conference version of a Dec 2025 study: Claude 3.5, finding all files to fix from the issue text alone — 65% on Verified vs 12.2% and 12% on two fresh sets, 17.4% on a third [6]", "FACT"]],
+  take: { q: "i could believe that grok 5 will show benchmark saturation while breakthrough in inference. that could enable capabilities not seen before: ubiquitous, immediate, pushing the bottleneck anywhere else than in AI.", who: "notebook, Feb 2026", verdict: "partly", why: "Saturation, yes: by September a public 99.4% on SWE-Bench Pro V2 [7]. The bottleneck moving out of the model and into checking is the argument of this map — consistent with the evidence, not yet measured as such." },
+  tell: "**When the control arm thins.** A randomised trial needs people willing to do representative work without the tool. How well studies can still fill a control arm is the clock on causal evidence about AI at work.",
+  src: [["METR — Time Horizon 1.1", "https://metr.org/blog/2026-1-29-time-horizon-1-1/", "29 Jan 2026", "FACT"],
+    ["METR — changing our developer productivity experiment design", "https://metr.org/blog/2026-02-24-uplift-update/", "24 Feb 2026", "FACT"],
+    ["Evaluating AGENTS.md: are repository-level context files helpful for coding agents? (arXiv:2602.11988)", "https://arxiv.org/abs/2602.11988", "12 Feb 2026", "FACT"],
+    ["Zietsman — The specification as quality gate (arXiv:2603.25773)", "https://arxiv.org/abs/2603.25773", "26 Mar 2026", "FACT"],
+    ["Anthropic — Claude Opus 4.6", "https://www.anthropic.com/news/claude-opus-4-6", "5 Feb 2026", "FACT"],
+    ["Does SWE-Bench-Verified test agent ability or model memory? (arXiv:2512.10218, Table 3)", "https://arxiv.org/html/2512.10218v2", "Dec 2025; conference Apr 2026", "FACT"],
+    ["Scale Labs — SWE-Bench Pro V2", "https://labs.scale.com/blog/swe-bench-pro-v2", "22 Sep 2026", "FACT"]] },
+
+{ id: "wiki", gx: 0, gy: 0, hue: "sea", short: "one GPU, one wiki",
+  kicker: "his practice · begins Feb 2026, through May", title: "One GPU, one wiki",
+  big: { v: "1", u: "GPU", l: "a consumer card running retrieval over fifteen years of his own writing" },
+  verdict: "Before agents wrote his code, they read his notes: local retrieval first, then a wiki an agent keeps.",
+  pill: "first principles, own data",
+  lede: "Early 2026 was a return to first principles on his own data. In February two episodes argued for compression and removal [1][7]. In March a two-year-old retrieval project came back on one consumer GPU: 52 blog posts cut into 904 chunks, embedded and searched locally, answered by three local models with no tokens leaving the machine, then compared with a frontier model in the cloud [2][3]. In April the notes went further: an LLM-wiki, a folder an agent compiles from raw sources and keeps cross-linked, named *Uqbar* and kept private; *The Mirror* is its public method [4][5].",
+  facts: [["10 Feb", "episodes 0011 *hyperawareness* and 0012 *learn by compression, build by removal* [1][7]", ""],
+    ["26 Mar", "episode 0014: local RAG on one GPU vs a frontier model [2]", ""],
+    ["52 → 904", "blog posts → chunks; local embeddings, ChromaDB, top-10 retrieval [3]", "FACT"],
+    ["15 Apr", "Uqbar, the private LLM-wiki, begins [6]", ""],
+    ["30 May", "episode 0017 and *The Mirror*, the public method [4][5]", ""]],
+  right: id => takeRow("Even post AI it is useful to learn to code, just like it is learning maths in spite of having calculators.", "notebook, Apr 2026", "", "", id) +
+    takeRow("Living wikis out of raw data out-of-context size are to llm’s as olap to big tables. Aggregated views out of append only logs.", "notebook, Apr 2026", "", "", id),
+  tell: "**Compile, don't retrieve.** The move from a vector store to a wiki an agent keeps is the move this map describes: from searching what exists to maintaining a view that is checked.",
+  src: [["not the tao 0012 — learn by compression, build by removal", "https://www.youtube.com/watch?v=wzJQV6GNN2I", "10 Feb 2026", "FACT"],
+    ["not the tao 0014 — rag on one gpu vs grok to clone my mind", "https://www.youtube.com/watch?v=c_JMsMy0DSM", "26 Mar 2026", "FACT"],
+    ["ragblog — README (ml-sandbox, public)", "https://github.com/adrianmatias/ml-sandbox/tree/master/ragblog", "2026", "FACT"],
+    ["not the tao 0017 — llm wiki as awareness for llms and The Mirror of Uqbar", "https://www.youtube.com/watch?v=zgjyRVkJTZc", "30 May 2026", "FACT"],
+    ["github.com/adrianmatias/the-mirror", "https://github.com/adrianmatias/the-mirror", "2026", "FACT"],
+    ["uqbar — first commit (private repo)", "", "15 Apr 2026", "FACT"],
+    ["not the tao 0011 — hyperawareness", "https://www.youtube.com/watch?v=fSPUbvdZM7w", "10 Feb 2026", "FACT"]] },
+
+{ id: "rag", gx: 0, gy: 1, hue: "sea", short: "relevant or faithful",
+  kicker: "the evidence · Mar 2026", title: "Relevant or faithful",
+  big: { v: "0.71 / 0.56", u: "", l: "the most relevant local model was the least faithful (Ragas, 16 cases)" },
+  verdict: "One metric would have picked the wrong model. The score that wins depends on which door you mean to close.",
+  pill: "LLM-judged",
+  lede: "The March retrieval system was scored, not admired: a synthetic test set of 16 cases generated from the corpus, Ragas metrics for the retrieval and for the answer, and different models for answering and for judging [1]. Same retrieval, three local generators. The one that stayed most on-topic was the one that added most beyond its sources.",
+  charts: [{ kind: "bar", title: "Ragas scores, same retrieval (k = 10), 16 cases", L: 190, rh: 25,
+    rows: [["27B (2-bit) · faithfulness", 0.897, "gold", "0.897"], ["27B (2-bit) · relevancy", 0.674, "ink", "0.674"], ["9B · faithfulness", 0.851, "gold", "0.851"], ["9B · relevancy", 0.565, "ink", "0.565"], ["gpt-oss 20B · faithfulness", 0.560, "rust", "0.560"], ["gpt-oss 20B · relevancy", 0.714, "ink", "0.714"]],
+    src: "[1]. Faithfulness: how far the answer stays inside the retrieved chunks; relevancy: how directly it answers. Both are scored by an LLM." }],
+  rightFacts: [["0.383 vs 0.565", "answer relevancy for the same 9B model in two README runs; each run re-retrieves, re-generates and re-judges, so this is uncontrolled rerun variation, not judge noise alone [1]", ""],
+    ["0.778 / 0.950", "context precision / recall in the first of those runs: the retriever found almost everything [1]", ""],
+    ["qualitative", "the comparison with the frontier model was not automated; formalising it needs a shared harness and ground truth [1]", ""],
+    ["52 posts", "a small corpus — small enough that a frontier model may have memorised it [1]", ""]],
+  bullT: "what it shows", bull: "Faithfulness and relevancy pull apart. Choosing a model is choosing which failure you accept.",
+  bearT: "what it does not", bear: "Sixteen synthetic cases, LLM-judged, one corpus, no repeats and no intervals: small differences cannot be ranked.",
+  tell: "**Measure the noise first.** Two runs of one model differ by 0.18 in relevancy [1]; rescoring frozen answers would show how much of that is the judge. Before a metric picks a model, run it twice on nothing new — the A/A control that *oof* later made formal.",
+  src: [["ragblog — README › Evaluation and Limitations (ml-sandbox, public)", "https://github.com/adrianmatias/ml-sandbox/tree/master/ragblog", "2026", "FACT"]] },
+
+{ id: "contract", gx: 1, gy: 0, hue: "ink", short: "the contract", h: 1040,
+  kicker: "his practice · begins May 2026, through Sep", title: "The contract",
+  big: { v: "1", u: "lane", l: "built alone: the human ground truth an LLM judge is checked against" },
+  verdict: "In production, the agents built against a written contract — and the judge was checked against people.",
+  pill: "agents at work, not at play",
+  lede: "From May 2026, contract work as a senior AI engineer on an LLM-as-judge product that scores software vendors, in a team of three senior AI engineers, a PM and an associate product owner [1]. The part that was his: the human ground-truth lane — parsing domain experts' templates, matching vendors, placing bands, averaging by tier and rolling up — so that the judge's scores could be reconciled against people's. And the discipline around the agents: business requirements kept as a contract artifact that agentic development built against, a typed output contract, and the gates behind it [1].",
+  facts: [["contract", "requirements as a contract artifact; schema-, domain- and spec-driven development [1]", ""],
+    ["gates", "type baselines per file and rule, a complexity ratchet, mutation tests, required status checks [1]", ""],
+    ["cost", "agentic development run as a measured practice: cost and turn discipline tuned per model tier [1]", ""],
+    ["epics", "full epics owned from business requirement to shipped increment [1]", ""]],
+  right: id => cites(`<div class="prose"><p><b>Why a contract.</b> An agent that builds against prose builds against its own reading of it, and a reviewing agent reads the same prose — the trap the March paper named [2]. A typed contract and a gate that has failed at least once give the review something outside the code to check against.</p><p><b>Why a human lane.</b> On two preference benchmarks, strong judges such as GPT-4 matched human preferences over 80% of the time — about as often as humans agree with each other — and still showed position, verbosity and self-enhancement biases [3]. Agreement with preferences is not correctness: on a product, a judge's accuracy is measured against its own experts, or not at all.</p></div>`, id),
+  tell: "**A judge needs a judge.** Watch whether a product reports the agreement between its LLM judge and its human lane — and on which cases — before it reports the judge's scores.",
+  src: [["His CV (public site)", "https://adrianmatias.github.io/", "Oct 2026", "FACT"],
+    ["Zietsman — The specification as quality gate (arXiv:2603.25773)", "https://arxiv.org/abs/2603.25773", "26 Mar 2026", "FACT"],
+    ["Judging LLM-as-a-judge with MT-Bench and Chatbot Arena (arXiv:2306.05685)", "https://arxiv.org/abs/2306.05685", "2023", "FACT"]] },
+
+{ id: "ledger", gx: 2, gy: 1, hue: "sea", short: "the boundary",
+  kicker: "the evidence · Sep 2026", title: "The boundary, not the language",
+  big: { v: "3", u: "agents", l: "wrote one frozen spec three ways, never seeing each other's code" },
+  verdict: "In this case study the language was not the load-bearing variable. The boundary was.",
+  pill: "public repo",
+  lede: "Does a typed language make agent-written code safer than Python? Three agents implemented one frozen specification — parse a bank statement, reconcile it, emit canonical JSON — in unchecked Python, in Python with its type checker and linters enforced, and in Scala 3, all producing identical output [1]. With its tools enforced, Python matched Scala on every gate [1]. The defect that mattered most was Scala's: a field added to a case class compiled clean while the hand-written JSON codec silently dropped it. Injected into Python as a separate probe, the same defect failed at construction under a pydantic model and was flagged by `ty` as a missing argument [2] — the codec was derived, not hand-written.",
+  charts: [{ kind: "bar", title: "production lines of code, same frozen spec", xf: "k", L: 200, rh: 28,
+    rows: [["Python, unchecked", 1357, "dim", "1,357 · 133 tests"], ["Python + ty, ruff, semgrep", 2187, "sea", "2,187 · 108 tests"], ["Scala 3", 1291, "ink", "1,291 · 92 tests"]],
+    src: "[1]. The three original arms, all without dependencies; a later pydantic + beartype arm came to 1,384 lines with 2 dependencies [2]." }],
+  right: id => cites(`<div class="prose"><p><b>The verdict, in its own words.</b> Spend the constraint budget on the gates and the boundary — enforced static checking, a derived codec, a scoped dead-code gate, an exhaustiveness convention, tests for wiring — and choose the language for ecosystem and domain, not for safety [1].</p></div>`, id),
+  bullT: "what it shows", bull: "Where data crossed a boundary, who owned the codec decided whether a new field could silently vanish.",
+  bearT: "what it does not", bear: "One agent per arm, uncontrolled agent variance, unequal scope and mid-run spec corrections [1]: a case study, not a law about languages.",
+  tell: "**Who owns the codec.** The defect lived where data crosses a boundary. That is where a contract earns its keep, whatever the language.",
+  src: [["agentic-ledger-bench — README (ml-sandbox, public)", "https://github.com/adrianmatias/ml-sandbox/tree/master/agentic-ledger-bench", "15 Sep 2026", "FACT"],
+    ["agentic-ledger-bench — docs/FINDINGS.md §12, §25", "https://github.com/adrianmatias/ml-sandbox/blob/master/agentic-ledger-bench/docs/FINDINGS.md", "15 Sep 2026", "FACT"]] }
+);
+
+// lanes (the row a tile sits in) and a tile-local source for every notebook quote (private; quoted as ideas, dated by entry)
+const LANES = { "-1": "field", "0": "practice", "1": "evidence" };
+const NOTEBOOK = { ladder: "Apr 2026", boom: "2022", byhand: "2022", shock: "Sep 2024", yardsticks: "Feb 2026", market: "2023",
+  pilot: "Dec 2025", wiki: "Apr 2026", house: "Aug 2026", next: "Dec 2025 · Jun, Sep 2026", takes: "Nov 2023 · 2023 · Dec 2025 · Jan, Feb 2026" };
+for (const n of DATA.nodes) {
+  n.lane = LANES[n.gy] || "";
+  if (NOTEBOOK[n.id]) (n.src = n.src || []).push(["Private notebook — the quoted lines, as ideas only", "", NOTEBOOK[n.id], ""]);
+}
 
 </script>
 <script>
@@ -797,7 +1046,8 @@ function lineChart(c) {
     g += `<path class="ln" stroke="${col}" d="${d}"${s.dash ? ' stroke-dasharray="4 4"' : ""}/>`;
     if (s.label) g += `<text class="lg" fill="${col}" x="${L + 8}" y="${T + 12 + i * 13}">${esc(s.label)}</text>`;
   });
-  for (const p of c.dots || []) { const px = X(parseT(p[0])), py = Y(p[1]); g += `<circle cx="${px}" cy="${py}" r="3.5" fill="${HUE[p[3]] || HUE.fg}"/><text class="ml" x="${px + 6}" y="${py + (p[4] || -6)}" fill="${HUE.fg}">${esc(p[2])}</text>`; }
+  for (const p of c.dots || []) { const px = X(parseT(p[0])), py = Y(p[1]), r = px > w * .62;   // labels near the right edge grow leftwards
+    g += `<circle cx="${px}" cy="${py}" r="3.5" fill="${HUE[p[3]] || HUE.fg}"/><text class="ml" x="${r ? px - 6 : px + 6}" y="${py + (p[4] || -6)}" fill="${HUE.fg}"${r ? ' text-anchor="end"' : ""}>${esc(p[2])}</text>`; }
   return g + "</svg>";
 }
 function barChart(c) {   // horizontal bars; c.rows = [[label, value, hue, note]]; signed values supported (linear)
@@ -824,9 +1074,21 @@ function spark(series, log) {
   const p = d.map((q, i) => (i ? "L" : "M") + X(xs[i]).toFixed(1) + " " + Y(q[1]).toFixed(1)).join("");
   return `<svg class="spark" viewBox="0 0 420 150"><path class="a" d="${p}L420 150L0 150Z"/><path d="${p}"/></svg>`;
 }
-function chartBlock(c, node) {
-  const body = c.kind === "bar" ? barChart(c) : lineChart(c);
-  return `<figure class="chart" data-zoom><div class="ct">${esc(c.title)}</div>${body}<div class="cs">${rich(c.src || "", node)}</div></figure>`;
+function barNarrow(c) {   // phone: the label on its own line, the bar under it
+  const w = 340, rh = 36, h = c.rows.length * rh + 6, vs = c.rows.map(r => r[1]), neg = Math.min(...vs) < 0;
+  const lo = c.log ? Math.min(...vs) / 2 : Math.min(0, Math.min(...vs)) * 1.04, hi = Math.max(...vs) * (c.log ? 2 : 1.06);
+  const X = scale(lo, hi, 4, w - 70, c.log), base = c.log ? 4 : X(0);
+  let g = `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(c.title)}">`;
+  if (neg) g += `<line class="ax" x1="${base}" x2="${base}" y1="14" y2="${h}"/>`;
+  c.rows.forEach((r, i) => {
+    const y = i * rh, col = HUE[r[2]] || HUE.dim, xv = X(r[1]), x0 = Math.min(base, xv), bw = Math.max(2, Math.abs(xv - base));
+    g += `<text class="nl" x="4" y="${y + 12}">${esc(r[0])}</text><rect x="${x0}" y="${y + 17}" width="${bw}" height="11" rx="3" fill="${col}" opacity=".85"/><text class="nv" x="${Math.max(xv, base) + 6}" y="${y + 27}">${esc(r[3] ?? fmt(r[1], c.xf))}</text>`;
+  });
+  return g + "</svg>";
+}
+function chartBlock(c, node, nw) {
+  const body = c.kind === "bar" ? (nw ? barNarrow(c) : barChart(c)) : lineChart(nw ? { ...c, w: 340, h: 236 } : c);
+  return `<figure class="chart"${nw ? "" : " data-zoom"}><div class="ct">${esc(c.title)}</div>${body}<div class="cs">${rich(c.src || "", node)}</div></figure>`;
 }
 
 // ---------- render ----------
@@ -837,6 +1099,26 @@ function takeBlock(t, node) {
   if (!t) return "";
   return `<div class="take"><q>${esc(t.q)}</q>${t.tr ? `<div class="tr">${esc(t.tr)}</div>` : ""}<div class="who">— ${esc(t.who)}</div>${t.verdict ? `<div class="score"><b class="${t.verdict}">${t.verdict.replace("-", " ")}</b><span>${rich(t.why, node)}</span></div>` : ""}</div>`;
 }
+function srcList(n, nw) {
+  if (!n.src) return "";
+  const li = n.src.map((s, i) => `<li${nw ? "" : ` id="${n.id}-s${i + 1}"`}><b>${i + 1}</b> ${s[3] ? `<span class="lab ${s[3] === "REPORTED" ? "" : s[3]}">${s[3] === "REPORTED" ? "REP" : s[3]}</span> ` : ""}${s[1] ? `<a href="${esc(s[1])}" target="_blank" rel="noopener">${esc(s[0])}</a>` : `<span class="priv">${esc(s[0])}</span>`}${s[2] ? " · " + esc(s[2]) : ""}</li>`).join("");
+  return nw ? `<details class="fs"><summary>sources · ${n.src.length}</summary><ol class="src">${li}</ol></details>` : `<ol class="src" data-zoom>${li}</ol>`;
+}
+function bodyHTML(n, nw) {   // the reading face; nw = narrow (phone feed)
+  let h = n.lede ? `<p class="lede">${rich(n.lede, n.id)}</p>` : "";
+  h += `<div class="cols"><div class="col">`;
+  for (const c of n.charts || []) h += chartBlock(c, n.id, nw);
+  if (n.facts) h += factsTable(n.facts, n.id);
+  if (n.left) h += n.left(n.id, nw);
+  if (n.tell && n.tellLeft) h += `<div class="tell"><h4>the tell</h4>${rich(n.tell, n.id)}</div>`;
+  h += `</div><div class="col">`;
+  for (const t of [].concat(n.take || [])) h += takeBlock(t, n.id);
+  if (n.rightFacts) h += factsTable(n.rightFacts, n.id);
+  if (n.right) h += n.right(n.id, nw);
+  if (n.bull || n.bear) h += `<div class="bb"><div class="bull"><h4>${esc(n.bullT || "bull")}</h4>${rich(n.bull, n.id)}</div><div class="bear"><h4>${esc(n.bearT || "bear")}</h4>${rich(n.bear, n.id)}</div></div>`;
+  if (n.tell && !n.tellLeft) h += `<div class="tell"><h4>the tell</h4>${rich(n.tell, n.id)}</div>`;
+  return h + `</div></div>` + srcList(n, nw);
+}
 function renderNode(n) {
   const el = document.createElement("article");
   el.className = "node"; el.id = n.id; el.tabIndex = 0; el.dataset.hue = n.hue;
@@ -846,21 +1128,7 @@ function renderNode(n) {
   if (b.v) h += `<div class="big">${esc(b.v)}<small>${esc(b.u || "")}</small></div><div class="bl">${esc(b.l || "")}</div>`;
   h += `<div class="v">${esc(n.verdict)}</div></div>`;
   h += `<div class="l1"><header><span class="k">${esc(n.kicker)}</span><h3>${esc(n.title)}</h3>${n.pill ? `<span class="pill">${esc(n.pill)}</span>` : ""}</header>`;
-  if (n.lede) h += `<p class="lede">${rich(n.lede, n.id)}</p>`;
-  h += `<div class="cols"><div class="col">`;
-  for (const c of n.charts || []) h += chartBlock(c, n.id);
-  if (n.facts) h += factsTable(n.facts, n.id);
-  if (n.left) h += n.left(n.id);
-  if (n.tell && n.tellLeft) h += `<div class="tell"><h4>the tell</h4>${rich(n.tell, n.id)}</div>`;
-  h += `</div><div class="col">`;
-  for (const t of [].concat(n.take || [])) h += takeBlock(t, n.id);
-  if (n.rightFacts) h += factsTable(n.rightFacts, n.id);
-  if (n.right) h += n.right(n.id);
-  if (n.bull || n.bear) h += `<div class="bb"><div class="bull"><h4>${esc(n.bullT || "bull")}</h4>${rich(n.bull, n.id)}</div><div class="bear"><h4>${esc(n.bearT || "bear")}</h4>${rich(n.bear, n.id)}</div></div>`;
-  if (n.tell && !n.tellLeft) h += `<div class="tell"><h4>the tell</h4>${rich(n.tell, n.id)}</div>`;
-  h += `</div></div>`;
-  if (n.src) h += `<ol class="src" data-zoom>${n.src.map((s, i) => `<li id="${n.id}-s${i + 1}"><b>${i + 1}</b> ${s[3] ? `<span class="lab ${s[3] === "REPORTED" ? "" : s[3]}">${s[3] === "REPORTED" ? "REP" : s[3]}</span> ` : ""}${s[1] ? `<a href="${esc(s[1])}" target="_blank" rel="noopener">${esc(s[0])}</a>` : `<span class="priv">${esc(s[0])}</span>`}${s[2] ? " · " + esc(s[2]) : ""}</li>`).join("")}</ol>`;
-  el.innerHTML = h + "</div>";
+  el.innerHTML = h + bodyHTML(n, false) + "</div>";
   return el;
 }
 const world = $("#world"), vp = $("#vp");
@@ -1009,16 +1277,25 @@ function click(e) {
   setFocus(n, z.classList.contains("src") ? "sources" : "chart"); flyTo(elRect(z), 650, .92);
 }
 function jumpCite(c) {
+  if (document.body.classList.contains("read")) {   // feed: open this card's sources and flash the line
+    const card = c.closest(".fc"), fs = card && card.querySelector(".fs"); if (!fs) return;
+    fs.open = true; const li = fs.querySelectorAll("li")[c.dataset.n - 1]; if (!li) return;
+    li.classList.add("flash"); setTimeout(() => li.classList.remove("flash"), 2200);
+    return li.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
   const n = byId[c.dataset.node], li = $(`#${n.id}-s${c.dataset.n}`); if (!li) return;
   li.classList.add("flash"); setTimeout(() => li.classList.remove("flash"), 2200);
-  if (document.body.classList.contains("read")) return li.scrollIntoView({ behavior: "smooth", block: "center" });
   setFocus(n, "sources"); flyTo(elRect(li.parentElement), 650, .92);
+}
+function openCard(id, smooth = true) {
+  const d = $("#c-" + id); if (!d) return;
+  d.open = true; requestAnimationFrame(() => d.scrollIntoView({ behavior: smooth ? "smooth" : "auto", block: "start" }));
 }
 document.addEventListener("click", e => {
   const a = e.target.closest("[data-act]"); if (a) { e.preventDefault(); act(a.dataset.act); }
-  const c = e.target.closest(".cite"); if (c && document.body.classList.contains("read")) jumpCite(c);
+  const c = e.target.closest(".cite"); if (c && document.body.classList.contains("read")) { e.preventDefault(); jumpCite(c); }
   if (e.target.id === "help") act("help");
-  const g = e.target.closest("[data-go]"); if (g && document.body.classList.contains("read")) $("#" + g.dataset.go).scrollIntoView({ behavior: "smooth" });
+  const g = e.target.closest("[data-go]"); if (g && document.body.classList.contains("read")) openCard(g.dataset.go);
 });
 function act(a) {
   if (a === "home") { if (document.body.classList.contains("read")) act("read"); home(); }
@@ -1027,7 +1304,7 @@ function act(a) {
   if (a === "read") {
     const on = document.body.classList.toggle("read");
     $$("#tools [data-act=read]")[0].textContent = on ? "map" : "read";
-    if (on) { (focus ? $("#" + focus.id) : document.body).scrollIntoView(); }
+    if (on) { buildFeed(); focus ? openCard(focus.id, false) : window.scrollTo(0, 0); }
     else { window.scrollTo(0, 0); requestAnimationFrame(() => focus ? goNode(focus, 1) : home(1)); }
   }
 }
@@ -1073,12 +1350,38 @@ mm.addEventListener("click", e => {
 });
 $$(".node").forEach(el => el.addEventListener("focus", () => { if (!document.body.classList.contains("read") && focus?.id !== el.id && !ptrs.size) goNode(byId[el.id]); }));
 
+
+// ---------- the feed: the same tiles as a chronological column (phones, read mode, print) ----------
+let feedBuilt = false;
+function cardHTML(n, open) {
+  const b = n.big || {}, lane = n.lane || "";
+  return `<details class="fc" data-hue="${n.hue}" id="c-${n.id}"${open ? " open" : ""}><summary>` +
+    `<div class="fk"><span>${esc(n.feedKicker ?? n.kicker.replace(/^(the field|his practice|the evidence) · /, ""))}</span>${lane ? `<i class="lane ${lane}">${lane}</i>` : ""}</div><h3>${esc(n.feedTitle || n.title)}</h3>` +
+    (b.v ? `<div class="fbig">${esc(b.v)}<small>${esc(b.u || "")}</small></div><div class="fbl">${esc(b.l || "")}</div>` : "") +
+    `<p class="fv">${esc(n.feedVerdict ?? n.verdict)}</p><span class="fm"></span></summary><div class="l1 fl1">${n.pill ? `<span class="pill">${esc(n.pill)}</span>` : ""}${bodyHTML(n, true)}</div></details>`;
+}
+function buildFeed() {
+  if (feedBuilt) return; feedBuilt = true;
+  const top = nodes.filter(n => n.gy === DATA.topRow), first = top.filter(n => n.gx < DATA.lastTopX), last = top.filter(n => n.gx >= DATA.lastTopX);
+  first.sort((a, b) => (a.id === DATA.start ? -1 : b.id === DATA.start ? 1 : a.gx - b.gx));
+  let h = `<header class="fh"><div class="k">${esc(DATA.kicker)}</div><h1>${esc(DATA.title)}</h1><p>${esc(DATA.subtitle)}</p><p class="fhint">${esc(DATA.feedHint)}</p></header>`;
+  h += first.map(n => cardHTML(n, n.id === DATA.start)).join("");
+  for (const e of DATA.eras) {
+    const ns = nodes.filter(n => n.gy !== DATA.topRow && Math.round(n.gx) === e.gx).sort((a, b) => a.gy - b.gy);
+    if (ns.length) h += `<section class="era${e.now ? " now" : ""}"><div class="eh"><b>${esc(e.t)}</b><span>${esc(e.s)}</span><em>${esc(e.span)}</em></div>${ns.map(n => cardHTML(n)).join("")}</section>`;
+  }
+  h += last.map(n => cardHTML(n)).join("");
+  $("#feed").innerHTML = h;
+}
+
+addEventListener("beforeprint", () => { if (!document.body.classList.contains("read")) act("read"); $$("#feed details").forEach(d => d.open = true); });
 // ---------- boot ----------
 addEventListener("resize", () => focus ? goNode(focus, 1) : home(1));
 const h0 = location.hash.slice(1);
-if (matchMedia("(max-width: 700px)").matches && !byId[h0]) document.body.classList.add("read"), $$("#tools [data-act=read]")[0].textContent = "map";
+const phone = matchMedia("(max-width: 700px)").matches;
+if (phone) { document.body.classList.add("read"); $$("#tools [data-act=read]")[0].textContent = "map"; buildFeed(); if (byId[h0]) openCard(h0, false); }
 cam.s = fitRect(BOUNDS, .96).s * .6; cam.x = vw() / 2 - (BOUNDS.x + BOUNDS.w / 2) * cam.s; cam.y = vh() / 2 - (BOUNDS.y + BOUNDS.h / 2) * cam.s; apply();
-byId[h0] ? goNode(byId[h0], 900) : home(900);
+if (!phone) byId[h0] ? goNode(byId[h0], 900) : home(900);
 setTimeout(() => $("#hint").style.opacity = .0, 9000);
 </script>
 </body>

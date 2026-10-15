@@ -59,7 +59,8 @@ function lineChart(c) {
     g += `<path class="ln" stroke="${col}" d="${d}"${s.dash ? ' stroke-dasharray="4 4"' : ""}/>`;
     if (s.label) g += `<text class="lg" fill="${col}" x="${L + 8}" y="${T + 12 + i * 13}">${esc(s.label)}</text>`;
   });
-  for (const p of c.dots || []) { const px = X(parseT(p[0])), py = Y(p[1]); g += `<circle cx="${px}" cy="${py}" r="3.5" fill="${HUE[p[3]] || HUE.fg}"/><text class="ml" x="${px + 6}" y="${py + (p[4] || -6)}" fill="${HUE.fg}">${esc(p[2])}</text>`; }
+  for (const p of c.dots || []) { const px = X(parseT(p[0])), py = Y(p[1]), r = px > w * .62;   // labels near the right edge grow leftwards
+    g += `<circle cx="${px}" cy="${py}" r="3.5" fill="${HUE[p[3]] || HUE.fg}"/><text class="ml" x="${r ? px - 6 : px + 6}" y="${py + (p[4] || -6)}" fill="${HUE.fg}"${r ? ' text-anchor="end"' : ""}>${esc(p[2])}</text>`; }
   return g + "</svg>";
 }
 function barChart(c) {   // horizontal bars; c.rows = [[label, value, hue, note]]; signed values supported (linear)
@@ -86,9 +87,21 @@ function spark(series, log) {
   const p = d.map((q, i) => (i ? "L" : "M") + X(xs[i]).toFixed(1) + " " + Y(q[1]).toFixed(1)).join("");
   return `<svg class="spark" viewBox="0 0 420 150"><path class="a" d="${p}L420 150L0 150Z"/><path d="${p}"/></svg>`;
 }
-function chartBlock(c, node) {
-  const body = c.kind === "bar" ? barChart(c) : lineChart(c);
-  return `<figure class="chart" data-zoom><div class="ct">${esc(c.title)}</div>${body}<div class="cs">${rich(c.src || "", node)}</div></figure>`;
+function barNarrow(c) {   // phone: the label on its own line, the bar under it
+  const w = 340, rh = 36, h = c.rows.length * rh + 6, vs = c.rows.map(r => r[1]), neg = Math.min(...vs) < 0;
+  const lo = c.log ? Math.min(...vs) / 2 : Math.min(0, Math.min(...vs)) * 1.04, hi = Math.max(...vs) * (c.log ? 2 : 1.06);
+  const X = scale(lo, hi, 4, w - 70, c.log), base = c.log ? 4 : X(0);
+  let g = `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(c.title)}">`;
+  if (neg) g += `<line class="ax" x1="${base}" x2="${base}" y1="14" y2="${h}"/>`;
+  c.rows.forEach((r, i) => {
+    const y = i * rh, col = HUE[r[2]] || HUE.dim, xv = X(r[1]), x0 = Math.min(base, xv), bw = Math.max(2, Math.abs(xv - base));
+    g += `<text class="nl" x="4" y="${y + 12}">${esc(r[0])}</text><rect x="${x0}" y="${y + 17}" width="${bw}" height="11" rx="3" fill="${col}" opacity=".85"/><text class="nv" x="${Math.max(xv, base) + 6}" y="${y + 27}">${esc(r[3] ?? fmt(r[1], c.xf))}</text>`;
+  });
+  return g + "</svg>";
+}
+function chartBlock(c, node, nw) {
+  const body = c.kind === "bar" ? (nw ? barNarrow(c) : barChart(c)) : lineChart(nw ? { ...c, w: 340, h: 236 } : c);
+  return `<figure class="chart"${nw ? "" : " data-zoom"}><div class="ct">${esc(c.title)}</div>${body}<div class="cs">${rich(c.src || "", node)}</div></figure>`;
 }
 
 // ---------- render ----------
@@ -99,6 +112,26 @@ function takeBlock(t, node) {
   if (!t) return "";
   return `<div class="take"><q>${esc(t.q)}</q>${t.tr ? `<div class="tr">${esc(t.tr)}</div>` : ""}<div class="who">— ${esc(t.who)}</div>${t.verdict ? `<div class="score"><b class="${t.verdict}">${t.verdict.replace("-", " ")}</b><span>${rich(t.why, node)}</span></div>` : ""}</div>`;
 }
+function srcList(n, nw) {
+  if (!n.src) return "";
+  const li = n.src.map((s, i) => `<li${nw ? "" : ` id="${n.id}-s${i + 1}"`}><b>${i + 1}</b> ${s[3] ? `<span class="lab ${s[3] === "REPORTED" ? "" : s[3]}">${s[3] === "REPORTED" ? "REP" : s[3]}</span> ` : ""}${s[1] ? `<a href="${esc(s[1])}" target="_blank" rel="noopener">${esc(s[0])}</a>` : `<span class="priv">${esc(s[0])}</span>`}${s[2] ? " · " + esc(s[2]) : ""}</li>`).join("");
+  return nw ? `<details class="fs"><summary>sources · ${n.src.length}</summary><ol class="src">${li}</ol></details>` : `<ol class="src" data-zoom>${li}</ol>`;
+}
+function bodyHTML(n, nw) {   // the reading face; nw = narrow (phone feed)
+  let h = n.lede ? `<p class="lede">${rich(n.lede, n.id)}</p>` : "";
+  h += `<div class="cols"><div class="col">`;
+  for (const c of n.charts || []) h += chartBlock(c, n.id, nw);
+  if (n.facts) h += factsTable(n.facts, n.id);
+  if (n.left) h += n.left(n.id, nw);
+  if (n.tell && n.tellLeft) h += `<div class="tell"><h4>the tell</h4>${rich(n.tell, n.id)}</div>`;
+  h += `</div><div class="col">`;
+  for (const t of [].concat(n.take || [])) h += takeBlock(t, n.id);
+  if (n.rightFacts) h += factsTable(n.rightFacts, n.id);
+  if (n.right) h += n.right(n.id, nw);
+  if (n.bull || n.bear) h += `<div class="bb"><div class="bull"><h4>${esc(n.bullT || "bull")}</h4>${rich(n.bull, n.id)}</div><div class="bear"><h4>${esc(n.bearT || "bear")}</h4>${rich(n.bear, n.id)}</div></div>`;
+  if (n.tell && !n.tellLeft) h += `<div class="tell"><h4>the tell</h4>${rich(n.tell, n.id)}</div>`;
+  return h + `</div></div>` + srcList(n, nw);
+}
 function renderNode(n) {
   const el = document.createElement("article");
   el.className = "node"; el.id = n.id; el.tabIndex = 0; el.dataset.hue = n.hue;
@@ -108,21 +141,7 @@ function renderNode(n) {
   if (b.v) h += `<div class="big">${esc(b.v)}<small>${esc(b.u || "")}</small></div><div class="bl">${esc(b.l || "")}</div>`;
   h += `<div class="v">${esc(n.verdict)}</div></div>`;
   h += `<div class="l1"><header><span class="k">${esc(n.kicker)}</span><h3>${esc(n.title)}</h3>${n.pill ? `<span class="pill">${esc(n.pill)}</span>` : ""}</header>`;
-  if (n.lede) h += `<p class="lede">${rich(n.lede, n.id)}</p>`;
-  h += `<div class="cols"><div class="col">`;
-  for (const c of n.charts || []) h += chartBlock(c, n.id);
-  if (n.facts) h += factsTable(n.facts, n.id);
-  if (n.left) h += n.left(n.id);
-  if (n.tell && n.tellLeft) h += `<div class="tell"><h4>the tell</h4>${rich(n.tell, n.id)}</div>`;
-  h += `</div><div class="col">`;
-  for (const t of [].concat(n.take || [])) h += takeBlock(t, n.id);
-  if (n.rightFacts) h += factsTable(n.rightFacts, n.id);
-  if (n.right) h += n.right(n.id);
-  if (n.bull || n.bear) h += `<div class="bb"><div class="bull"><h4>${esc(n.bullT || "bull")}</h4>${rich(n.bull, n.id)}</div><div class="bear"><h4>${esc(n.bearT || "bear")}</h4>${rich(n.bear, n.id)}</div></div>`;
-  if (n.tell && !n.tellLeft) h += `<div class="tell"><h4>the tell</h4>${rich(n.tell, n.id)}</div>`;
-  h += `</div></div>`;
-  if (n.src) h += `<ol class="src" data-zoom>${n.src.map((s, i) => `<li id="${n.id}-s${i + 1}"><b>${i + 1}</b> ${s[3] ? `<span class="lab ${s[3] === "REPORTED" ? "" : s[3]}">${s[3] === "REPORTED" ? "REP" : s[3]}</span> ` : ""}${s[1] ? `<a href="${esc(s[1])}" target="_blank" rel="noopener">${esc(s[0])}</a>` : `<span class="priv">${esc(s[0])}</span>`}${s[2] ? " · " + esc(s[2]) : ""}</li>`).join("")}</ol>`;
-  el.innerHTML = h + "</div>";
+  el.innerHTML = h + bodyHTML(n, false) + "</div>";
   return el;
 }
 const world = $("#world"), vp = $("#vp");
@@ -271,16 +290,25 @@ function click(e) {
   setFocus(n, z.classList.contains("src") ? "sources" : "chart"); flyTo(elRect(z), 650, .92);
 }
 function jumpCite(c) {
+  if (document.body.classList.contains("read")) {   // feed: open this card's sources and flash the line
+    const card = c.closest(".fc"), fs = card && card.querySelector(".fs"); if (!fs) return;
+    fs.open = true; const li = fs.querySelectorAll("li")[c.dataset.n - 1]; if (!li) return;
+    li.classList.add("flash"); setTimeout(() => li.classList.remove("flash"), 2200);
+    return li.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
   const n = byId[c.dataset.node], li = $(`#${n.id}-s${c.dataset.n}`); if (!li) return;
   li.classList.add("flash"); setTimeout(() => li.classList.remove("flash"), 2200);
-  if (document.body.classList.contains("read")) return li.scrollIntoView({ behavior: "smooth", block: "center" });
   setFocus(n, "sources"); flyTo(elRect(li.parentElement), 650, .92);
+}
+function openCard(id, smooth = true) {
+  const d = $("#c-" + id); if (!d) return;
+  d.open = true; requestAnimationFrame(() => d.scrollIntoView({ behavior: smooth ? "smooth" : "auto", block: "start" }));
 }
 document.addEventListener("click", e => {
   const a = e.target.closest("[data-act]"); if (a) { e.preventDefault(); act(a.dataset.act); }
-  const c = e.target.closest(".cite"); if (c && document.body.classList.contains("read")) jumpCite(c);
+  const c = e.target.closest(".cite"); if (c && document.body.classList.contains("read")) { e.preventDefault(); jumpCite(c); }
   if (e.target.id === "help") act("help");
-  const g = e.target.closest("[data-go]"); if (g && document.body.classList.contains("read")) $("#" + g.dataset.go).scrollIntoView({ behavior: "smooth" });
+  const g = e.target.closest("[data-go]"); if (g && document.body.classList.contains("read")) openCard(g.dataset.go);
 });
 function act(a) {
   if (a === "home") { if (document.body.classList.contains("read")) act("read"); home(); }
@@ -289,7 +317,7 @@ function act(a) {
   if (a === "read") {
     const on = document.body.classList.toggle("read");
     $$("#tools [data-act=read]")[0].textContent = on ? "map" : "read";
-    if (on) { (focus ? $("#" + focus.id) : document.body).scrollIntoView(); }
+    if (on) { buildFeed(); focus ? openCard(focus.id, false) : window.scrollTo(0, 0); }
     else { window.scrollTo(0, 0); requestAnimationFrame(() => focus ? goNode(focus, 1) : home(1)); }
   }
 }
@@ -335,10 +363,36 @@ mm.addEventListener("click", e => {
 });
 $$(".node").forEach(el => el.addEventListener("focus", () => { if (!document.body.classList.contains("read") && focus?.id !== el.id && !ptrs.size) goNode(byId[el.id]); }));
 
+
+// ---------- the feed: the same tiles as a chronological column (phones, read mode, print) ----------
+let feedBuilt = false;
+function cardHTML(n, open) {
+  const b = n.big || {}, lane = n.lane || "";
+  return `<details class="fc" data-hue="${n.hue}" id="c-${n.id}"${open ? " open" : ""}><summary>` +
+    `<div class="fk"><span>${esc(n.feedKicker ?? n.kicker.replace(/^(the field|his practice|the evidence) · /, ""))}</span>${lane ? `<i class="lane ${lane}">${lane}</i>` : ""}</div><h3>${esc(n.feedTitle || n.title)}</h3>` +
+    (b.v ? `<div class="fbig">${esc(b.v)}<small>${esc(b.u || "")}</small></div><div class="fbl">${esc(b.l || "")}</div>` : "") +
+    `<p class="fv">${esc(n.feedVerdict ?? n.verdict)}</p><span class="fm"></span></summary><div class="l1 fl1">${n.pill ? `<span class="pill">${esc(n.pill)}</span>` : ""}${bodyHTML(n, true)}</div></details>`;
+}
+function buildFeed() {
+  if (feedBuilt) return; feedBuilt = true;
+  const top = nodes.filter(n => n.gy === DATA.topRow), first = top.filter(n => n.gx < DATA.lastTopX), last = top.filter(n => n.gx >= DATA.lastTopX);
+  first.sort((a, b) => (a.id === DATA.start ? -1 : b.id === DATA.start ? 1 : a.gx - b.gx));
+  let h = `<header class="fh"><div class="k">${esc(DATA.kicker)}</div><h1>${esc(DATA.title)}</h1><p>${esc(DATA.subtitle)}</p><p class="fhint">${esc(DATA.feedHint)}</p></header>`;
+  h += first.map(n => cardHTML(n, n.id === DATA.start)).join("");
+  for (const e of DATA.eras) {
+    const ns = nodes.filter(n => n.gy !== DATA.topRow && Math.round(n.gx) === e.gx).sort((a, b) => a.gy - b.gy);
+    if (ns.length) h += `<section class="era${e.now ? " now" : ""}"><div class="eh"><b>${esc(e.t)}</b><span>${esc(e.s)}</span><em>${esc(e.span)}</em></div>${ns.map(n => cardHTML(n)).join("")}</section>`;
+  }
+  h += last.map(n => cardHTML(n)).join("");
+  $("#feed").innerHTML = h;
+}
+
+addEventListener("beforeprint", () => { if (!document.body.classList.contains("read")) act("read"); $$("#feed details").forEach(d => d.open = true); });
 // ---------- boot ----------
 addEventListener("resize", () => focus ? goNode(focus, 1) : home(1));
 const h0 = location.hash.slice(1);
-if (matchMedia("(max-width: 700px)").matches && !byId[h0]) document.body.classList.add("read"), $$("#tools [data-act=read]")[0].textContent = "map";
+const phone = matchMedia("(max-width: 700px)").matches;
+if (phone) { document.body.classList.add("read"); $$("#tools [data-act=read]")[0].textContent = "map"; buildFeed(); if (byId[h0]) openCard(h0, false); }
 cam.s = fitRect(BOUNDS, .96).s * .6; cam.x = vw() / 2 - (BOUNDS.x + BOUNDS.w / 2) * cam.s; cam.y = vh() / 2 - (BOUNDS.y + BOUNDS.h / 2) * cam.s; apply();
-byId[h0] ? goNode(byId[h0], 900) : home(900);
+if (!phone) byId[h0] ? goNode(byId[h0], 900) : home(900);
 setTimeout(() => $("#hint").style.opacity = .0, 9000);
