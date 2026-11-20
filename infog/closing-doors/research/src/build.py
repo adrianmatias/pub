@@ -15,7 +15,7 @@ head = f"""<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>{TITLE} · October 2026</title>
+<title>{TITLE} · updated Nov 2026</title>
 <meta name="description" content="{DESC}">
 <meta name="theme-color" content="#0b0b0c">
 <link rel="canonical" href="{URL}">
@@ -36,6 +36,7 @@ head = f"""<!DOCTYPE html>
 <meta name="twitter:image" content="{URL}og.png">
 <meta name="author" content="Adrian Matias">
 <meta property="article:published_time" content="2026-10-14">
+<meta property="article:modified_time" content="2026-11-20">
 <style>
 """
 body = """</style>
@@ -46,14 +47,14 @@ body = """</style>
 <div id="vp"><div id="world"><div id="grid"></div><svg id="links"></svg></div></div>
 <main id="feed"></main>
 <nav id="crumb" class="hud"><a href="../../" title="taoaieng.io/pub — all pieces and the archive">pub</a><span>›</span><a data-act="home">closing doors</a><span id="crumbTail"></span></nav>
-<div id="tools" class="hud"><button data-act="home" title="whole map (0)">map</button><button data-act="read" title="read as an article (R)">read</button><button data-act="help" title="how to move (?)">?</button></div>
-<div id="hint" class="hud">scroll or pinch to zoom · drag to pan · click a tile · ← → walk · R read · ? help</div>
+<div id="tools" class="hud"><button data-act="zout" title="zoom out (−)">−</button><button data-act="zin" title="zoom in (+)">+</button><button data-act="home" title="whole map (0)">map</button><button data-act="read" title="read as an article (R)">read</button><button data-act="help" title="how to move (?)">?</button></div>
+<div id="hint" class="hud">scroll or pinch to zoom · drag to pan · click a tile · ← → walk · −/+ zoom · R read · ? help</div>
 <div id="mini" class="hud"></div>
 <div id="help"><div>
   <h4>How to move</h4>
-  <p>Time runs left to right, 2007 → 2030, and speeds up: the columns span eight years, seven, three, then months of 2026, then two weeks. Three layers run top to bottom: <b>the field</b> (what happened to everyone), <b>his practice</b> (how one data scientist worked), <b>the evidence</b> (his takes and experiments, scored). The map has three depths: <b>far</b>, one line and one number per tile; <b>near</b> (click a tile), the chart, the facts and the take; <b>closer</b> (click a chart or the source list), every number's source, date and label.</p>
-  <p style="margin-top:10px"><kbd>scroll</kbd> zoom · <kbd>drag</kbd> pan · <kbd>click</kbd> dive · <kbd>Esc</kbd> rise · <kbd>← ↑ → ↓</kbd> walk the map · <kbd>0</kbd> whole map · <kbd>R</kbd> read as an article · a superscript number jumps to its source.</p>
-  <p style="margin-top:10px">Labels: <span class="lab FACT">FACT</span> primary or high-quality source · <span class="lab">REP</span> single or second-hand · <span class="lab FORECAST">FORECAST</span> a named projection · <span class="lab UNVERIFIED">UNVERIFIED</span> could not be confirmed. Sources without a link are his own private files. Data as of 14 October 2026.</p>
+  <p>Time runs left to right, 2007 → 2030, and speeds up: the columns span eight years, seven, three, then months and weeks of 2026. Three layers run top to bottom: <b>the field</b> (what happened to everyone), <b>his practice</b> (how one data scientist worked), <b>the evidence</b> (his takes and experiments, scored). The map has four depths: <b>overview</b> (whole graph, hue-coded), <b>far</b>, one line and one number per tile; <b>near</b> (click a tile), the chart, the facts and the take; <b>closer</b> (click a chart or the source list), every number's source, date and label.</p>
+  <p style="margin-top:10px"><kbd>scroll</kbd> / <kbd>−</kbd> <kbd>+</kbd> zoom · <kbd>drag</kbd> pan · <kbd>click</kbd> dive · <kbd>Esc</kbd> rise · <kbd>← ↑ → ↓</kbd> walk the map · <kbd>0</kbd> whole map · <kbd>R</kbd> read as an article · a superscript number jumps to its source.</p>
+  <p style="margin-top:10px">Labels: <span class="lab FACT">FACT</span> primary or high-quality source · <span class="lab">REP</span> single or second-hand · <span class="lab FORECAST">FORECAST</span> a named projection · <span class="lab UNVERIFIED">UNVERIFIED</span> could not be confirmed. Sources without a link are his own private files. Field data as of 14 October 2026; practice and gate learnings updated 20 November 2026.</p>
 </div></div>
 
 <script>

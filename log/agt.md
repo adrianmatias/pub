@@ -51,3 +51,25 @@
 - **Tsunami:** the same engine as *Closing Doors*. On phones it reads as a feed in the order of its argument: the two forces → hard money → what else they move → where it leaves us. The content, data and sources are byte-identical, and the desktop map is unchanged.
 - **Closing Doors:** `noindex` and the "draft · offline" pill removed; merged into `master` with its two draft commits.
 - Home page card and meta updated; AGENTS records the shared engine and the two checks (desktop clipping, 390 px phone overflow).
+
+# 2026-11-20
+
+## reply — mobile extra zoom-out on the map for both pieces; Closing Doors updated with Oct–Nov engineering learnings
+
+- **Mobile map & extra zoom-out (`style.css`, `extra.css`, `engine.js`, `build.py`, `port_tsunami.py`, `AGENTS.md`):**
+  - Removed the forced phone redirect into scroll-only `body.read`; every viewport now opens on the zoomable graph map (`#read` or the `read` button still opens the feed directly).
+  - Lowered `minScale()` to `Math.min(0.008, fitRect(BOUNDS, .96).s * 0.42)` (was clamped at `0.03`), added `−` / `+` zoom buttons in `#tools` (plus `-`/`+` shortcuts), and added a `z-far` overview layer (`.lm` short title + metric, hue-colored borders, thickened edges, non-hot chips hidden, boosted `.band` contrast) when `W * cam.s < 78px` so the whole graph structure reads cleanly on 390 px phones and at one extra zoom-out level.
+  - Switched `o1` from viewport fraction to screen-pixel tile width (`(tilePx - 480) / 180`), added synchronous snap when `flyTo` has `ms <= 1`, enlarged chip clearance + arc candidates (`±2800/3200`) so desktop chips stop overlapping, and added a second-tap fallback on focused `l0` tiles when `o1 < 0.5` (covering both portrait `390×844` and landscape `844×390`).
+  - Propagated the shared CSS, `#tools`/`#hint`/`#help` updates, and `engine.js` to `infog/tsunami-and-printing-press/index.html` via `port_tsunami.py` (`S` and `DATA` untouched).
+- **Closing Doors Nov 20 update (`data.js`, `tiles2026.js`, `index.html`):**
+  - Added column `gx: 4` (`2026 · Oct 15 – Nov 20 · distil & prove`, shifting `2027 – 2030` to `gx: 5`) with two tiles: *Distil, don't link* (router retired, walking skeleton → distil the LLM out, AST ontology, schema as prompt, deliberate redundancy under line budgets, expand/compress + dream loop + 3-family routing) and *Proven gates, public surface* (witness-proven gates `--prove`, public-surface tests + CRAP vs helper unit suites, inert checks, detached-worktree pre-push). Zero closed-repo, client, or internal count details disclosed.
+  - Corrected `contract` (`tiles2026.js`): aligned strictly with the public CV (two separate lanes — expert scoring sheets vs unstructured document ingestion with quoted provenance, quoted requirements as a contract artifact, typed schema) and kept rubric scoring distinct from a label-calibrated judge.
+- **Adversarial review (`claude-opus-5-5`, cross-family from author `gemini-4-hydrogen`):** 7 findings (1 blocker, 5 should-fix, 1 note), all 7 accepted and fixed:
+  1. *(blocks)* `contract` cited non-public engagement details under the public CV — trimmed back to public CV claims + unattributed general lessons.
+  2. *(should-fix)* `contract` verdict compared unmeasured calibration and misstated baseline/replacement claims — rewritten non-comparatively.
+  3. *(should-fix)* `distil`/`gates` exposed closed-repo internal counts, line budgets, and incident specifics — stripped internal figures and standardized private-note sources to `20 Nov 2026`.
+  4. *(should-fix)* `house` `data.js` named a specific gate count on a private project — neutralized to `"deterministic gates"` (pre-existing Oct 14 published vault-log labels retained).
+  5. *(should-fix)* Landscape `844×390` tapped tiles stayed at `o1 = 0` without read fallback — removed `vw() <= 700` gate on `focus === n && o1 < .5` and added `(max-height:560px)` cue.
+  6. *(should-fix)* `AGENTS.md` still documented phone feed-first boot — updated to match the map-first contract.
+  7. *(note)* `port_tsunami.py` missed `−/+` in `#hint` and `#help` — updated both strings.
+- **Verification (headless Chromium, local `file://`):** `closing-doors` (`1440×900` `z0` `s=0.0853`, `390×844` `z-far` `s=0.0231` → extra `−` `s=0.0134` → `l0` `s=0.3055` → `read` `scrollW=390`, `844×390` tap-2 `read` open); `tsunami-and-printing-press` (`1440×900` `z0` `s=0.1536`, `390×844` `z-far` `s=0.0416` → extra `−` `s=0.0241` → `l0` `s=0.3055` → `read` `scrollW=390`, `844×390` tap-2 `read` open); closed-repo/client privacy scan clean.

@@ -140,8 +140,9 @@ function renderNode(n) {
   const el = document.createElement("article");
   el.className = "node"; el.id = n.id; el.tabIndex = 0; el.dataset.hue = n.hue;
   el.style.left = n.gx * GX - W / 2 + "px"; el.style.top = n.gy * GY - (n.h || H) / 2 + "px"; if (n.h) el.style.height = n.h + "px";
-  const b = n.big || {};
-  let h = `<div class="l0"><div class="k">${esc(n.kicker)}</div><h2>${esc(n.title)}</h2>${n.spark ? spark(n.spark, n.sparkLog) : ""}`;
+  const b = n.big || {}, short = esc(n.short || n.title);
+  let h = `<div class="lm"><h4>${short}</h4>${b.v ? `<div class="mv">${esc(b.v)}${b.u ? " " + esc(b.u) : ""}</div>` : ""}</div>`;
+  h += `<div class="l0"><div class="k">${esc(n.kicker)}</div><h2>${esc(n.title)}</h2>${n.spark ? spark(n.spark, n.sparkLog) : ""}`;
   if (b.v) h += `<div class="big">${esc(b.v)}<small>${esc(b.u || "")}</small></div><div class="bl">${esc(b.l || "")}</div>`;
   h += `<div class="v">${esc(n.verdict)}</div></div>`;
   h += `<div class="l1"><header><span class="k">${esc(n.kicker)}</span><h3>${esc(n.title)}</h3>${n.pill ? `<span class="pill">${esc(n.pill)}</span>` : ""}</header>`;
@@ -151,8 +152,13 @@ function renderNode(n) {
 const world = $("#world"), vp = $("#vp");
 const nodes = DATA.nodes, byId = Object.fromEntries(nodes.map(n => [n.id, n]));
 const gxs = nodes.map(n => n.gx), gys = nodes.map(n => n.gy);
-const BOUNDS = { x: Math.min(...gxs) * GX - W / 2 - 300, y: Math.min(...gys) * GY - H / 2 - 300 };
-BOUNDS.w = Math.max(...gxs) * GX + W / 2 + 300 - BOUNDS.x; BOUNDS.h = Math.max(...gys) * GY + H / 2 + 300 - BOUNDS.y;
+const bandYs = (DATA.bands || []).map(b => b.y), bandXs = (DATA.bands || []).map(b => b.x);
+const BOUNDS = {
+  x: Math.min(Math.min(...gxs) * GX - W / 2 - 300, bandXs.length ? Math.min(...bandXs) - 200 : 1e9),
+  y: Math.min(Math.min(...gys) * GY - H / 2 - 300, bandYs.length ? Math.min(...bandYs) - 180 : 1e9)
+};
+BOUNDS.w = Math.max(...gxs) * GX + W / 2 + 300 - BOUNDS.x;
+BOUNDS.h = Math.max(...nodes.map(n => n.gy * GY + (n.h || H) / 2)) + 300 - BOUNDS.y;
 const grid = $("#grid"); Object.assign(grid.style, { left: BOUNDS.x - 3000 + "px", top: BOUNDS.y - 3000 + "px", width: BOUNDS.w + 6000 + "px", height: BOUNDS.h + 6000 + "px" });
 for (const n of nodes) world.appendChild(renderNode(n));
 // era and layer bands: large quiet labels on the open ground between tiles
@@ -173,11 +179,11 @@ DATA.links.forEach(([a, b, label]) => {
   const dx = bx - ax, dy = by - ay, len = Math.hypot(dx, dy), px = -dy / len, py = dx / len;
   // choose the bend that puts the label (curve midpoint) on open ground: off every tile, clear of other labels
   let best = null, bs = 1e18;
-  for (const c of [0, 300, -300, 600, -600, 1000, -1000, GY, -GY, 1800, -1800, 2400, -2400]) {
+  for (const c of [0, 300, -300, 600, -600, 900, -900, 1200, -1200, GY, -GY, 1800, -1800, 2400, -2400, 2800, -2800, 3200, -3200]) {
     const x = mx + px * c / 2, y = my + py * c / 2;
     let sc = Math.abs(c);
-    for (const n of nodes) { const r = nodeRect(n), m = 60; if (x > r.x - m && x < r.x + r.w + m && y > r.y - m && y < r.y + r.h + m) sc += 1e7; }
-    for (const k of CHIPS) if (Math.abs(k.x - x) < 700 && Math.abs(k.y - y) < 260) sc += 1e6;
+    for (const n of nodes) { const r = nodeRect(n), m = 40; if (x > r.x - m && x < r.x + r.w + m && y > r.y - m && y < r.y + r.h + m) sc += 1e7; }
+    for (const k of CHIPS) if (Math.abs(k.x - x) < 1000 && Math.abs(k.y - y) < 380) sc += 1e6;
     if (sc < bs) { bs = sc; best = { c, x, y }; }
   }
   const cx = mx + px * best.c, cy = my + py * best.c;
@@ -207,20 +213,31 @@ function placeChips(o1) {
 // ---------- camera ----------
 let cam = { x: 0, y: 0, s: .2 }, anim = null, focus = null;
 const vw = () => vp.clientWidth, vh = () => vp.clientHeight;
+const minScale = () => Math.min(.008, fitRect(BOUNDS, .96).s * .42);
 function apply() {
   world.style.transform = `translate(${cam.x}px,${cam.y}px) scale(${cam.s})`;
-  const o1 = Math.min(1, Math.max(0, (W * cam.s / vw() - .38) / .2));
+  const tilePx = W * cam.s;
+  const o1 = Math.min(1, Math.max(0, (tilePx - 480) / 180));
   world.style.setProperty("--o1", o1.toFixed(3));
   document.body.classList.toggle("z0", o1 < .5);
+  document.body.classList.toggle("z-far", tilePx < 78);
   placeChips(o1);
   mini();
+}
+function zoomBy(k) {
+  cancelAnimationFrame(anim);
+  const s = Math.min(9, Math.max(minScale(), cam.s * k)), r = s / cam.s;
+  const mx = vw() / 2, my = vh() / 2;
+  cam.x = mx - (mx - cam.x) * r; cam.y = my - (my - cam.y) * r; cam.s = s; apply(); fade();
 }
 function fitRect(r, pad = .9) {
   const s = Math.min(vw() * pad / r.w, vh() * pad / r.h);
   return { s, cx: r.x + r.w / 2, cy: r.y + r.h / 2 };
 }
 function flyTo(r, ms = 750, pad) {
-  const t = fitRect(r, pad), c0 = { cx: (vw() / 2 - cam.x) / cam.s, cy: (vh() / 2 - cam.y) / cam.s, s: cam.s };
+  const t = fitRect(r, pad);
+  if (ms <= 1) { cancelAnimationFrame(anim); cam.s = t.s; cam.x = vw() / 2 - t.cx * cam.s; cam.y = vh() / 2 - t.cy * cam.s; apply(); return; }
+  const c0 = { cx: (vw() / 2 - cam.x) / cam.s, cy: (vh() / 2 - cam.y) / cam.s, s: cam.s };
   const dist = Math.hypot(t.cx - c0.cx, t.cy - c0.cy), dip = Math.min(.9, dist / 6000);
   const t0 = performance.now(); cancelAnimationFrame(anim);
   const step = now => {
@@ -255,7 +272,7 @@ function goNode(n, ms) { setFocus(n); flyTo(nodeRect(n), ms, .94); }
 let ptrs = new Map(), downAt = null, moved = 0, pinch0 = null;
 vp.addEventListener("wheel", e => {
   e.preventDefault(); cancelAnimationFrame(anim);
-  const f = Math.exp(-(e.ctrlKey ? e.deltaY * 3 : e.deltaY) * .0016), s = Math.min(9, Math.max(.03, cam.s * f)), k = s / cam.s;
+  const f = Math.exp(-(e.ctrlKey ? e.deltaY * 3 : e.deltaY) * .0016), s = Math.min(9, Math.max(minScale(), cam.s * f)), k = s / cam.s;
   const r = vp.getBoundingClientRect(), mx = e.clientX - r.left, my = e.clientY - r.top;
   cam.x = mx - (mx - cam.x) * k; cam.y = my - (my - cam.y) * k; cam.s = s; apply(); fade();
 }, { passive: false });
@@ -272,7 +289,7 @@ vp.addEventListener("pointermove", e => {
   moved += Math.abs(dx) + Math.abs(dy);
   if (ptrs.size === 2 && pinch0) {
     const [p, q] = [...ptrs.values()], d = Math.hypot(p.x - q.x, p.y - q.y), mx = (p.x + q.x) / 2, my = (p.y + q.y) / 2;
-    const s = Math.min(9, Math.max(.03, pinch0.s * d / pinch0.d)), k = s / cam.s;
+    const s = Math.min(9, Math.max(minScale(), pinch0.s * d / pinch0.d)), k = s / cam.s;
     cam.x = mx - (mx - cam.x) * k + dx / 2; cam.y = my - (my - cam.y) * k + dy / 2; cam.s = s;
   } else if (moved > 4) { cam.x += dx; cam.y += dy; vp.classList.add("drag"); }
   apply(); if (moved > 4) fade();
@@ -290,6 +307,7 @@ function click(e) {
   const nodeEl = t.closest(".node"); if (!nodeEl) return;
   const n = byId[nodeEl.id], z = t.closest("[data-zoom]");
   const o1 = parseFloat(world.style.getPropertyValue("--o1")) || 0;
+  if (focus === n && o1 < .5) return act("read");
   if (focus !== n || o1 < .9 || !z) return goNode(n);
   setFocus(n, z.classList.contains("src") ? "sources" : "chart"); flyTo(elRect(z), 650, .92);
 }
@@ -316,6 +334,8 @@ document.addEventListener("click", e => {
 });
 function act(a) {
   if (a === "home") { if (document.body.classList.contains("read")) act("read"); home(); }
+  if (a === "zout") zoomBy(.58);
+  if (a === "zin") zoomBy(1.72);
   if (a === "node" && focus) goNode(focus);
   if (a === "help") $("#help").classList.toggle("on");
   if (a === "read") {
@@ -345,6 +365,8 @@ document.addEventListener("keydown", e => {
   if (document.body.classList.contains("read")) return;
   if (k === "Escape") { if ($("#help").classList.contains("on")) return act("help"); return focus && cam.s > (fitRect(nodeRect(focus), .94).s * 1.2) ? goNode(focus) : home(); }
   if (k === "0" || k === "Home") return home();
+  if (k === "-" || k === "_") return zoomBy(.58);
+  if (k === "=" || k === "+") return zoomBy(1.72);
   const dir = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[k];
   if (dir) { e.preventDefault(); walk(...dir); }
   if (k === "Enter" && document.activeElement?.classList.contains("node")) goNode(byId[document.activeElement.id]);
@@ -395,10 +417,13 @@ function buildFeed() {   // DATA.sections (an argument order) or DATA.eras (one 
 
 addEventListener("beforeprint", () => { if (!document.body.classList.contains("read")) act("read"); $$("#feed details").forEach(d => d.open = true); });
 // ---------- boot ----------
-addEventListener("resize", () => focus ? goNode(focus, 1) : home(1));
+let lastVw = vw();
+addEventListener("resize", () => {
+  if (document.body.classList.contains("read")) return;
+  if (Math.abs(vw() - lastVw) < 2) return;
+  lastVw = vw(); focus ? goNode(focus, 1) : home(1);
+});
 const h0 = location.hash.slice(1);
-const phone = matchMedia("(max-width: 700px)").matches;
-if (phone) { document.body.classList.add("read"); $$("#tools [data-act=read]")[0].textContent = "map"; buildFeed(); if (byId[h0]) openCard(h0, false); }
 cam.s = fitRect(BOUNDS, .96).s * .6; cam.x = vw() / 2 - (BOUNDS.x + BOUNDS.w / 2) * cam.s; cam.y = vh() / 2 - (BOUNDS.y + BOUNDS.h / 2) * cam.s; apply();
-if (!phone) byId[h0] ? goNode(byId[h0], 900) : home(900);
+if (h0 === "read") { act("read"); } else { byId[h0] ? goNode(byId[h0], 900) : home(900); }
 setTimeout(() => $("#hint").style.opacity = .0, 9000);

@@ -29,7 +29,7 @@ served as a website: everything committed is published the moment it is pushed.
   The one exception is link-preview metadata (`og:*`, `twitter:*`, `canonical`): crawlers need
   absolute URLs, so those point at `https://taoaieng.io/pub/…`. Every page carries them; a piece
   ships an `og.png` (1200×630) beside its `index.html`.
-- Pieces share one map engine (`infog/closing-doors/research/src/engine.js`). On phones (≤ 700 px) and in read mode a piece renders as a feed: an ordered column of cards (`DATA.eras` or `DATA.sections`), each opening to its evidence. Check both: no clipped tile on desktop, nothing past the right edge on a 390 px phone with every card open.
+- Pieces share one map engine (`infog/closing-doors/research/src/engine.js`). Every device opens on the zoomable map (phones land on the `z-far` whole-graph overview and can zoom out one extra level via `−` or pinch; a second tap on a focused `l0` tile, `read`, or `#read` switches to the feed of `DATA.eras` or `DATA.sections`). Check desktop (no clipped tile), landscape/portrait phone (`z-far` → `l0` → `read`), and 390 px feed with every card open (no horizontal overflow).
 - Never set a custom domain on this repo; `taoaieng.io` belongs to the user site (see README › publish).
 - English for pieces and logs; quotes keep their original language with a translation beside them.
 

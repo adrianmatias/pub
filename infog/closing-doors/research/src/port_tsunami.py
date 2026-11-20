@@ -1,29 +1,40 @@
 #!/usr/bin/env python3
-"""Give Tsunami & Printing Press the shared engine and its phone feed. Reads the published piece, keeps its
-head, CSS and DATA byte-for-byte, appends the feed CSS, adds the feed's section order, swaps in engine.js."""
+"""Update Tsunami & Printing Press with the shared CSS, HUD zoom controls, and engine.js.
+Reads the published piece, keeps its head, S and DATA untouched, and writes the shared engine/CSS."""
 import pathlib, sys
+
 D = pathlib.Path(__file__).parent
-src = pathlib.Path(sys.argv[1]); out = pathlib.Path(sys.argv[2])
-L = src.read_text().split("\n")
-i_style_end = L.index("</style>"); i_vp = next(i for i, l in enumerate(L) if l.startswith('<div id="vp">'))
-i_s1 = L.index("<script>"); i_s1_end = L.index("</script>")
-assert L[i_s1_end + 1] == "<script>"
-head, style, body = L[:i_style_end], (D / "extra.css").read_text(), L[i_style_end:i_s1]
-body.insert(i_vp - i_style_end + 1, '<main id="feed"></main>')
-data = "\n".join(L[i_s1 + 1:i_s1_end])
-FEED = '''const DATA = {
-kicker: "money in the age of AI · 14 Oct 2026",
-title: "Tsunami & Printing Press",
-subtitle: "AI is deflationary in what it sells and inflationary in what it buys. The press has not been called — yet.",
-feedHint: "The map, read in the order of its argument: the two forces, the hard money between them, what else they move, and where that leaves us. Open any card for the chart, the facts and every source.",
-lead: ["thesis"], tail: ["method"],
-sections: [
-  { t: "The two forces", s: "tsunami · printing press", ids: ["aidefl", "aisink", "bonds", "austrian"] },
-  { t: "Hard money", s: "bitcoin · zcash · quantum", ids: ["btc", "y2013", "zec", "quantum"] },
-  { t: "What else they move", s: "equity · housing · the yen", ids: ["equity", "realestate", "carry"] },
-  { t: "Where it leaves us", s: "four futures · the tells", ids: ["scen", "tells"] }],
-'''
-assert data.count("const DATA = {\n") == 1
-data = data.replace("const DATA = {\n", FEED)
-html = "\n".join(head) + "\n" + style + "\n".join(body) + "\n<script>\n" + data + "\n</script>\n<script>\n" + (D / "engine.js").read_text() + "</script>\n</body>\n</html>\n"
-out.write_text(html); print(out, len(html))
+src = pathlib.Path(sys.argv[1])
+out = pathlib.Path(sys.argv[2])
+text = src.read_text()
+
+style_start = text.index("<style>\n") + len("<style>\n")
+style_end = text.index("</style>")
+head = text[:style_start]
+
+body_start = style_end
+s1_start = text.index("<script>\n")
+body = text[body_start:s1_start]
+old_tools = '<div id="tools" class="hud"><button data-act="home" title="whole map (0)">map</button>'
+new_tools = '<div id="tools" class="hud"><button data-act="zout" title="zoom out (−)">−</button><button data-act="zin" title="zoom in (+)">+</button><button data-act="home" title="whole map (0)">map</button>'
+if 'data-act="zout"' not in body:
+    assert old_tools in body
+    body = body.replace(old_tools, new_tools, 1)
+body = body.replace(
+    "scroll or pinch to zoom · drag to pan · click a tile · ← → walk · R read · ? help",
+    "scroll or pinch to zoom · drag to pan · click a tile · ← → walk · −/+ zoom · R read · ? help",
+)
+body = body.replace(
+    "<kbd>scroll</kbd> zoom · <kbd>drag</kbd>",
+    "<kbd>scroll</kbd> / <kbd>−</kbd> <kbd>+</kbd> zoom · <kbd>drag</kbd>",
+)
+
+s1_end = text.index("</script>\n<script>\n", s1_start)
+data_script = text[s1_start:s1_end + len("</script>\n<script>\n")]
+
+css = (D / "style.css").read_text().rstrip() + "\n" + (D / "extra.css").read_text().rstrip() + "\n"
+engine = (D / "engine.js").read_text().rstrip() + "\n"
+
+html = head + css + body + data_script + engine + "</script>\n</body>\n</html>\n"
+out.write_text(html)
+print(out, len(html))

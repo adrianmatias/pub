@@ -55,14 +55,15 @@ const ERAS = [
   { gx: 1, t: "2026 · Apr – Jul", s: "the contract", span: "4 months", now: true },
   { gx: 2, t: "2026 · Aug – Sep", s: "the house", span: "2 months", now: true },
   { gx: 3, t: "2026 · Oct 1 – 14", s: "measuring the method", span: "2 weeks", now: true },
-  { gx: 4, t: "2027 – 2030", s: "the next rung", span: "ahead" }];
+  { gx: 4, t: "2026 · Oct 15 – Nov 20", s: "distil & prove", span: "5 weeks", now: true },
+  { gx: 5, t: "2027 – 2030", s: "the next rung", span: "ahead" }];
 
 const DATA = {
 start: "thesis",
-kicker: "data science in the age of agents · 14 Oct 2026",
+kicker: "data science in the age of agents · updated 20 Nov 2026",
 title: "Closing Doors",
 subtitle: "Agents made opening doors nearly free. His bet: the scarce work is closing them.",
-feedHint: "Time runs down the page and speeds up as it goes: eight years, then seven, three, then months, then two weeks. Open any card for the evidence; every number has its source.",
+feedHint: "Time runs down the page and speeds up as it goes: eight years, then seven, three, then months, then weeks. Open any card for the evidence; every number has its source.",
 topRow: -2, lastTopX: 2,
 eras: ERAS,
 bands: [
@@ -76,17 +77,17 @@ nodes: [
 // ───────────────────────────── top row: thesis, the rung, method
 { id: "thesis", gx: 0.5, gy: -2, hue: "gold", short: "the thesis", h: 1110,
   feedKicker: "the thesis · 2026", feedTitle: "The year it turned", feedVerdict: "Opening got cheap; closing did not. Inside: 2026 in ten rows, the case for and the case against.",
-  kicker: "data science in the age of agents · 14 Oct 2026", title: "Closing Doors",
-  big: { v: "15 → 198", u: "", l: "his commits: all of July vs the first 14 days of October — activity, not productivity" },
+  kicker: "data science in the age of agents · updated 20 Nov 2026", title: "Closing Doors",
+  big: { v: "15 → 198", u: "", l: "his commits: July vs Oct 1–14 snapshot — activity, not productivity" },
   verdict: "Agents made opening doors nearly free. His bet: the scarce work is closing them.",
   pill: "a working hypothesis",
-  lede: "A 2022 notebook line: *Data Science is about opening doors, Machine Learning Engineering is about closing almost all of them* [1]. 2026 is the year that line became an explicit agent workflow. In ten months the field's yardsticks bent: METR found developers withholding work from its no-AI arm, enough to make its estimate unreliable [2]; context files describing a repository were found, on average, not to help coding agents while adding over 20% to cost [3]; and a hardened coding benchmark split into a public 99.4% and a private 81.6% [4]. His own work moved from a copilot in an editor to agents in vaults, built against contracts and checked against folds they never see. The map reads left to right in time, and its columns narrow as the clock speeds up. Its argument is his working hypothesis, not a measured fact: the scarce part of the work moved from writing code to deciding what is allowed to stay.",
+  lede: "A 2022 notebook line: *Data Science is about opening doors, Machine Learning Engineering is about closing almost all of them* [1]. 2026 is the year that line became an explicit agent workflow. In eleven months the field's yardsticks bent: METR found developers withholding work from its no-AI arm, enough to make its estimate unreliable [2]; context files describing a repository were found, on average, not to help coding agents while adding over 20% to cost [3]; and a hardened coding benchmark split into a public 99.4% and a private 81.6% [4]. His own work moved from a copilot in an editor to agents in vaults, built against quoted contracts, deterministic gates proven red (`--prove`), and cross-family review. The map reads left to right in time, and its columns narrow as the clock speeds up. Its argument is his working hypothesis, not a measured fact: the scarce part of the work moved from writing code to deciding what is allowed to stay.",
   left: (id, nw) => (nw ? strip26HTML() : `<figure class="chart">${strip26SVG()}<div class="cs">${rich("Bars: his commits per month over 14 personal repos and this vault [8] — activity, not value; employer work is not in them; October is 14 days. Events: each is sourced on its own tile.", id)}</div></figure>`) +
     `<div class="bb"><div class="bull"><h4>for the hypothesis</h4>${rich("Trust stays conditional: **48%** of developers trust AI when they can easily verify it, **6.6%** for important decisions [5]. Public scores outrun private ones [4]; his own judge was overconfident (*an eval is a model*).", id)}</div><div class="bear"><h4>the strongest case against</h4>${rich("Agents already close doors too: **58.1%** of developers use AI to write tests and **64.5%** find it useful for review [5]. If checking automates as fast as writing, its absolute cost falls even while its share of human time rises — and scarcity is the wrong word.", id)}</div></div>`,
   right: id => takeRow("Data Science is about opening doors, Machine Learning Engineering is about closing almost all of them.", "notebook, León, 2022", "holds", "Four years on, opening is what agents do best. Closing — the held-out fold, the gate, the kill with a reason — is what the evidence on this map suggests stays scarce; the case against is on the left.", id) + `<div class="grid2">
     ${cell("What got cheap", "", md("The draft, the code, the first search. The price of a fixed capability falls **9× to 900× a year**, depending on the task [6]."), "", false, id)}
     ${cell("What got scarce", "", md("Knowing whether it is right. **66%** of developers spend more time fixing almost-right AI code [7]; **76.5%** run an AI answer before using it [5]."), "", false, id)}
-    ${cell("What he does now", "", md("Writes the contract the agents build against, keeps gates he has *seen fail*, has a different model family review the author — and still does the old parts: choosing the problem, designing the experiment, explaining the result to whoever decides."), "", true, id)}
+    ${cell("What he does now", "", md("Writes quoted contracts and typed schemas, keeps deterministic gates proven red against planted defects, distils shared rules per repo under line budgets, and rotates three model families — while still choosing the problem, designing the experiment and owning the verdict."), "", true, id)}
     ${cell("What he stopped doing", "", md("Typing most of the code. Notebook cells as the deliverable. Letting one model check its own work."), "", false, id)}
   </div>`,
   tellLeft: true,
@@ -114,8 +115,8 @@ nodes: [
     ["Liberty Street Economics — Do job postings show early labor-market effects of AI?", "https://libertystreeteconomics.newyorkfed.org/2026/05/do-job-postings-show-early-labor-market-effects-of-ai/", "14 May 2026", "FACT"]] },
 
 { id: "method", gx: 3, gy: -2, hue: "ink", short: "method",
-  kicker: "how this was made", title: "Method & limits",
-  big: { v: "4 + 1", u: "", l: "research slices, one adversarial review" },
+  kicker: "how this was made · updated 20 Nov 2026", title: "Method & limits",
+  big: { v: "4 + 1", u: "", l: "research slices, one adversarial review (Oct 14; Nov 20 update reviewed separately)" },
   verdict: "Every number has a source and a date. His own numbers are computed from his own files.",
   pill: "sources & limits",
   left: id => `<div class="prose"><p><b>Field data.</b> Four research passes on 14 Oct 2026 — capability, adoption and trust, the labour market, ideas and forecasts — each fetching primary sources the same day (METR, Scale, Stack Overflow, DORA, BLS, Indeed Hiring Lab, Stanford, the New York Fed, arXiv, lab announcements) and labelling every row <span class="lab FACT">FACT</span> <span class="lab">REP</span> <span class="lab FORECAST">FORECAST</span> <span class="lab UNVERIFIED">UNVERIFIED</span>. Key figures were re-fetched by the author.</p><p><b>His data.</b> Commit counts from <code>git log</code> over his personal repos; word counts over the append-only logs; experiment results read from the result files the experiments wrote. Computed, not typed. Private repos are cited by file, not linked. Notebook lines are quoted as ideas — nothing personal.</p><p><b>Review.</b> An adversarial pass by a model of a different family from the author checked every tile against its sources; findings and fixes are in the log.</p></div>`,
@@ -250,7 +251,7 @@ nodes: [
     ["Randstad España — las ofertas de empleo con IA se multiplican por nueve", "https://www.randstad.es/nosotros/sala-prensa/ofertas-empleo-ia-multiplican-nueve-espana-cinco-anos-impulsan-salarios-25-altos/", "19 May 2026", "REPORTED"],
     ["Zero G Talent — LLM evaluation: the new AI hiring category (citing 365 Data Science)", "https://zerogtalent.com/blog/confident-ai-s-2-2m-seed-round-is-quietly-building-ai-s-first-llm-evaluation-workforce-and-the-deepeval-open-source-moat-reveals-what-post-hype-ai-engineering-actually-demands", "24 Jun 2026", "REPORTED"]] },
 
-{ id: "forecasts", gx: 4, gy: -1, hue: "rose", short: "named futures", h: 1040,
+{ id: "forecasts", gx: 5, gy: -1, hue: "rose", short: "named futures", h: 1040,
   kicker: "the field · 2027 → 2030", title: "Named futures",
   big: { v: "2027–30", u: "", l: "medians for an “automated coder”, three AI Futures authors, Aug 2026" },
   verdict: "One group's medians sit in 2027–2030 — and the last bold public prediction had not come true when it was checked.",
@@ -332,7 +333,7 @@ nodes: [
     src: "Own count, 14 Oct 2026: words in the agent's log (`log/agt*.md`) ÷ words in his (`log/mat.md`), per vault [3]. Words, not effort — a one-line prompt can carry an hour of thought; the two vaults under 1× are seeds an agent barely worked." }],
   right: (id, nw) => (nw ? roundHTML() : `<figure class="chart">${roundSVG()}<div class="cs">One round. Qualitative.</div></figure>`) + factsTable([
       ["16 Aug", "dsp repository started — a demand-side platform to be built and operated by agents [1][5]", ""],
-      ["31 Aug", "opo repository started; today it compiles official law into a cited corpus behind six CI gates [2][5]", ""],
+      ["31 Aug", "opo repository started; compiles official law into a cited corpus behind deterministic gates [2][5]", ""],
       ["23 Sep", "you-nut and you-train repositories started the same day — one plan engine, two domains [4][5]", ""],
       ["5", "agent harnesses the contracts are written to survive: Hermes, OpenCode, Pi, Codex, Claude Code [1]", ""]], id) +
     takeRow("most frequent outcome with claude this week: 20 mins to reply “i have not done it and this is why”", "notebook, Aug 2026", "", "", id),
@@ -344,7 +345,7 @@ nodes: [
     ["you-nut and you-train — READMEs (private repos)", "", "23 Sep 2026", "FACT"],
     ["git log: first commits and monthly counts over his personal repos, snapshot of 14 Oct 2026, taken before this piece's own commit", "", "14 Oct 2026", "FACT"]] },
 
-{ id: "next", gx: 4, gy: 0, hue: "rose", short: "the next rung",
+{ id: "next", gx: 5, gy: 0, hue: "rose", short: "the next rung",
   kicker: "his practice · 2027 → 2030", title: "The next rung",
   big: { v: "2×2", u: "", l: "agents keep lengthening or stall × checking gets cheap or stays scarce" },
   verdict: "His bet: agents keep lengthening, checking stays scarce. Provisional.",
@@ -455,7 +456,7 @@ nodes: [
       ["expand-contract", "breathe in wide, breathe out: kill with reasons, keep one move", ""], ["cascade", "cheapest attempt → mechanical check → escalate one tier", ""],
       ["cheap-swarm", "N cheap workers over one cached preamble", ""], ["sr-and-jr · duel · fan-out · megaprompt", "critique loops, two-draft judging, one-question subagents, one context-complete plan", ""],
       ["≈ $0.00003", "one routing decision — a single call that picks the pattern [1]", ""], ["≤ 3", "human gates per round, only for facts only he holds [1]", ""]], id),
-  tell: "**Root cause, not wrapper.** A pattern that fails is fixed at its source or deleted — never wrapped in another pattern [5].",
+  tell: "**Root cause, not wrapper.** A pattern that fails is fixed at its source or deleted — the central router itself was retired in November when plain skills and proven gates replaced it [5].",
   src: [["pat — README and router (private repo)", "", "6 Oct 2026", "FACT"],
     ["alx-ds-ml-ai — README, proof/runs (private repo)", "", "7 Oct 2026", "FACT"],
     ["pat — README › evidence (oof H2) (private repo)", "", "9 Oct 2026", "FACT"],
@@ -463,8 +464,46 @@ nodes: [
     ["pat — catalog and PRINCIPLES (private repo)", "", "Oct 2026", "FACT"],
     ["git log --all over his personal repos, Oct 1–14 (198 commits), snapshot of 14 Oct 2026, taken before this piece's own commit", "", "14 Oct 2026", "FACT"]] },
 
-{ id: "tells", gx: 4, gy: 1, hue: "ink", short: "the tells",
-  kicker: "watch list · as of 14 Oct 2026", title: "The tells",
+{ id: "distil", gx: 4, gy: 0, hue: "gold", short: "distil, don't link", h: 1150,
+  kicker: "his practice · Oct 15 → Nov 20, 2026", title: "Distil, don't link",
+  big: { v: "3", u: "families", l: "integrator, bulk lanes and cross-family critic — plain skills, no router" },
+  verdict: "The router went away. Shared rules live as plain files an agent distils per repo, under hard budgets.",
+  pill: "distil, don't link",
+  lede: "By mid-November the October pattern-book router was retired (*a tool nobody called is not a tool*) and replaced with a live template of plain markdown and deterministic gates [1]. Three lessons settled across active projects. **Walking skeleton first, then distil the LLM out**: let a model carry the first end-to-end path, then move deterministic steps — parsing, validation, rendering, checks — into typed code until only real judgement remains. **The ontology renders from the AST**, never drawn by hand, and wire models carry each field's instruction once (`the schema is the prompt`). **Distil, don't link**: shared rules either drift as copies or couple repos through a dependency — instead an agent distils what applies into each project's own terms, under tight line budgets [1].",
+  left: id => factsTable([
+      ["walking skeleton", "LLM carries step 1; each round moves deterministic work into typed code [1]", ""],
+      ["AST ontology", "components, entities and edges generated straight from code — stale docs fail the check [1]", ""],
+      ["distil, don't link", "deliberate redundancy: projects keep no tie back and stay green if the template vanishes [1]", ""],
+      ["expand / compress", "every round ends compressed: fold survivors into fewer concepts, lines and files [1]", ""],
+      ["dream loop", "replay logs first, then cross-family daydream with verbatim machine-checked quotes + falsifiable conjectures [1]", ""],
+      ["3-family routing", "plan-backed or complement integrator, cheap max-effort API lanes, distinct-family critic with explicit finding dispositions [1]", ""]], id),
+  right: id => cites(`<div class="prose"><p><b>Why deliberate redundancy.</b> Shared engineering knowledge has two bad homes: static copies that rot, or one live package that couples every project to one clock. Having an agent distil the principles into each repo's own vocabulary resolves the paradox — while strict line budgets stop the harness from bloating past what models actually benefit from [2].</p><p><b>Attention is the bottleneck.</b> Skills are plain markdown loaded on demand rather than harness-locked plugins, so the method outlives any one vendor or tool [1].</p></div>`, id) +
+    takeRow("Spend the constraint budget on the gates and the boundary, and distil the LLM out round by round.", "engineering notes, Nov 2026", "", "", id),
+  tellLeft: true,
+  tell: "**Distil or drift.** Watch whether a rule or skill survives a second project in its own words — if it cannot earn its lines there, delete it.",
+  src: [["Own engineering notes & template method (closed repo specifics omitted)", "", "20 Nov 2026", "FACT"],
+    ["Evaluating AGENTS.md (arXiv:2602.11988)", "https://arxiv.org/abs/2602.11988", "12 Feb 2026", "FACT"]] },
+
+{ id: "gates", gx: 4, gy: 1, hue: "sea", short: "proven gates", h: 1150,
+  kicker: "the evidence · Oct 15 → Nov 20, 2026", title: "Proven gates, public surface",
+  big: { v: "N / N", u: "proven", l: "every deterministic gate must fail on a planted witness before it counts" },
+  verdict: "A gate never seen red is decoration; private-helper unit suites hid dead entry points and uncovered CLI paths.",
+  pill: "failure classes, measured",
+  lede: "Five weeks of hardening turned recurring agent failure modes into a full stack of deterministic gates — lint, docstrings, annotations, static types, banned surfaces, AST module shape (boundary parsing separated from core classes), complexity bounds, duplication, dead code, wire-field descriptions + rendered ontology parity, harness budgets, behaviour tests, and CRAP — each proven to turn red on a planted defect in a scratch replica [1].",
+  left: id => factsTable([
+      ["helper bloat", "unit suites bound to private helpers inflated suite size while subprocess mocks hid deleted entry points and uncovered CLI paths — caught by CRAP + in-process public-surface tests [1]", ""],
+      ["inert checks", "a check typo, a replica missing data, missing tools returning empty exit-1 as green, and field docstrings counted as prose — fixed by testing every check red [1]", ""],
+      ["stale artifacts", "path strings rotted across refactors until replaced by module names; sweeps missed secondary pages until checks read every served surface [1]", ""],
+      ["quota & push", "parallel lanes on a quota plan hit rate limits fast; bulk work moved to cheap APIs and a pre-push hook gates the exact commit pushed to main in a detached worktree [1]", ""]], id),
+  right: id => cites(`<div class="prose"><p><b>The falsifiability standard.</b> A rule in prose is a hope; a gate without a witness is decoration. Running <code>--prove</code> plants one defect per gate inside a scratch replica (linking data directories so suites still run) and rejects any gate that stays green [1].</p></div>`, id),
+  bullT: "what it proves", bull: "Deterministic invariants hold across agent rounds, inert checks get caught early, and <code>main</code> stays deployable without external CI.",
+  bearT: "what it does not", bear: "An all-green gate tree still ships zero value if the requirement or market bet is wrong — gates test correctness, never demand.",
+  tellLeft: true,
+  tell: "**Every bug buys a witness.** Whenever a defect slips past review, plant it as a failing witness before shipping the fix.",
+  src: [["Own post-mortem learnings & gate method (closed repo specifics omitted)", "", "20 Nov 2026", "FACT"]] },
+
+{ id: "tells", gx: 5, gy: 1, hue: "ink", short: "the tells",
+  kicker: "watch list · updated 20 Nov 2026", title: "The tells",
   verdict: "Not predictions — a watchlist. The thresholds are his choices, written down before the news.",
   pill: "watchlist",
   left: id => `<table class="facts">${[
@@ -481,10 +520,10 @@ nodes: [
 ],
 links: [
   ["tunnel", "byhand", "rock → data"], ["byhand", "pilot", "features → embeddings"], ["pilot", "wiki", "copilot → agent"], ["wiki", "contract", "a wiki → a contract"],
-  ["contract", "house", "one contract per vault"], ["house", "patbook", "the house audits itself"], ["patbook", "next", "the next rung"],
+  ["contract", "house", "one contract per vault"], ["house", "patbook", "the house audits itself"], ["patbook", "distil", "router retired → distil"], ["distil", "next", "the next rung"],
   ["boom", "byhand", "the sexiest job"], ["shock", "pilot", "the helicopter"], ["yardsticks", "wiki", "context files, measured"], ["market", "contract", "senior + AI-titled"],
-  ["agents", "oof", "public vs private"], ["forecasts", "next", "2027 → 2030"],
-  ["rag", "wiki", "scored on a golden set"], ["ledger", "house", "the boundary"], ["oof", "patbook", "a fold it never sees"],
+  ["contract", "distil", "schema is the prompt"], ["agents", "oof", "public vs private"], ["forecasts", "next", "2027 → 2030"],
+  ["rag", "wiki", "scored on a golden set"], ["ledger", "house", "the boundary"], ["oof", "patbook", "a fold it never sees"], ["oof", "gates", "fold → proven gates"], ["gates", "distil", "proven red"],
   ["tells", "next", "which square"], ["ladder", "thesis", "the rung"]
 ]
 };

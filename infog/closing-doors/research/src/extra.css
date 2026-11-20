@@ -5,6 +5,10 @@
 .band small{display:block;margin-top:14px;font-family:var(--mono);font-size:34px;letter-spacing:.3em;text-transform:uppercase;color:rgba(235,232,226,.22)}
 .band.layer{text-align:left;font-family:var(--mono);font-size:40px;letter-spacing:.32em;text-transform:uppercase;color:rgba(212,173,58,.32)}
 .band.now{color:rgba(212,173,58,.26)}
+body.z-far .band{font-size:144px;color:rgba(235,232,226,.34);opacity:1}
+body.z-far .band.now{color:rgba(212,173,58,.46)}
+body.z-far .band small{font-size:52px;color:rgba(235,232,226,.36)}
+body.z-far .band.layer{font-size:78px;color:rgba(212,173,58,.58)}
 body.read .band{display:none}
 .priv{color:var(--fg3)}
 svg .dg{font-family:var(--sans);font-size:12px;fill:var(--fg2)}
