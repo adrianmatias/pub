@@ -1,0 +1,1572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ini: Constraining the Generative — typed modular AI engineering</title>
+<meta name="description" content="Domain modelling, object orientation, and typed deterministic modularity to counterbalance hallucination, untested claims, and unbounded complexity — Adrian Matias's core AI engineering thesis coalesced in ini v0.3.0 on one zoomable map.">
+<meta name="theme-color" content="#0b0b0c">
+<link rel="canonical" href="https://taoaieng.io/pub/infog/ini/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="tao · ai · eng">
+<meta property="og:title" content="ini: Constraining the Generative — typed modular AI engineering">
+<meta property="og:description" content="Domain modelling, object orientation, and typed deterministic modularity to counterbalance hallucination, untested claims, and unbounded complexity — Adrian Matias's core AI engineering thesis coalesced in ini v0.3.0 on one zoomable map.">
+<meta property="og:url" content="https://taoaieng.io/pub/infog/ini/">
+<meta property="og:image" content="https://taoaieng.io/pub/infog/ini/og.png">
+<meta property="og:image:secure_url" content="https://taoaieng.io/pub/infog/ini/og.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The zoomable map of ini: Constraining the Generative">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ini: Constraining the Generative — typed modular AI engineering">
+<meta name="twitter:description" content="Domain modelling, object orientation, and typed deterministic modularity to counterbalance hallucination, untested claims, and unbounded complexity — Adrian Matias's core AI engineering thesis coalesced in ini v0.3.0 on one zoomable map.">
+<meta name="twitter:image" content="https://taoaieng.io/pub/infog/ini/og.png">
+<meta name="author" content="Adrian Matias">
+<meta property="article:published_time" content="2026-11-20">
+<meta property="article:modified_time" content="2026-11-23">
+<style>
+:root{
+  --bg:#0b0b0c; --bg2:#111113; --card:#141416; --line:#26262a; --line2:#34343a;
+  --fg:#ebe8e2; --fg2:#b9b4ab; --fg3:#7d786f; --fg4:#57534c;
+  --gold:#d4ad3a; --gold2:#8f7524; --goldsoft:rgba(212,173,58,.12);
+  --sea:#4fb3a9; --seasoft:rgba(79,179,169,.12);
+  --rust:#d0694a; --rustsoft:rgba(208,105,74,.13);
+  --ink:#8f9bd6; --inksoft:rgba(143,155,214,.13);
+  --rose:#c96f8f; --rosesoft:rgba(201,111,143,.13);
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+  --mono:ui-monospace,"SF Mono","Cascadia Code",Menlo,Consolas,monospace;
+  --o1:0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--bg);color:var(--fg);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+a{color:var(--gold);text-decoration:none}
+a:hover{text-decoration:underline}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+
+/* ---------- viewport / world ---------- */
+#vp{position:fixed;inset:0;overflow:hidden;touch-action:none;cursor:grab;
+  background:radial-gradient(ellipse at 50% 45%,#121214 0%,var(--bg) 70%)}
+#vp.drag{cursor:grabbing}
+#world{position:absolute;left:0;top:0;transform-origin:0 0}
+#grid{position:absolute;pointer-events:none;
+  background-image:radial-gradient(circle,rgba(235,232,226,.07) 1.6px,transparent 1.8px),
+                   radial-gradient(circle,rgba(235,232,226,.035) 1px,transparent 1.2px);
+  background-size:600px 600px,60px 60px}
+#links{position:absolute;overflow:visible;pointer-events:none}
+#links path{fill:none;stroke:#4a4a52;stroke-width:6;stroke-dasharray:3 18;stroke-linecap:round}
+#links path.hot{stroke:var(--gold);stroke-dasharray:none;stroke-width:5;opacity:.85}
+#chips{position:fixed;inset:0;pointer-events:none;z-index:5;overflow:hidden}
+#chips button{position:absolute;left:0;top:0;pointer-events:auto;max-width:104px;padding:3px 7px;border-radius:9px;
+  font:9.5px/1.25 var(--mono);letter-spacing:.02em;color:var(--fg2);text-align:center;white-space:normal;
+  background:rgba(17,17,19,.92);border:1px solid var(--line2);box-shadow:0 4px 14px rgba(0,0,0,.5);transition:opacity .25s,border-color .2s,color .2s}
+#chips button:hover{border-color:var(--gold);color:var(--fg)}
+#chips button.hot{border-color:var(--gold2);color:var(--gold)}
+#chips button.off{opacity:0;pointer-events:none}
+
+/* ---------- node ---------- */
+.node{position:absolute;width:1200px;height:960px;border-radius:44px;background:var(--card);
+  border:2px solid var(--line);box-shadow:0 30px 80px rgba(0,0,0,.45);overflow:hidden;outline:none}
+.node:focus-visible{border-color:var(--gold)}
+.node.cur{border-color:var(--line2)}
+.node#thesis{border-color:var(--gold2)}
+.node::before{content:"";position:absolute;inset:0;border-radius:44px;pointer-events:none;
+  background:linear-gradient(160deg,var(--tint) 0%,transparent 46%)}
+.node[data-hue=gold]{--h:var(--gold);--tint:var(--goldsoft)}
+.node[data-hue=sea]{--h:var(--sea);--tint:var(--seasoft)}
+.node[data-hue=rust]{--h:var(--rust);--tint:var(--rustsoft)}
+.node[data-hue=ink]{--h:var(--ink);--tint:var(--inksoft)}
+.node[data-hue=rose]{--h:var(--rose);--tint:var(--rosesoft)}
+
+/* level -1: far graph overview (mobile whole map + extra zoom-out) */
+.lm{position:absolute;inset:0;padding:72px;display:flex;flex-direction:column;justify-content:center;align-items:center;
+  text-align:center;gap:34px;opacity:0;pointer-events:none}
+.lm h4{font-family:var(--serif);font-weight:600;font-size:185px;line-height:1.05;color:var(--fg);max-width:100%}
+.lm .mv{font-family:var(--mono);font-size:145px;color:var(--h);line-height:1}
+body.z-far .lm{opacity:1}
+body.z-far .l0{opacity:0}
+body.z-far .node{border-width:22px;border-color:var(--h)}
+body.z-far #links path{stroke-width:16;stroke-dasharray:12 30;stroke:#62626c}
+body.z-far #links path.hot{stroke:var(--gold);stroke-width:22;stroke-dasharray:none;opacity:.95}
+body.z-far #chips button:not(.hot){opacity:0;pointer-events:none}
+
+/* level 0: the map face */
+.l0{position:absolute;inset:0;padding:84px 90px;display:flex;flex-direction:column;
+  opacity:calc(1 - var(--o1));pointer-events:none}
+.l0 .k{font-family:var(--mono);font-size:30px;letter-spacing:.24em;text-transform:uppercase;color:var(--h)}
+.l0 h2{font-family:var(--serif);font-weight:500;font-size:96px;line-height:1.02;letter-spacing:-.015em;margin-top:22px}
+.l0 .big{margin-top:auto;font-family:var(--mono);font-size:150px;line-height:1;letter-spacing:-.04em;color:var(--fg)}
+.l0 .big small{font-size:48px;color:var(--fg3);letter-spacing:0;margin-left:14px}
+.l0 .bl{font-size:34px;color:var(--fg3);margin-top:14px;font-family:var(--mono)}
+.l0 .v{margin-top:34px;font-family:var(--serif);font-style:italic;font-size:46px;line-height:1.2;color:var(--fg2)}
+.l0 svg.spark{position:absolute;right:90px;top:250px;width:420px;height:150px;overflow:visible}
+.l0 svg.spark path{fill:none;stroke:var(--h);stroke-width:5;stroke-linejoin:round}
+.l0 svg.spark path.a{fill:var(--tint);stroke:none}
+
+/* level 1: the reading face (all sizes in world px) */
+.l1{position:absolute;inset:0;padding:44px 52px 30px;opacity:var(--o1);display:flex;flex-direction:column;gap:16px;
+  font-size:16.5px;line-height:1.5;color:var(--fg2)}
+body.z0 .l1{pointer-events:none}
+.l1 header{display:flex;align-items:baseline;gap:18px;border-bottom:1px solid var(--line);padding-bottom:14px}
+.l1 header .k{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--h);white-space:nowrap}
+.l1 header h3{font-family:var(--serif);font-weight:500;font-size:34px;line-height:1.1;color:var(--fg);letter-spacing:-.01em}
+.l1 header .pill{margin-left:auto;font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;
+  border:1px solid var(--h);color:var(--h);border-radius:99px;padding:4px 12px;white-space:nowrap}
+.l1 .lede{font-family:var(--serif);font-size:20px;line-height:1.42;color:var(--fg)}
+.l1 .cols{display:grid;grid-template-columns:1.32fr 1fr;gap:30px;flex:1;min-height:0}
+.l1 .col{display:flex;flex-direction:column;gap:14px;min-height:0}
+.chart{background:var(--bg2);border:1px solid var(--line);border-radius:16px;padding:12px 14px 6px;cursor:zoom-in}
+.chart .ct{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg3)}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.chart:hover{border-color:var(--line2)}
+.chart .cs{font-size:9.5px;color:var(--fg4);font-family:var(--mono);margin-top:2px}
+svg .ax{stroke:var(--line);stroke-width:1}
+svg .gl{stroke:var(--line);stroke-width:.6;stroke-dasharray:2 3}
+svg text{text-rendering:geometricPrecision}
+svg .tk{font-family:var(--mono);font-size:9.5px;fill:var(--fg4)}
+svg .ln{fill:none;stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+svg .ar{stroke:none;opacity:.14}
+svg .mk{stroke:var(--fg4);stroke-width:.8;stroke-dasharray:3 3}
+svg .ml{font-family:var(--mono);font-size:9px;fill:var(--fg3)}
+svg .lg{font-family:var(--mono);font-size:10px}
+svg .bv{font-family:var(--mono);font-size:10px;fill:var(--fg2)}
+table.facts{width:100%;border-collapse:collapse;font-size:13.5px;line-height:1.35}
+table.facts td{padding:6px 0;border-bottom:1px solid var(--line);vertical-align:top}
+table.facts td.v{font-family:var(--mono);color:var(--fg);white-space:nowrap;padding-right:14px;text-align:right;width:1%}
+table.facts td.c{color:var(--fg2)}
+table.facts sup,.cite{font-family:var(--mono);font-size:9.5px;color:var(--gold2);margin-left:3px;cursor:pointer}
+.lab{font-family:var(--mono);font-size:8.5px;letter-spacing:.08em;padding:1px 5px;border-radius:4px;margin-left:5px;vertical-align:1px;border:1px solid var(--line2);color:var(--fg3)}
+.lab.FACT{color:var(--sea);border-color:rgba(79,179,169,.4)}
+.lab.FORECAST{color:var(--ink);border-color:rgba(143,155,214,.4)}
+.lab.UNVERIFIED{color:var(--rust);border-color:rgba(208,105,74,.45)}
+.take{border-left:3px solid var(--h);padding:4px 0 4px 16px}
+.take q{display:block;font-family:var(--serif);font-style:italic;font-size:18.5px;line-height:1.38;color:var(--fg);quotes:"“" "”"}
+.take .who{font-family:var(--mono);font-size:10.5px;color:var(--fg3);margin-top:6px;letter-spacing:.04em}
+.take .tr{font-size:12.5px;color:var(--fg3);margin-top:3px}
+.score{display:flex;gap:10px;align-items:baseline;font-size:14px;line-height:1.42;margin-top:8px}
+.score>b{min-width:70px;text-align:center}
+.col>.score{margin-top:2px}
+.score>b{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:99px;white-space:nowrap}
+.score>b.holds{background:rgba(79,179,169,.16);color:var(--sea)}
+.score>b.partly{background:rgba(212,173,58,.16);color:var(--gold)}
+.score>b.not-yet{background:rgba(143,155,214,.16);color:var(--ink)}
+.score>b.wrong{background:rgba(208,105,74,.16);color:var(--rust)}
+.bb{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.bb div{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:13px;line-height:1.42}
+.bb h4,.tell h4{font-family:var(--mono);font-weight:500;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:4px}
+.bb .bull h4{color:var(--sea)} .bb .bear h4{color:var(--rust)}
+.tell{border:1px dashed var(--h);border-radius:12px;padding:10px 14px;font-size:13.5px;line-height:1.42;color:var(--fg)}
+.tell h4{color:var(--h)}
+.src{border-top:1px solid var(--line);padding-top:8px;font-size:9.6px;line-height:1.45;color:var(--fg4);
+  font-family:var(--mono);columns:2;column-gap:28px}
+.src li{list-style:none;break-inside:avoid;margin-bottom:2px}
+.src li b{color:var(--fg3);font-weight:500}
+.src a{color:var(--fg3)} .src a:hover{color:var(--gold)}
+.src li.flash{color:var(--gold)}
+#tells table.facts{font-size:15.5px} #tells table.facts td{padding:9px 14px 9px 0} tr[data-go]{cursor:pointer} tr[data-go]:hover td{color:var(--gold)}
+.go{font-family:var(--mono);font-size:10px;color:var(--fg4);margin-left:6px}
+.prose{font-size:14.5px;line-height:1.52;color:var(--fg2)}
+.prose p+p{margin-top:8px}
+.prose b{color:var(--fg);font-weight:600}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cell{background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:13px;line-height:1.42}
+.cell h5{font-family:var(--serif);font-weight:500;font-size:18px;color:var(--fg);margin-bottom:4px}
+.cell .q{font-family:var(--serif);font-style:italic;color:var(--fg);font-size:14px;margin:4px 0 6px}
+.cell .m{font-family:var(--mono);font-size:10.5px;color:var(--fg3);letter-spacing:.04em}
+.cell.lean{border-color:var(--h)}
+
+/* ---------- HUD ---------- */
+.hud{position:fixed;z-index:10;font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--fg3)}
+#crumb{left:18px;top:14px;display:flex;gap:8px;align-items:center;background:rgba(11,11,12,.78);backdrop-filter:blur(8px);
+  border:1px solid var(--line);border-radius:99px;padding:7px 14px}
+#crumb b{color:var(--fg);font-weight:500}
+#crumb a{color:var(--fg3);cursor:pointer} #crumb a:hover{color:var(--gold)}
+#tools{right:18px;top:14px;display:flex;gap:6px}
+#tools button{background:rgba(11,11,12,.78);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:99px;padding:7px 13px;color:var(--fg2)}
+#tools button:hover{border-color:var(--gold);color:var(--gold)}
+#hint{left:50%;bottom:16px;transform:translateX(-50%);background:rgba(11,11,12,.78);backdrop-filter:blur(8px);
+  border:1px solid var(--line);border-radius:99px;padding:7px 16px;transition:opacity .6s;white-space:nowrap}
+#mini{right:18px;bottom:16px;width:190px;height:120px;background:rgba(11,11,12,.8);border:1px solid var(--line);border-radius:12px;overflow:hidden;cursor:pointer}
+#mini i{position:absolute;border-radius:2px;background:var(--line2)}
+#mini i.cur{background:var(--gold2)}
+#mini u{position:absolute;border:1.5px solid var(--gold);border-radius:3px;pointer-events:none}
+#help{position:fixed;inset:0;z-index:20;display:none;place-items:center;background:rgba(5,5,6,.7);backdrop-filter:blur(4px)}
+#help.on{display:grid}
+#help div{max-width:520px;background:var(--card);border:1px solid var(--line2);border-radius:18px;padding:26px 30px;font-size:14px;line-height:1.6;color:var(--fg2)}
+#help h4{font-family:var(--serif);font-weight:500;font-size:22px;color:var(--fg);margin-bottom:10px}
+#help kbd{font-family:var(--mono);font-size:11.5px;border:1px solid var(--line2);border-radius:5px;padding:1px 6px;color:var(--fg)}
+
+/* ---------- read mode (and print, and small screens by choice) ---------- */
+body.read{overflow:auto}
+body.read #vp{position:static;overflow:visible;cursor:auto;background:none;touch-action:auto}
+body.read #world{position:static;transform:none!important;width:auto!important;height:auto!important;
+  padding:70px 16px 60px;display:flex;flex-direction:column;align-items:center;gap:36px;--o1:1}
+body.read #chips,body.read #grid,body.read #links,body.read #mini,body.read #hint,body.read #tools [data-act=home],body.read #tools [data-act=zout],body.read #tools [data-act=zin]{display:none}
+body.read .node{position:relative;left:auto!important;top:auto!important;width:min(1200px,100%);height:auto;box-shadow:none}
+body.read .l0{display:none}
+body.read .l1{position:relative;opacity:1;pointer-events:auto}
+body.read .chart{cursor:auto}
+@media (max-width:820px){
+  body.read .l1 .cols,body.read .bb,body.read .grid2{grid-template-columns:1fr}
+  body.read .src{columns:1}
+  body.read .l1{padding:26px 20px 22px}
+  body.read .l1 header{flex-wrap:wrap}
+}
+@media (max-width:700px),(max-height:560px){
+  body.z0 .node.cur .l0::after{content:"tap again to read evidence ↓";margin-top:24px;font-family:var(--mono);font-size:36px;letter-spacing:.06em;color:var(--gold)}
+}
+@media (max-width:700px){
+  #mini,#hint{display:none}
+  #crumb{left:12px;top:12px;max-width:46vw;overflow:hidden;white-space:nowrap;font-size:11px;padding:6px 10px}
+  #tools{right:12px;top:12px;gap:4px}
+  #tools button{padding:6px 9px;font-size:11px}
+}
+@media print{
+  body{background:#fff;color:#111}
+  .hud,#help{display:none!important}
+}
+noscript{display:block;padding:40px;font-family:var(--serif);font-size:20px}
+
+/* ---------- closing doors: additions ---------- */
+.band{position:absolute;width:1200px;pointer-events:none;text-align:center;white-space:nowrap;
+  font-family:var(--serif);font-size:118px;line-height:1;letter-spacing:-.01em;color:rgba(235,232,226,.15);
+  opacity:calc(1 - var(--o1) * .8)}
+.band small{display:block;margin-top:14px;font-family:var(--mono);font-size:34px;letter-spacing:.3em;text-transform:uppercase;color:rgba(235,232,226,.22)}
+.band.layer{text-align:left;font-family:var(--mono);font-size:40px;letter-spacing:.32em;text-transform:uppercase;color:rgba(212,173,58,.32)}
+.band.now{color:rgba(212,173,58,.26)}
+body.z-far .band{font-size:144px;color:rgba(235,232,226,.34);opacity:1}
+body.z-far .band.now{color:rgba(212,173,58,.46)}
+body.z-far .band small{font-size:52px;color:rgba(235,232,226,.36)}
+body.z-far .band.layer{font-size:78px;color:rgba(212,173,58,.58)}
+body.read .band{display:none}
+.priv{color:var(--fg3)}
+svg .dg{font-family:var(--sans);font-size:12px;fill:var(--fg2)}
+svg .dgb{font-family:var(--serif);font-size:15px;fill:var(--fg)}
+svg .dgm{font-family:var(--mono);font-size:9.5px;fill:var(--fg3);letter-spacing:.04em}
+svg .box{fill:var(--bg2);stroke:var(--line2);stroke-width:1}
+svg .box.h{stroke:var(--gold2)}
+svg .ar2{fill:none;stroke:var(--fg4);stroke-width:1.3}
+svg .ar2.h{stroke:var(--gold)}
+.ep{display:grid;grid-template-columns:58px 1fr;gap:2px 12px;font-size:13px;line-height:1.38;padding:6px 0;border-bottom:1px solid var(--line)}
+.ep b{font-family:var(--mono);font-weight:500;font-size:11px;color:var(--h);padding-top:2px}
+.ep i{color:var(--fg);font-style:normal;font-family:var(--serif);font-size:15px}
+.ep span{display:block;color:var(--fg3)}
+code{font-family:var(--mono);font-size:.88em;color:var(--fg)}
+svg .nl{font-family:var(--mono);font-size:11px;fill:var(--fg2)}
+svg .nv{font-family:var(--mono);font-size:11px;fill:var(--fg)}
+
+/* ---------- the feed: phones, read mode, print ---------- */
+#feed{display:none}
+body.read #vp,body.read #chips,body.read #mini,body.read #hint{display:none!important}
+body.read{overflow:auto}
+body.read #feed{display:block;max-width:760px;margin:0 auto;padding:62px 14px 96px}
+body.read::before{content:"";position:fixed;left:0;right:0;top:0;height:56px;z-index:9;pointer-events:none;background:linear-gradient(var(--bg) 72%,rgba(11,11,12,0))}
+.fh{padding:14px 4px 18px}
+.fh .k{font:500 11px/1.4 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.fh h1{font:500 48px/1 var(--serif);letter-spacing:-.015em;margin-top:10px}
+.fh p{font:italic 20px/1.32 var(--serif);color:var(--fg2);margin-top:10px}
+.fh p.fhint{font:12.5px/1.55 var(--sans);font-style:normal;color:var(--fg3)}
+.era{position:relative;margin:30px 0 0 4px;padding-left:14px;border-left:1px solid var(--line2)}
+.era.now{border-left:2px solid var(--gold2)}
+.eh{position:sticky;top:54px;z-index:5;display:flex;align-items:baseline;gap:8px 10px;flex-wrap:wrap;padding:9px 10px 9px 12px;margin:0 0 2px -16px;
+  background:rgba(11,11,12,.94);backdrop-filter:blur(6px);border-left:3px solid var(--line2);border-radius:0 10px 10px 0}
+.era.now .eh{border-left-color:var(--gold)}
+.eh b{font:500 21px/1.1 var(--serif);color:var(--fg)}
+.eh span{font:11px/1.2 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--fg3)}
+.eh em{margin-left:auto;font:normal 11px/1 var(--mono);color:var(--gold);border:1px solid var(--gold2);border-radius:99px;padding:4px 9px;white-space:nowrap}
+.era:not(.now) .eh em{color:var(--fg3);border-color:var(--line2)}
+.fc{position:relative;background:var(--card);border:1px solid var(--line);border-radius:18px;margin:12px 0;overflow:hidden}
+.fc::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(160deg,var(--tint) 0%,transparent 42%)}
+.fc[data-hue=gold]{--h:var(--gold);--tint:var(--goldsoft)} .fc[data-hue=sea]{--h:var(--sea);--tint:var(--seasoft)}
+.fc[data-hue=rust]{--h:var(--rust);--tint:var(--rustsoft)} .fc[data-hue=ink]{--h:var(--ink);--tint:var(--inksoft)}
+.fc[data-hue=rose]{--h:var(--rose);--tint:var(--rosesoft)}
+.fc[open]{border-color:var(--line2)}
+.fc summary{position:relative;list-style:none;cursor:pointer;padding:16px 18px 14px;-webkit-tap-highlight-color:transparent}
+.fc summary::-webkit-details-marker{display:none}
+.fk{display:flex;gap:8px;align-items:center;font:500 10.5px/1.35 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--h)}
+.fk .lane{margin-left:auto;font-style:normal;font-size:9.5px;letter-spacing:.12em;color:var(--fg3);border:1px solid var(--line2);border-radius:99px;padding:2px 8px;white-space:nowrap}
+.fc h3{font:500 28px/1.08 var(--serif);margin-top:7px;color:var(--fg);letter-spacing:-.01em}
+.fbig{font:400 40px/1 var(--mono);letter-spacing:-.03em;margin-top:14px;color:var(--fg)}
+.fbig small{font-size:15px;color:var(--fg3);margin-left:7px;letter-spacing:0}
+.fbl{font:11.5px/1.45 var(--mono);color:var(--fg3);margin-top:5px}
+.fv{font:italic 17.5px/1.36 var(--serif);color:var(--fg2);margin-top:11px}
+.fm{display:inline-block;margin-top:12px;font:11px/1 var(--mono);letter-spacing:.08em;color:var(--h);border:1px solid var(--line2);border-radius:99px;padding:6px 11px}
+.fm::after{content:"open the evidence ↓"} .fc[open] .fm::after{content:"close ↑"}
+#feed .l1{position:static;opacity:1;pointer-events:auto;display:block;padding:0 18px 20px;font-size:15px;line-height:1.5}
+#feed .l1>.pill{display:inline-block;font:10.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--h);color:var(--h);border-radius:99px;padding:5px 10px;margin-bottom:12px}
+#feed .l1 .lede{font-size:17.5px;line-height:1.46}
+#feed .l1 .cols{display:block}
+#feed .l1 .col{display:flex;flex-direction:column;gap:14px;margin-top:16px}
+#feed .grid2,#feed .bb{grid-template-columns:1fr}
+#feed .chart{cursor:auto;padding:10px 10px 6px}
+#feed .chart .cs{font-size:10.5px;line-height:1.45}
+#feed table.facts{font-size:14px}
+#feed table.facts td.v{white-space:normal;min-width:74px;max-width:120px;font-size:12.5px}
+#feed .take q{font-size:17px}
+#feed .prose{font-size:15px}
+#feed .fs{margin-top:16px;border-top:1px solid var(--line);padding-top:10px}
+#feed .fs summary{cursor:pointer;font:11px var(--mono);color:var(--fg3);letter-spacing:.08em}
+#feed .src{columns:1;border:0;padding-top:8px;font-size:11px;line-height:1.5}
+#feed .src li{margin-bottom:5px}
+@media (min-width:701px){ body.read #feed{padding-top:70px} .eh{top:60px} }
+
+/* narrow diagrams */
+.rungs{list-style:none;display:flex;flex-direction:column;gap:8px}
+.rungs li{border-left:3px solid var(--line2);padding:6px 0 6px 12px}
+.rungs li.now{border-left-color:var(--gold)} .rungs li.next{border-left-style:dashed}
+.rungs b{display:block;font:11px var(--mono);color:var(--fg3)} .rungs li.now b{color:var(--gold)}
+.rungs span{display:block;font:16px/1.3 var(--serif);color:var(--fg)} .rungs li.next span{font-style:italic;color:var(--fg2)}
+.rungs em{display:block;font-style:normal;font-size:12.5px;color:var(--fg3)}
+.loop{border:1px solid var(--line2);border-radius:12px;padding:10px 12px;font-size:14px;line-height:1.45}
+.loop b{display:block;font:500 10.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--fg3);margin-bottom:4px}
+.loop.hot{border-color:var(--gold2)} .loop.hot b{color:var(--gold)}
+.round{list-style:none;counter-reset:r;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.round li{counter-increment:r;padding-left:26px;position:relative;color:var(--fg2)}
+.round li::before{content:counter(r);position:absolute;left:0;top:1px;font:11px var(--mono);color:var(--gold)}
+.round b{font-family:var(--mono);font-weight:500;color:var(--fg)}
+
+/* 2026, month by month — narrow */
+.m26{display:flex;flex-direction:column;gap:2px;font-size:13px}
+.m26h{display:flex;gap:12px;flex-wrap:wrap;font:10.5px var(--mono);letter-spacing:.08em;color:var(--fg3);margin-bottom:6px}
+.m26h .f{color:var(--ink)} .m26h .p{color:var(--gold)}
+.m26r{display:grid;grid-template-columns:38px 1fr;gap:2px 10px;padding:7px 0;border-bottom:1px solid var(--line)}
+.m26r b{grid-row:span 9;font:500 12px var(--mono);color:var(--fg2);padding-top:1px}
+.m26r.late b{color:var(--gold)}
+.m26b{display:flex;align-items:center;gap:8px}
+.m26b i{display:block;height:9px;border-radius:3px;background:var(--fg4)}
+.m26r.late .m26b i{background:var(--gold)}
+.m26b span{font:11px var(--mono);color:var(--fg3);white-space:nowrap}
+.ev{line-height:1.35;padding-left:12px;position:relative}
+.ev::before{content:"";position:absolute;left:0;top:.5em;width:5px;height:5px;border-radius:50%}
+.ev.f{color:var(--fg2)} .ev.f::before{background:var(--ink)}
+.ev.p{color:var(--fg)} .ev.p::before{background:var(--gold)}
+@media print{ body.read #feed{max-width:none} .fc{break-inside:avoid} }
+#feed .chart svg{max-width:440px}
+#feed .fc{scroll-margin-top:120px}
+#feed .src li{scroll-margin-top:130px}
+
+/* ---------- ini piece: diagram & narrow-mode additions ---------- */
+.px-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.px-card{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:13px;line-height:1.4}
+.px-card.win{border-color:var(--gold2);background:linear-gradient(160deg,var(--goldsoft),var(--bg2) 60%)}
+.px-card b{display:block;font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--fg3);margin-bottom:4px}
+.px-card.win b{color:var(--gold)}
+.px-card span{color:var(--fg2)}
+.cb-list{display:flex;flex-direction:column;gap:8px}
+.cb-row{background:var(--bg2);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:10px;padding:9px 12px;font-size:13px;line-height:1.4}
+.cb-row .risk{font:500 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--rust)}
+.cb-row .ans{font:500 14.5px var(--serif);color:var(--fg);margin:2px 0 3px}
+.cb-row .how{color:var(--fg2);font-size:12.5px}
+.tier-list{list-style:none;display:flex;flex-direction:column;gap:6px}
+.tier-list li{display:flex;gap:10px;align-items:baseline;border-left:3px solid var(--line2);padding:5px 0 5px 10px;font-size:13.5px}
+.tier-list li.top{border-left-color:var(--gold)}
+.tier-list li b{font:500 11px var(--mono);color:var(--gold);min-width:48px}
+.tier-list li span{color:var(--fg);font-family:var(--serif);font-size:15.5px}
+.tier-list li em{font-style:normal;font-size:12px;color:var(--fg3);margin-left:auto}
+.g-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;font-size:12.5px;line-height:1.35}
+.g-row{display:flex;gap:8px;align-items:baseline;border-bottom:1px solid var(--line);padding:4px 0}
+.g-row b{font:500 11px var(--mono);color:var(--fg);min-width:86px;white-space:nowrap}
+.g-row.core b{color:var(--gold)}
+.g-row span{color:var(--fg2)}
+.g-row em{margin-left:auto;font:normal 10px var(--mono);color:var(--fg4);white-space:nowrap}
+.sk-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sk-box{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:12.5px;line-height:1.35}
+.sk-box b{font:500 11.5px var(--mono);color:var(--sea)}
+.sk-box em{float:right;font:normal 10px var(--mono);color:var(--fg3)}
+.sk-box p{color:var(--fg2);margin-top:3px}
+#feed .px-grid,#feed .g-grid,#feed .sk-grid{grid-template-columns:1fr}
+#feed .tier-list li{flex-wrap:wrap}
+#feed .tier-list li em{margin-left:0;width:100%}
+.fk .lane.principles{color:var(--gold);border-color:rgba(212,173,58,.4)}
+.fk .lane.machinery{color:var(--sea);border-color:rgba(79,179,169,.4)}
+.fk .lane.evidence{color:var(--ink);border-color:rgba(143,155,214,.4)}
+</style>
+</head>
+<body class="z0">
+<noscript>This piece is a zoomable map drawn by a small inline script. Enable JavaScript, or read the repository directly at https://github.com/adrianmatias/ini.</noscript>
+<div id="chips"></div>
+<div id="vp"><div id="world"><div id="grid"></div><svg id="links"></svg></div></div>
+<main id="feed"></main>
+<nav id="crumb" class="hud"><a href="../../" title="taoaieng.io/pub — all pieces and the archive">pub</a><span>›</span><a data-act="home">ini</a><span id="crumbTail"></span></nav>
+<div id="tools" class="hud"><button data-act="zout" title="zoom out (−)">−</button><button data-act="zin" title="zoom in (+)">+</button><button data-act="home" title="whole map (0)">map</button><button data-act="read" title="read as an article (R)">read</button><button data-act="help" title="how to move (?)">?</button></div>
+<div id="hint" class="hud">scroll or pinch to zoom · drag to pan · click a tile · ← → walk · −/+ zoom · R read · ? help</div>
+<div id="mini" class="hud"></div>
+<div id="help"><div>
+  <h4>How to move</h4>
+  <p>Five pillars run left to right around a central gold spine: <b>I · Direction</b> (objective &amp; distilling the LLM out), <b>II · Proof</b> (13 witness-proven gates), <b>III · Domain &amp; OOP</b> (the center spine — domain schema, OOP modular abstraction, public-surface CRAP contracts), <b>IV · Rhythm</b> (expand/compress, 3 families, Deutsch conjectures &amp; deterministic dream loop), and <b>V · Flow</b> (distil don't link, 8 budgeted skills, field proof). Three layers run top to bottom: <b>the principles</b>, <b>the machinery</b>, and <b>the evidence</b>. Four depths: <b>overview</b>, <b>far</b>, <b>near</b> (click a tile), and <b>closer</b> (click a chart or source list).</p>
+  <p style="margin-top:10px"><kbd>scroll</kbd> / <kbd>−</kbd> <kbd>+</kbd> zoom · <kbd>drag</kbd> pan · <kbd>click</kbd> dive · <kbd>Esc</kbd> rise · <kbd>← ↑ → ↓</kbd> walk the map · <kbd>0</kbd> whole map · <kbd>R</kbd> read as an article · a superscript number jumps to its source.</p>
+  <p style="margin-top:10px">Labels: <span class="lab FACT">FACT</span> verified directly from <code>ini</code> v0.3.0 or a primary source · <span class="lab">REP</span> single or second-hand · <span class="lab FORECAST">FORECAST</span> a dated target or open test · <span class="lab UNVERIFIED">UNVERIFIED</span> could not be confirmed. Verified as of 23 November 2026.</p>
+</div></div>
+
+<script>
+// ---------- piece-specific pure SVG diagrams + narrow phone equivalents ----------
+const md = s => s.replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/\*([^*\s][^*]*?)\*/g, "<i>$1</i>").replace(/`([^`]+)`/g, "<code>$1</code>");
+const cell = (h, q, body, meta, lean, id) => `<div class="cell${lean ? " lean" : ""}"><h5>${h}</h5>${q ? `<div class="q">“${q}”</div>` : ""}<div>${id ? cites(md(body), id) : md(body)}</div>${meta ? `<div class="m">${meta}</div>` : ""}</div>`;
+const SVGDEF = `<defs><marker id="ah" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#7d786f"/></marker><marker id="ahg" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#d4ad3a"/></marker><marker id="ahs" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#4fb3a9"/></marker></defs>`;
+
+// 0. Core AI engineering thesis: constraining generative LLMs into typed deterministic modularity
+function counterbalanceSVG() {
+  const rows = [
+    ["HALLUCINATION", "ungrounded shapes & paraphrases", "Domain & Typed Schema", "BaseModel wire · Field docs · AST ontology"],
+    ["UNBOUNDED COMPLEXITY", "piles of loose functions", "OOP Modular Abstraction", "concept = class · component = pkg · PILE ≤ 6"],
+    ["UNTESTED CLAIMS", "plausible prose & inert checks", "Deterministic Proof", "13 gates (--prove) · public-surface CRAP ≤ 8"]
+  ];
+  let g = `<svg viewBox="0 0 640 264" role="img" aria-label="Constraining generative LLMs into typed deterministic modularity">${SVGDEF}`;
+  g += `<text class="dgm" x="128" y="16" text-anchor="middle" style="fill:#d0694a">GENERATIVE DRIFT (UNCONSTRAINED LLMS)</text>`;
+  g += `<text class="dgm" x="466" y="16" text-anchor="middle" style="fill:#d4ad3a">TYPED DETERMINISTIC MODULARITY (INI)</text>`;
+  rows.forEach(([risk, rsub, ans, asub], i) => {
+    const y = 28 + i * 64;
+    g += `<rect class="box" x="14" y="${y}" width="228" height="52" rx="9" style="stroke:rgba(208,105,74,.45)"/>`;
+    g += `<text class="dgm" x="26" y="${y + 20}" style="fill:#d0694a">${risk}</text>`;
+    g += `<text class="dg" x="26" y="${y + 39}" style="font-size:11px;fill:#b9b4ab">${rsub}</text>`;
+
+    g += `<path class="ar2 h" d="M246 ${y + 26} H296" marker-end="url(#ahg)"/>`;
+    g += `<text class="dgm" x="270" y="${y + 18}" text-anchor="middle" style="fill:#7d786f">bound</text>`;
+
+    g += `<rect class="box h" x="304" y="${y}" width="322" height="52" rx="9" style="fill:rgba(212,173,58,.07)"/>`;
+    g += `<text class="dgb" x="318" y="${y + 21}" style="font-size:14.5px;fill:#ebe8e2">${ans}</text>`;
+    g += `<text class="dgm" x="318" y="${y + 39}" style="fill:#4fb3a9">${asub}</text>`;
+  });
+  g += `<rect class="box" x="14" y="222" width="612" height="32" rx="8" style="fill:rgba(79,179,169,.08);stroke:rgba(79,179,169,.4)"/>`;
+  g += `<text class="dgm" x="320" y="242" text-anchor="middle" style="fill:#ebe8e2;font-size:10px">ARC: walking skeleton (LLM) → distil into typed modules → LLM keeps only irreducible judgement</text>`;
+  return g + `</svg>`;
+}
+const counterbalanceHTML = () => `<div class="cb-list">
+  <div class="cb-row"><div class="risk">vs Hallucination</div><div class="ans">Domain &amp; Typed Schema</div><div class="how">Name the domain, forbid illegal states, describe every wire field (schema = prompt), render ontology from AST.</div></div>
+  <div class="cb-row"><div class="risk">vs Unbounded Complexity</div><div class="ans">OOP Modular Abstraction</div><div class="how">A concept is a class; a component is a package; thin cli/ run layer; ≤6 free functions per module; C901 ≤ 6.</div></div>
+  <div class="cb-row"><div class="risk">vs Untested Claims</div><div class="ans">Deterministic Witness-Proven Proof</div><div class="how">13 gates proven able to fail (--prove), public-surface behaviour tests, CRAP ≤ 8, and cross-family adversarial review.</div></div>
+</div>`;
+
+// 1. The paradox resolved: drifting copies vs coupled dependency -> deliberate redundancy
+function paradoxSVG() {
+  let g = `<svg viewBox="0 0 640 250" role="img" aria-label="Shared knowledge: drifting copies vs coupled dependency vs deliberate redundancy">${SVGDEF}`;
+  g += `<rect class="box" x="14" y="18" width="186" height="92" rx="10"/>`;
+  g += `<text class="dgm" x="28" y="38" style="fill:#d0694a">FAILURE 1 · STATIC COPIES</text>`;
+  g += `<text class="dgb" x="28" y="60">Copy-paste &amp; drift</text>`;
+  g += `<text class="dg" x="28" y="80">Decoupled, but lessons rot.</text>`;
+  g += `<text class="dg" x="28" y="96" style="fill:#7d786f">Each repo repeats old bugs.</text>`;
+
+  g += `<rect class="box" x="440" y="18" width="186" height="92" rx="10"/>`;
+  g += `<text class="dgm" x="454" y="38" style="fill:#d0694a">FAILURE 2 · LIVE DEPENDENCY</text>`;
+  g += `<text class="dgb" x="454" y="60">Package / submodule</text>`;
+  g += `<text class="dg" x="454" y="80">Synced, but tightly coupled.</text>`;
+  g += `<text class="dg" x="454" y="96" style="fill:#7d786f">One bump breaks every repo.</text>`;
+
+  g += `<path class="ar2" d="M204 64 H432" stroke-dasharray="4 4"/>`;
+  g += `<text class="dgm" x="320" y="56" text-anchor="middle">THE OLD TRADE-OFF</text>`;
+
+  g += `<path class="ar2 h" d="M108 110 Q150 132 212 136" marker-end="url(#ahg)"/>`;
+  g += `<path class="ar2 h" d="M532 110 Q490 132 428 136" marker-end="url(#ahg)"/>`;
+
+  g += `<rect class="box h" x="116" y="138" width="408" height="98" rx="12" style="fill:rgba(212,173,58,.08)"/>`;
+  g += `<text class="dgm" x="320" y="159" text-anchor="middle" style="fill:#d4ad3a">INI'S RESOLUTION · DELIBERATE REDUNDANCY</text>`;
+  g += `<text class="dgb" x="320" y="183" text-anchor="middle" style="font-size:17px">An agent distils by meaning — zero links kept</text>`;
+  g += `<text class="dg" x="320" y="205" text-anchor="middle">Each project owns its distillate in its own words and layout.</text>`;
+  g += `<text class="dgm" x="320" y="223" text-anchor="middle" style="fill:#4fb3a9">If ini vanished tomorrow, every project would stay 100% green.</text>`;
+  return g + `</svg>`;
+}
+const paradoxHTML = () => `<div class="px-grid">
+  <div class="px-card"><b>Failure 1 · Static copies</b><span>Decoupled, but lessons drift and every repo repeats old bugs.</span></div>
+  <div class="px-card"><b>Failure 2 · Live dependency</b><span>Synced, but a central change or pin couples every project to one clock.</span></div>
+  <div class="px-card win" style="grid-column:1/-1"><b>ini · Deliberate redundancy</b><span>An agent reads ini, compares by meaning, and rewrites what applies in each project's own words. Zero imports, submodules, or origin stamps: every repo stays green if ini disappears.</span></div>
+</div>`;
+
+// 2. The 6-tier steering ladder + 4 intellectual lenses
+function steeringSVG() {
+  const T = [
+    ["TIER 1", "objective.md", "claim, checkable loss, kill criterion"],
+    ["TIER 2", "foundation.md", "12 principles, rhythm, lenses"],
+    ["TIER 3", "domain.md", "words + AST-rendered ontology"],
+    ["TIER 4", "code-standard.md", "shape, boundaries, refusals"],
+    ["TIER 5", "gates & tests", "13 witness-proven checks, public surface"],
+    ["TIER 6", "implementation", "code the agent writes — lowest authority"]
+  ];
+  const L = [
+    ["Taleb", "antifragile routing"],
+    ["Deutsch", "conjectures & refutations"],
+    ["Karpathy", "compiled wiki"],
+    ["Chollet", "generalisation score"]
+  ];
+  let g = `<svg viewBox="0 0 640 318" role="img" aria-label="The six-tier steering ladder and four lenses">${SVGDEF}`;
+  g += `<path class="ar2 h" d="M22 24 V294" marker-end="url(#ahg)"/>`;
+  g += `<text class="dgm" x="14" y="160" text-anchor="middle" transform="rotate(-90 14 160)" style="fill:#d4ad3a">STEERING FLOWS DOWN</text>`;
+  g += `<path class="ar2" d="M620 294 V24" marker-end="url(#ahs)" style="stroke:#4fb3a9"/>`;
+  g += `<text class="dgm" x="628" y="160" text-anchor="middle" transform="rotate(90 628 160)" style="fill:#4fb3a9">EVIDENCE FLOWS UP</text>`;
+  T.forEach(([tier, name, desc], i) => {
+    const y = 16 + i * 49, top = i === 0, gate = i === 4;
+    g += `<rect class="box${top || gate ? " h" : ""}" x="40" y="${y}" width="392" height="40" rx="8"/>`;
+    g += `<text class="dgm" x="52" y="${y + 16}" style="fill:${top ? "#d4ad3a" : gate ? "#4fb3a9" : "#7d786f"}">${tier}</text>`;
+    g += `<text class="dgb" x="108" y="${y + 17}" style="font-size:14px">${name}</text>`;
+    g += `<text class="dg" x="52" y="${y + 33}" style="font-size:11px;fill:#b9b4ab">${desc}</text>`;
+  });
+  g += `<rect class="box" x="450" y="16" width="154" height="285" rx="10" stroke-dasharray="4 4"/>`;
+  g += `<text class="dgm" x="527" y="38" text-anchor="middle" style="fill:#8f9bd6">FOUR LENSES</text>`;
+  g += `<text class="dgm" x="527" y="52" text-anchor="middle">(foundation.md)</text>`;
+  L.forEach(([who, what], i) => {
+    const y = 68 + i * 56;
+    g += `<rect class="box" x="462" y="${y}" width="130" height="44" rx="7"/>`;
+    g += `<text class="dgb" x="527" y="${y + 18}" text-anchor="middle" style="font-size:13.5px;fill:#8f9bd6">${who}</text>`;
+    g += `<text class="dg" x="527" y="${y + 34}" text-anchor="middle" style="font-size:10.5px;fill:#b9b4ab">${what}</text>`;
+  });
+  return g + `</svg>`;
+}
+const steeringHTML = () => `<ol class="tier-list">
+  <li class="top"><b>Tier 1</b><span>objective.md</span><em>claim, checkable loss, kill criterion</em></li>
+  <li><b>Tier 2</b><span>foundation.md</span><em>12 principles, rhythm, 4 lenses</em></li>
+  <li><b>Tier 3</b><span>domain.md</span><em>words + AST ontology</em></li>
+  <li><b>Tier 4</b><span>code-standard.md</span><em>shape, seams, refusals</em></li>
+  <li class="top"><b>Tier 5</b><span>gates &amp; behaviour tests</span><em>13 witnesses, public surface</em></li>
+  <li><b>Tier 6</b><span>implementation</span><em>lowest authority — rewritten freely</em></li>
+</ol>`;
+
+// 3. Walking skeleton -> Distil the LLM out
+function skeletonSVG() {
+  let g = `<svg viewBox="0 0 640 218" role="img" aria-label="Walking skeleton first, then distil the LLM out round by round">${SVGDEF}`;
+  const cols = [
+    [16, "ROUND 1 · SKELETON", "LLM carries the path", [["Parse input", 1], ["Apply rules", 1], ["Judgement", 1], ["Format output", 1]]],
+    [226, "ROUND N · HARDENING", "Deterministic seams extracted", [["Typed parser", 0], ["Domain rules", 0], ["Judgement", 1], ["Pure renderer", 0]]],
+    [436, "MATURE · ENGINEERING", "Only judgement stays LLM", [["Pydantic wire", 0], ["Tested core", 0], ["Judgement + schema", 1], ["Proven gates", 0]]]
+  ];
+  cols.forEach(([x, k, sub, rows], ci) => {
+    g += `<rect class="box${ci === 2 ? " h" : ""}" x="${x}" y="12" width="188" height="194" rx="10"/>`;
+    g += `<text class="dgm" x="${x + 12}" y="30" style="fill:${ci === 2 ? "#d4ad3a" : "#7d786f"}">${k}</text>`;
+    g += `<text class="dg" x="${x + 12}" y="46" style="font-size:11px;fill:#ebe8e2">${sub}</text>`;
+    rows.forEach(([lbl, llm], ri) => {
+      const y = 60 + ri * 34;
+      g += `<rect x="${x + 12}" y="${y}" width="164" height="26" rx="6" fill="${llm ? "rgba(212,173,58,.15)" : "rgba(79,179,169,.14)"}" stroke="${llm ? "#8f7524" : "#4fb3a9"}"/>`;
+      g += `<text class="dgm" x="${x + 22}" y="${y + 17}" style="fill:${llm ? "#d4ad3a" : "#4fb3a9"}">${llm ? "LLM" : "CODE"}</text>`;
+      g += `<text class="dg" x="${x + 62}" y="${y + 17}" style="font-size:11px">${lbl}</text>`;
+    });
+    if (ci < 2) g += `<path class="ar2 h" d="M${x + 190} 110 H${x + 206}" marker-end="url(#ahg)"/>`;
+  });
+  return g + `</svg>`;
+}
+const skeletonHTML = () => `<div class="loop hot"><b>Round 1 · Walking skeleton</b><span>One thin end-to-end path through cli/ + 1 behaviour test; the LLM may carry every step.</span></div>
+<div class="loop"><b>Round N · Distil the LLM out</b><span>Move parsing, lookups, rules, and rendering into typed deterministic code — the model keeps only irreducible judgement.</span></div>`;
+
+// 4. ini's real AST-rendered ontology graph (verified from domain.md)
+function ontologySVG() {
+  const B = [
+    ["ci", 66, 94, "entry", "0 entities"],
+    ["cli", 198, 94, "run layer", "0 entities"],
+    ["gates", 364, 42, "13 checks", "24 entities"],
+    ["ontology", 364, 148, "AST reader", "10 entities"],
+    ["core", 548, 94, "kernel", "7 entities"]
+  ];
+  let g = `<svg viewBox="0 0 640 202" role="img" aria-label="ini AST-rendered package dependency graph from domain.md">${SVGDEF}`;
+  const edges = [[112, 94, 148, 94], [248, 82, 304, 52], [248, 106, 304, 136], [248, 94, 488, 94], [424, 52, 490, 82], [424, 136, 490, 106], [364, 70, 364, 118]];
+  edges.forEach(([x1, y1, x2, y2]) => { g += `<path class="ar2" d="M${x1} ${y1} L${x2} ${y2}" marker-end="url(#ahs)" style="stroke:#4fb3a9"/>`; });
+  B.forEach(([name, x, y, sub, ent]) => {
+    const hot = name === "gates" || name === "core";
+    g += `<rect class="box${hot ? " h" : ""}" x="${x - 54}" y="${y - 27}" width="108" height="54" rx="9"/>`;
+    g += `<text class="dgb" x="${x}" y="${y - 6}" text-anchor="middle" style="font-size:14px">${name}</text>`;
+    g += `<text class="dgm" x="${x}" y="${y + 9}" text-anchor="middle" style="fill:#4fb3a9">${sub}</text>`;
+    g += `<text class="dgm" x="${x}" y="${y + 21}" text-anchor="middle">${ent}</text>`;
+  });
+  g += `<text class="dgm" x="320" y="194" text-anchor="middle">41 public entities · 26 components · 11 values · 2 vocabularies · 1 wire · 1 error</text>`;
+  return g + `</svg>`;
+}
+const ontologyHTML = () => `<div class="loop hot"><b>AST import graph (domain.md)</b><span>ci → cli → {gates, ontology, core}; gates → {ontology, core}; ontology → core. Zero cycles; 41 public entities rendered straight from Python AST.</span></div>`;
+
+// 5. How --prove works
+function proveSVG() {
+  const S = [
+    [68, 72, "working tree", "untouched"],
+    [206, 72, "Replica", "copy code + link data"],
+    [352, 72, "plant witness", "1 defect per gate"],
+    [492, 72, "run gate", "must fail in witness"],
+    [594, 72, "13 / 13", "proven"]
+  ];
+  let g = `<svg viewBox="0 0 640 144" role="img" aria-label="How --prove plants one witness per gate in a scratch replica">${SVGDEF}`;
+  S.forEach(([x, y, a, b], i) => {
+    const w = i === 4 ? 76 : i === 0 ? 114 : 122;
+    g += `<rect class="box${i === 2 || i === 4 ? " h" : ""}" x="${x - w / 2}" y="${y - 28}" width="${w}" height="56" rx="9"${i === 4 ? ' style="fill:rgba(79,179,169,.14);stroke:#4fb3a9"' : ""}/>`;
+    g += `<text class="dgb" x="${x}" y="${y - 5}" text-anchor="middle" style="font-size:13px${i === 4 ? ";fill:#4fb3a9" : ""}">${a}</text>`;
+    g += `<text class="dgm" x="${x}" y="${y + 14}" text-anchor="middle">${b}</text>`;
+  });
+  [[126, 144], [268, 290], [414, 430], [554, 555]].forEach(([x1, x2]) => {
+    if (x2 > x1) g += `<path class="ar2 h" d="M${x1} 72 H${x2}" marker-end="url(#ahg)"/>`;
+  });
+  g += `<text class="dgm" x="320" y="128" text-anchor="middle" style="fill:#d0694a">If a gate stays green on its planted defect → FAIL ("witness ACCEPTED — the gate is inert")</text>`;
+  return g + `</svg>`;
+}
+const proveHTML = () => `<ol class="round">
+  <li><b>Replica</b> copies gate inputs to scratch and symlinks data directories — working tree stays untouched.</li>
+  <li><b>Plant</b> writes one targeted failing file per gate (e.g. undescribed wire field, 8-line twin, failing test).</li>
+  <li><b>Judge</b> requires a red finding inside the planted file; green means the gate is inert and fails <code>--prove</code>.</li>
+</ol>`;
+
+// 6. Expand / Compress round loop
+function rhythmSVG() {
+  const B = [
+    [94, 46, "1 · expand", "explore & make it work"],
+    [268, 46, "2 · gates", "13/13 whole tree green"],
+    [442, 46, "3 · critic", "other family, failing cases"],
+    [442, 148, "4 · compress", "kill, fold, measure delta"],
+    [268, 148, "5 · record", "now.md + log/agt.md"],
+    [94, 148, "6 · harvest", "up if 2+ repos · down by meaning"]
+  ];
+  let g = `<svg viewBox="0 0 540 198" role="img" aria-label="The breathing cycle of one working round">${SVGDEF}`;
+  B.forEach(([x, y, a, b], i) => {
+    g += `<rect class="box${i === 3 ? " h" : ""}" x="${x - 76}" y="${y - 24}" width="152" height="48" rx="9"/>`;
+    g += `<text class="dgb" x="${x}" y="${y - 3}" text-anchor="middle" style="font-size:13.5px">${a}</text>`;
+    g += `<text class="dgm" x="${x}" y="${y + 14}" text-anchor="middle">${b}</text>`;
+  });
+  g += `<path class="ar2" d="M172 46 H190" marker-end="url(#ah)"/><path class="ar2" d="M346 46 H364" marker-end="url(#ah)"/><path class="ar2" d="M442 72 V122" marker-end="url(#ah)"/>`;
+  g += `<path class="ar2 h" d="M364 148 H346" marker-end="url(#ahg)"/><path class="ar2 h" d="M190 148 H172" marker-end="url(#ahg)"/><path class="ar2 h" d="M94 122 V72" marker-end="url(#ahg)"/>`;
+  g += `<text class="dgm" x="104" y="101" style="fill:#d4ad3a">next round</text>`;
+  return g + `</svg>`;
+}
+const rhythmHTML = () => `<ol class="round">
+  <li><b>expand</b> build or explore toward the objective (make it work).</li>
+  <li><b>gates</b> whole tree green (make it right, in its own diff).</li>
+  <li><b>critic</b> independent pass by another model family.</li>
+  <li><b>compress</b> judge threads, kill with reasons, fold into fewer lines.</li>
+  <li><b>record &amp; harvest</b> rewrite now.md, append log, promote lessons that held twice.</li>
+</ol>`;
+
+// 7. Dream loop + conjectures
+function dreamSVG() {
+  const B = [
+    [90, 48, "1 · replay", "logs + conjectures.md"],
+    [280, 48, "2 · pairs", "dream.py pairs (≥2 kB)"],
+    [470, 48, "3 · daydream", "other family, ≥20c"],
+    [470, 146, "4 · check", "dream.py check (wire)"],
+    [280, 146, "5 · judge", "true · new · hard-to-vary"],
+    [90, 146, "6 · feed", "dream.py feed + cNN"]
+  ];
+  let g = `<svg viewBox="0 0 560 196" role="img" aria-label="Two-phase dream consolidation loop and conjecture register">${SVGDEF}`;
+  B.forEach(([x, y, a, b], i) => {
+    g += `<rect class="box${i === 3 || i === 5 ? " h" : ""}" x="${x - 80}" y="${y - 24}" width="160" height="48" rx="9"/>`;
+    g += `<text class="dgb" x="${x}" y="${y - 3}" text-anchor="middle" style="font-size:13.5px">${a}</text>`;
+    g += `<text class="dgm" x="${x}" y="${y + 14}" text-anchor="middle">${b}</text>`;
+  });
+  g += `<path class="ar2" d="M172 48 H198" marker-end="url(#ah)"/><path class="ar2" d="M362 48 H388" marker-end="url(#ah)"/><path class="ar2 h" d="M470 74 V120" marker-end="url(#ahg)"/>`;
+  g += `<path class="ar2 h" d="M388 146 H362" marker-end="url(#ahg)"/><path class="ar2 h" d="M198 146 H172" marker-end="url(#ahg)"/>`;
+  g += `<text class="dgm" x="470" y="102" text-anchor="middle" style="fill:#c96f8f">failed quote = instant kill</text>`;
+  return g + `</svg>`;
+}
+const dreamHTML = () => `<ol class="round">
+  <li><b>Replay</b> sync anchors, learnings and <code>wiki/conjectures.md</code> (<code>open</code> / <code>promoted</code> / <code>destroyed</code>) to recent logs before sampling.</li>
+  <li><b>Pairs &amp; Daydream</b> <code>dream.py pairs</code> samples unlinked pages; another model family proposes candidate links with ≥20-char quotes.</li>
+  <li><b>Check</b> <code>dream.py check</code> parses rows as <code>Candidate</code> and matches ≥20-char quotes via normalised substring; any mismatch kills the candidate immediately.</li>
+  <li><b>Judge &amp; Feed</b> keep ~1 in 6–10 true, new, useful, hard-to-vary claims; assign a permanent <code>cNN</code> id + falsifier and run <code>dream.py feed</code> (idempotent on <code>pairs.tsv</code> and <code>## Dream links</code>).</li>
+</ol>`;
+
+// ---------- ini: Constraining the Generative — every number verified from ini v0.3.0 (23 Nov 2026) ----------
+const INI = "https://github.com/adrianmatias/ini/blob/main/";
+
+const PILLARS = [
+  { gx: -2, t: "I · Direction", s: "objective & distillation" },
+  { gx: -1, t: "II · Proof", s: "gates & witnesses" },
+  { gx: 0, t: "III · Domain & OOP", s: "typed modular core", now: true },
+  { gx: 1, t: "IV · Rhythm", s: "agents · dream · conjectures" },
+  { gx: 2, t: "V · Flow", s: "distil & compound" }
+];
+
+const DATA = {
+start: "thesis",
+kicker: "AI engineering thesis · ini v0.3.0 · 23 Nov 2026",
+title: "ini: Constraining the Generative",
+subtitle: "Domain modelling, object orientation, and typed deterministic modularity to counterbalance hallucination, untested claims, and unbounded complexity.",
+feedHint: "The core thesis sits first — domain modelling, OOP modular abstraction, and public-surface contracts — followed by deterministic gates, direction, agent rhythm (with Deutsch conjectures & dream.py), and how the standard travels without coupling.",
+lead: ["thesis", "ladder"],
+tail: ["method"],
+sections: [
+  { t: "III · Domain & OOP (the core)", s: "domain & schema · OOP modular abstraction · public surface & CRAP", ids: ["domain", "shape", "testing"], now: true },
+  { t: "II · Proof", s: "witnesses · thirteen gates · ratchet & push", ids: ["proof", "gates", "ratchet"], now: true },
+  { t: "I · Direction", s: "objective as loss · distil the LLM out · failure classes", ids: ["objective", "skeleton", "learnings"] },
+  { t: "IV · Rhythm", s: "expand/compress · three families · conjectures & dream", ids: ["rhythm", "delegate", "dream"] },
+  { t: "V · Flow", s: "distil don't link · eight skills · field proof", ids: ["distil", "skills", "tells"] }
+],
+bands: [
+  ...PILLARS.map(p => ({ x: p.gx * 1800 - 600, y: -3760, html: `${p.t}<small>${p.s}</small>`, cls: p.now ? "now" : "" })),
+  { x: -4200, y: -2070, html: "the principles ↓", cls: "layer" },
+  { x: -4200, y: -590, html: "the machinery ↓", cls: "layer" },
+  { x: -4200, y: 890, html: "the evidence ↓", cls: "layer" }
+],
+nodes: [
+
+// ───────────────────────────── crown row (gy = -2)
+{ id: "thesis", gx: 0, gy: -2, hue: "gold", short: "the thesis", h: 1080,
+  kicker: "AI engineering thesis · ini v0.3.0 · 23 Nov 2026", title: "ini: Constraining the Generative",
+  feedKicker: "the core thesis · ini v0.3.0", feedTitle: "Typed deterministic modularity for LLMs",
+  big: { v: "3→1", u: "3 drifts → 1 discipline", l: "domain modelling, OOP modular abstraction, and 13 proven gates — constraining LLMs into engineering" },
+  verdict: "Constrain the generative nature of LLMs into typed, deterministic, modular abstractions — counterbalancing hallucination, untested claims, and unbounded complexity.",
+  pill: "domain · OOP · proof",
+  lede: "LLMs generate code cheaply, and left unconstrained they drift along three axes: **hallucination** (plausible wrong shapes and paraphrased intent), **unbounded complexity** (piles of loose functions patching one another across leaky seams), and **untested claims** (confident prose and inert checks). `ini` encodes one practitioner's counterbalance as a live repository: **model the domain first**, express modular abstractions through **object orientation** (concept = class, component = package), **distil LLM steps into typed deterministic code**, and hold every boundary with **13 witness-proven gates** [1][2][3].",
+  left: (id, nw) => (nw ? counterbalanceHTML() : `<figure class="chart">${counterbalanceSVG()}<div class="cs">${rich("The architectural spine of `ini` (`foundation.md` §3, §5–9; `code-standard.md` §shape; `ci/gates/`) [1][2][3].", id)}</div></figure>`) +
+    `<div class="bb"><div class="bull"><h4>why it holds</h4>${rich("Turns probabilistic generation into bounded, checkable engineering: **41** AST-tracked entities, **13/13** gates proven red (`--prove`), **848** lines of portable knowledge [1][4].", id)}</div><div class="bear"><h4>what would kill it</h4>${rich("If distilling and holding these modular gates on real projects costs more than it returns, or refreshing later changes costs more than starting fresh by **2026-12-31** [5].", id)}</div></div>`,
+  right: id => `<div class="grid2">
+    ${cell("vs Hallucination", "", "**Domain & typed wire schemas**: illegal states unconstructible, every wire field self-described (`schema = prompt`), AST-rendered `domain.md` [2][3].", "Tier 3 · domain gate", true, id)}
+    ${cell("vs Complexity", "", "**OOP modular abstraction**: concept = class, component = package, thin `cli/` run layer, ≤6 free functions/module, McCabe ≤ 6 [2][3].", "Tier 4 · shape gate", true, id)}
+    ${cell("vs Untested Claims", "", "**Witness-proven proof**: 13 gates each seen red (`--prove`), public-surface behaviour tests, `CRAP ≤ 8` [1][3].", "Tier 5 · 13/13 proven", true, id)}
+    ${cell("How it travels", "", "**Distil, don't link**: plain files (848 L knowledge, 1,764 L `ci/`), no install or submodule — an agent distils by meaning [1][4][5].", "deliberate redundancy", false, id)}
+  </div>`,
+  tellLeft: true,
+  tell: "**Engineering, not prompt glue.** A project shaped by `ini` starts with an LLM carrying its walking skeleton and moves steps, round by round, into typed deterministic modules until only irreducible judgement remains [1][2].",
+  src: [["ini — README.md (opening, gates, distil)", INI + "README.md", "23 Nov 2026", "FACT"],
+    ["ini — foundation.md (§direction 3, §engineering 5–10)", INI + "foundation.md", "23 Nov 2026", "FACT"],
+    ["ini — code-standard.md (§shape 1–10, §tests, §gates)", INI + "code-standard.md", "20 Nov 2026", "FACT"],
+    ["Direct line/entity counts & live gates/pytest run on ini v0.3.0 (848 L knowledge, 1,764 L ci prod, 41 entities, 13/13 green, 18 passed)", "https://github.com/adrianmatias/ini", "23 Nov 2026", "FACT"],
+    ["ini — objective.md (claim, target, not, kill)", INI + "objective.md", "20 Nov 2026", "FACT"]] },
+
+{ id: "ladder", gx: -1, gy: -2, hue: "ink", short: "steering & lenses", h: 1030,
+  kicker: "authority & mental models · Tier 1 → Tier 6", title: "The steering ladder",
+  feedKicker: "authority · 6 tiers & 4 lenses",
+  big: { v: "6", u: "tiers", l: "objective > foundation > domain > code-standard > gates & tests > implementation" },
+  verdict: "Steering flows down the tiers; evidence flows up as checkable findings, never summaries taken on trust.",
+  pill: "hierarchy of truth",
+  lede: "When an agent hits a conflict, it needs a tie-breaker that does not depend on mood. `ini` orders every file in a project into six strict tiers: **implementation sits at the bottom** [1][2]. Below the core rules sit four intellectual lenses — kept only where each decides something the engineering rules do not [2].",
+  left: (id, nw) => nw ? steeringHTML() : `<figure class="chart">${steeringSVG()}<div class="cs">${rich("Steering order from `objective.md` and `foundation.md`; evidence flow from `skills/delegate` [1][2][3].", id)}</div></figure>`,
+  right: id => factsTable([
+    ["Taleb", "**Antifragile**: an outage of one model, one vendor, or one host degrades work — never stops it [2]", "FACT"],
+    ["Deutsch", "**Conjectures & refutations**: knowledge grows by hard-to-vary claims paired with what would kill them (`wiki/conjectures.md`), kept or destroyed by test and replay (`skills/dream`) [2]", "FACT"],
+    ["Karpathy", "**Compiled wiki**: compile knowledge once into durable files instead of re-retrieving the same raw sources each session [2][4]", "FACT"],
+    ["Chollet", "**Generalisation is the score**: a benchmark the work was tuned on proves nothing — measure on unseen ground [2]", "FACT"],
+    ["sovereignty", "Open-source first, local-first, portable across harnesses; the repository is the memory; the director's attention is the bottleneck [2]", "FACT"]], id),
+  tellLeft: true,
+  tell: "**Watch what wins a tie.** When a code standard or test conflicts with `objective.md`, the lower tier yields; when evidence refutes the objective, the director reframes Tier 1 explicitly [1][2].",
+  src: [["ini — objective.md (steering order)", INI + "objective.md", "20 Nov 2026", "FACT"],
+    ["ini — foundation.md (tiers, sovereignty, lenses)", INI + "foundation.md", "23 Nov 2026", "FACT"],
+    ["ini — skills/delegate/SKILL.md (steering down, evidence up)", INI + "skills/delegate/SKILL.md", "20 Nov 2026", "FACT"],
+    ["The Mirror — public LLM-wiki method", "https://github.com/adrianmatias/the-mirror", "2026", "FACT"]] },
+
+{ id: "method", gx: 1, gy: -2, hue: "ink", short: "method & limits", h: 1030,
+  kicker: "how this map was built · 23 Nov 2026", title: "Method & limits",
+  feedKicker: "method · provenance & limits",
+  big: { v: "0", u: "private leaks", l: "every count computed directly from ini v0.3.0; zero private repos or clients named" },
+  verdict: "Every number is read from the repository on disk; every limit of the method is stated beside its claims.",
+  pill: "verified on disk",
+  lede: "This piece maps [github.com/adrianmatias/ini](https://github.com/adrianmatias/ini) at **v0.3.0** (`23 Nov 2026`) [1]. Line counts, entity counts, gate thresholds, and test results were computed mechanically from the files and a live `uv run pytest` + `uv run python -m ci gates` run — not estimated or copied from prose [2].",
+  left: id => `<div class="prose"><p><b>Evidence discipline.</b> Claims from <code>ini</code>'s own files carry direct file links and dates through <code>23 Nov 2026</code> (<span class="lab FACT">FACT</span>). External claims cite primary papers or docs (<code>arXiv:2602.11988</code>, <code>arXiv:2603.25773</code>, Python 3.14, GMetrics CRAP). Forward targets for <code>2026-12-31</code> are labelled <span class="lab FORECAST">FORECAST</span>.</p><p><b>Adversarial review.</b> Before shipping, a critic from a different model family audited every tile against source files, privacy rules, and layout checks; dispositions are logged in <code>pub/log/agt.md</code>.</p></div>`,
+  right: id => `<div class="prose"><p><b>What ini cannot prove.</b> Green deterministic gates prove internal structural and behavioural contracts — never that a product has demand, that a user will pay, or that the chosen objective is right.</p><p><b>Scope boundary.</b> The <code>ci/</code> harness targets Python (≥3.14 for running gates); non-Python or static repos (like <code>pub</code> itself) harvest only the principles, rhythm, and applicable plain-file skills.</p><p><b>Made by</b> <a href="https://adrianmatias.github.io/" target="_blank" rel="noopener">Adrian Matias</a>. Sibling pieces: <a href="../closing-doors/">Closing Doors</a> · <a href="../tsunami-and-printing-press/">Tsunami &amp; Printing Press</a> · <a href="../../">pub shelf</a>.</p></div>`,
+  tellLeft: true,
+  tell: "**Start from ini.** `git clone --depth 1 https://github.com/adrianmatias/ini my-project` → `rm -rf .git && git init && uv sync` → ask any agent to run `skills/kickoff` [1].",
+  src: [["ini — README.md & pyproject.toml (v0.3.0)", INI + "README.md", "23 Nov 2026", "FACT"],
+    ["ini — log/agt.md & live gate/test verification", INI + "log/agt.md", "23 Nov 2026", "FACT"],
+    ["Evaluating AGENTS.md (arXiv:2602.11988)", "https://arxiv.org/abs/2602.11988", "12 Feb 2026", "FACT"],
+    ["Zietsman — The specification as quality gate (arXiv:2603.25773)", "https://arxiv.org/abs/2603.25773", "26 Mar 2026", "FACT"]] },
+
+// ───────────────────────────── row -1: THE PRINCIPLES (gy = -1)
+{ id: "objective", gx: -2, gy: -1, hue: "sea", short: "objective as loss", lane: "principles",
+  kicker: "principles · I · direction", title: "Objective as loss",
+  feedKicker: "I · direction · Tier 1",
+  big: { v: "loss = 0", u: "", l: "a target a machine or stranger can check — not 'improve' or 'explore'" },
+  verdict: "Work that moves no checkable target is expansion without contraction. No kill criterion means a hobby.",
+  pill: "foundation 1–4",
+  lede: "The harness gate stays **red** on a fresh copy until every kickoff placeholder in `objective.md` is replaced [1][2]. Four direction principles force clarity before a single feature is built: state the objective as a loss, quote requirements verbatim, build a walking skeleton first, and never report a number without its uncertainty [3].",
+  facts: [["loss", "State a checkable metric + threshold, a sale, or a pass/fail — spend tokens only on closing the gap [3]", "FACT"],
+    ["requirements", "Quote from the source, index, version, and surface contradictions — an agent that paraphrases builds the paraphrase [3][4]", "FACT"],
+    ["uncertainty", "A number without its spread is an anecdote; 7/10 is not 70/100. Decide on the decision metric, not the easy one [3]", "FACT"],
+    ["kill criterion", "What result, by when, stops or reframes the bet — `skills/kickoff` calls a project without one a hobby, and registers open bets in `wiki/conjectures.md` [2]", "FACT"],
+    ["what it is not", "Name the tempting adjacent product the project explicitly refuses to become [2]", "FACT"]],
+  right: id => cites(`<div class="prose"><p><b>Why quoted requirements matter.</b> A March 2026 paper named the silent trap in agentic review: when generating and reviewing agents reason from the same paraphrased notes, <i>the review checks code against itself, not against intent</i> [4].</p><p><b>Real incident:</b> agents once built a hallucinated mixed scoring mode while an oversized unit suite and <code>AGENTS.md</code> both pinned the wrong shape — and refused correction until verbatim quoted requirements entered the repo [5].</p></div>`, id),
+  take: { q: "The objective is a loss. State a target a machine or a stranger can check — a metric with a threshold, a sale, a pass/fail — and spend tokens on closing the gap.", who: "ini/foundation.md §1, Nov 2026" },
+  tell: "**Can a stranger score it?** If two readers could disagree on whether a round moved the target, the objective is still prose, not a loss [2][3].",
+  src: [["ini — ci/gates/harness.py (kickoff gate)", INI + "ci/gates/harness.py", "20 Nov 2026", "FACT"],
+    ["ini — skills/kickoff/SKILL.md (§1 objective, §4 requirements)", INI + "skills/kickoff/SKILL.md", "20 Nov 2026", "FACT"],
+    ["ini — foundation.md (§direction 1–4)", INI + "foundation.md", "20 Nov 2026", "FACT"],
+    ["Zietsman — The specification as quality gate (arXiv:2603.25773)", "https://arxiv.org/abs/2603.25773", "26 Mar 2026", "FACT"],
+    ["ini — wiki/learnings.md (§2 requirements and agents)", INI + "wiki/learnings.md", "20 Nov 2026", "FACT"]] },
+
+{ id: "proof", gx: -1, gy: -1, hue: "sea", short: "proof over prose", lane: "principles",
+  kicker: "principles · II · proof", title: "Proof over prose",
+  feedKicker: "II · proof · vs untested claims",
+  big: { v: "13/13", u: "witnesses", l: "every gate must turn red on a planted defect inside a scratch replica" },
+  verdict: "Counterbalance against untested claims: a rule in prose is a hope; a gate never seen red is decoration.",
+  pill: "ci gates --prove",
+  lede: "`foundation.md` §9 sets the bar: every rule is either a deterministic gate seen to fail, or explicitly states why no machine can enforce it (such as renderer purity, which stays in review) [1][2]. Running `uv run python -m ci gates --prove` builds a scratch `Replica` — copying code scopes and symlinking data directories so real suites run — plants one targeted defect per gate, and **fails if any gate stays green** [3].",
+  left: (id, nw) => (nw ? proveHTML() : `<figure class="chart">${proveSVG()}<div class="cs">${rich("From `ci/gates/runner.py`: working tree is never touched; witness findings must land in the planted file [3].", id)}</div></figure>`) +
+    factsTable([
+      ["inert check bug", "A release check spelled «gmail..com» stayed green by construction until fixed and fired on run 1 [4]", "FACT"],
+      ["missing-tool bug", "In ini's first review, 3 gates read an empty failure from a missing tool as green — now a hard refusal [5]", "FACT"],
+      ["data-link fix", "Suites reading data at conftest import errored outside the planted file until `Replica.link` symlinked non-copied dirs [3][5]", "FACT"]], id),
+  right: id => cites(`<div class="prose"><p><b>Why <code>ini</code> is its own first project.</b> An illustrative toy package was built on request and reverted [5]. Instead, <code>[tool.ini]</code> points at <code>ci/</code> itself: every change to the harness must pass all 13 gates, reject all 13 witnesses, and pass 18 behaviour tests, most starting a fresh copy of <code>ini</code> in a temp directory [5][6].</p><p><b>Refused shortcuts.</b> Blanket ignores, raised thresholds, <code>--exit-zero</code>, <code>cast</code>, <code>type: ignore</code>, or aspirational red gates are refused outright [2].</p></div>`, id),
+  take: { q: "A rule is a gate that has been seen to fail, or it says why nothing can enforce it.", who: "ini/foundation.md §9, Nov 2026" },
+  tell: "**Test the check, not the clean tree.** Whenever a bug slips past a check, plant that failure class as a witness before shipping the fix [3][4].",
+  src: [["ini — foundation.md (§engineering 9–10)", INI + "foundation.md", "20 Nov 2026", "FACT"],
+    ["ini — code-standard.md (§gates, §refuses)", INI + "code-standard.md", "20 Nov 2026", "FACT"],
+    ["ini — ci/gates/runner.py (Replica & Runner.prove)", INI + "ci/gates/runner.py", "20 Nov 2026", "FACT"],
+    ["ini — wiki/learnings.md (§1 boundaries)", INI + "wiki/learnings.md", "20 Nov 2026", "FACT"],
+    ["ini — log/agt.md (18 Nov 2026 reviews & Replica.link)", INI + "log/agt.md", "18–20 Nov 2026", "FACT"],
+    ["ini — ci/tests/test_start.py, test_gates.py & test_skills.py (18 tests)", INI + "ci/tests/test_gates.py", "23 Nov 2026", "FACT"]] },
+
+{ id: "domain", gx: 0, gy: -1, hue: "gold", short: "domain & schema", lane: "principles", h: 1050,
+  kicker: "principles · III · domain & OOP", title: "Domain & schema",
+  feedKicker: "III · domain & OOP · vs hallucination",
+  big: { v: "41", u: "entities", l: "components, values, vocabularies, wire & error rendered directly from ini's AST" },
+  verdict: "Counterbalance against hallucination: name the domain, forbid illegal states, make the schema the prompt, and render the map from AST.",
+  pill: "core · domain gate",
+  lede: "Hallucination thrives on untyped strings and stale prose. `ini` forces every project to **model the domain first** and make illegal states unconstructible at the decode boundary [1][2]. Any record crossing a wire — file, HTTP body, report, or LLM structured output — is a Pydantic `BaseModel` whose every field describes itself once (**the schema is the prompt**) [1][2]. And `domain.md`'s component map is generated from Python's AST (`python -m ci domain --write`): if an agent's map drifts from reality, the **domain** gate turns red [3][4].",
+  left: (id, nw) => nw ? ontologyHTML() : `<figure class="chart">${ontologySVG()}<div class="cs">${rich("Exact acyclic import graph and entity counts rendered by `ci/ontology/` into `domain.md` [4].", id)}</div></figure>`,
+  rightFacts: [["wire contract", "`BaseModel` (frozen where it travels); `Field(description=...)` or attribute docstring required on every wire field — enforced by `domain` [2][3]", "FACT"],
+    ["inside value", "Frozen `@dataclass(slots=True)` for process-local values; `StrEnum` for closed vocabularies; decode once at boundary, then trust [2]", "FACT"],
+    ["no dict-as-record", "`TypedDict`, `eval`/`exec`, and `pickle` banned deterministically by `surface`; `Any` banned in signatures by `annotations` [2][5]", "FACT"],
+    ["diagram = claim", "A hand-drawn package map kept two deleted edges for weeks (`wiki/learnings.md` §1, 11 Nov 2026) — hence AST rendering [6]", "FACT"],
+    ["projections vs ledgers", "Rendered artifacts pull words from the model and regenerate; ledgers and evidence append and never regenerate [1]", "FACT"]],
+  tellLeft: true,
+  tell: "**Constrain the output space before generating.** Typed models constrained an LLM from raw text to the expected artifact and kept the codebase from a pile of functions correcting one another [6].",
+  src: [["ini — foundation.md (§engineering 5, 7–8)", INI + "foundation.md", "20 Nov 2026", "FACT"],
+    ["ini — code-standard.md (§shape 3–4, 8–10)", INI + "code-standard.md", "20 Nov 2026", "FACT"],
+    ["ini — ci/gates/domain.py (field-description & ontology-stale)", INI + "ci/gates/domain.py", "20 Nov 2026", "FACT"],
+    ["ini — domain.md (language & AST-rendered ontology)", INI + "domain.md", "20 Nov 2026", "FACT"],
+    ["ini — ci/gates/ruff.py (banned-api surface & ANN rules)", INI + "ci/gates/ruff.py", "20 Nov 2026", "FACT"],
+    ["ini — wiki/learnings.md (§1 boundaries, §2 declarative schema)", INI + "wiki/learnings.md", "20 Nov 2026", "FACT"]] },
+
+{ id: "rhythm", gx: 1, gy: -1, hue: "ink", short: "expand, compress", lane: "principles",
+  kicker: "principles · IV · rhythm", title: "Expand, then compress",
+  feedKicker: "IV · rhythm · breathing rounds",
+  big: { v: "2", u: "phases", l: "expansion builds; compression is where the project and harness learn" },
+  verdict: "Simplicity leads. Compression is the core of intelligence. Every round ends compressed.",
+  pill: "make it work ≠ make it right",
+  lede: "A round that only expands leaves debt; one that only compresses ships nothing [1]. `ini` codifies an explicit breathing rhythm — directly echoing *learn by compression, build by removal* [2]. Work separates **make it work** from **make it right** (never in the same diff), subtracts before adding, attacks shared premises after two failed fixes, and compresses code, docs, and the harness itself before closing every round [1][3].",
+  left: (id, nw) => nw ? rhythmHTML() : `<figure class="chart">${rhythmSVG()}<div class="cs">${rich("From `foundation.md` §rhythm and `skills/compress`: logs stay append-only as the record compression is judged against [1][3].", id)}</div></figure>`,
+  rightFacts: [["one home", "Redundancy is what a wrong concept looks like from outside — find the concept that makes the second statement unnecessary [1]", "FACT"],
+    ["separate diffs", "A refactor and a behaviour change never share a diff; pins (digests + suite) prove nothing broke [1][4]", "FACT"],
+    ["attack premise", "Two fixes sharing a premise and failing the same gate mean the premise is the defect [1]", "FACT"],
+    ["build the lever", "If a change is not obvious at a glance, do one unit by hand, then write the tool (e.g. `sweep_callsites.py`) [1][5]", "FACT"],
+    ["trust, verify tree", "Give the agent objective, invariants, and gates — not a checklist; accept only the whole tree green [1]", "FACT"]],
+  tellLeft: true,
+  tell: "**Overfitting test for rules.** If a rule names a single incident's file path or count in its imperative, it is a log entry pretending to be a rule — restate the failure class, keep the incident as evidence [3].",
+  src: [["ini — foundation.md (opening & §rhythm)", INI + "foundation.md", "20 Nov 2026", "FACT"],
+    ["not the tao 0012 — learn by compression, build by removal", "https://www.youtube.com/watch?v=wzJQV6GNN2I", "10 Feb 2026", "FACT"],
+    ["ini — skills/compress/SKILL.md", INI + "skills/compress/SKILL.md", "20 Nov 2026", "FACT"],
+    ["ini — skills/mode/SKILL.md (make it work / right / practice)", INI + "skills/mode/SKILL.md", "20 Nov 2026", "FACT"],
+    ["ini — skills/restructure/scripts/sweep_callsites.py (163 lines)", INI + "skills/restructure/scripts/sweep_callsites.py", "20 Nov 2026", "FACT"]] },
+
+{ id: "distil", gx: 2, gy: -1, hue: "sea", short: "distil, don't link", lane: "principles", h: 1050,
+  kicker: "principles · V · flow", title: "Distil, don't link",
+  feedKicker: "V · flow · deliberate redundancy",
+  big: { v: "0", u: "ties back", l: "no install, no submodule, no base/ dir, no recorded origin commit" },
+  verdict: "Inside one repo a fact has one home. Between repos, choose deliberate redundancy — and let an agent keep it fresh.",
+  pill: "harvest up & down",
+  lede: "`ini` evolved through three sharp cuts on 18 Nov 2026: a first package draft, then `0.2.0` (a plain repository with a read-only `base/`); a `[tool.ini] origin` commit stamp was drafted next, and both `base/` and `origin` were cut in `0.3.0` [1][2]. Because trees are meant to diverge into each project's vocabulary, `harvest` compares by meaning, never by `diff` [3].",
+  left: (id, nw) => (nw ? paradoxHTML() : `<figure class="chart">${paradoxSVG()}<div class="cs">${rich("The sharing paradox resolved in `ini` 0.3.0: no package, no `base/`, no origin stamp [1][2].", id)}</div></figure>`) +
+    cites(`<div class="prose"><p><b>Why <code>base/</code> and <code>origin</code> were cut.</b> The first ongoing project naturally kept <code>ci/</code> as its own, added a product gate, and dropped <code>base/</code> [2]. Deleting both removed the last coupling so every repo stays 100% sovereign [1][2].</p></div>`, id),
+  rightFacts: [["down (distil)", "An agent reads `ini` (`now.md`, `log/agt.md`, knowledge, `ci/`) and writes what fits in the project's own terms, plus a starter `wiki/conjectures.md` if none exists [3]", "FACT"],
+    ["up (promote)", "A lesson, skill, or cross-project bet (`wiki/conjectures.md`) that held in **≥2 projects** is stripped of project names and promoted — paying for added lines by pruning weaker ones [3][4]", "FACT"],
+    ["what never crosses", "A project never imports, links, submodules, pins, or reads `ini` at runtime or gate time; `ini` never names a project; `ini`'s own bets (`wiki/conjectures.md`) stay separate from shared knowledge [3][4]", "FACT"],
+    ["non-Python repos", "Static sites or knowledge vaults keep what fits and drop `ci/` — e.g. `pub` distilled only `AGENTS.md` rhythm and 5 plain-file skills [2][5]", "FACT"]],
+  tellLeft: true,
+  tell: "**Survives a second repo?** A local departure from `ini` is either a valid local fit that stays local, or a general lesson `ini` lacks and should harvest up [1][3].",
+  src: [["ini — README.md (§learning flows both ways)", INI + "README.md", "23 Nov 2026", "FACT"],
+    ["ini — log/agt.md (v0.2 → v0.3.0; non-code vault evidence)", INI + "log/agt.md", "18–23 Nov 2026", "FACT"],
+    ["ini — skills/harvest/SKILL.md (down, up, what never crosses)", INI + "skills/harvest/SKILL.md", "23 Nov 2026", "FACT"],
+    ["ini — AGENTS.md (§what is special here)", INI + "AGENTS.md", "23 Nov 2026", "FACT"],
+    ["pub — AGENTS.md & skills/ (static-site distillate)", "../../AGENTS.md", "20 Nov 2026", "FACT"]] },
+
+// ───────────────────────────── row 0: THE MACHINERY (gy = 0)
+{ id: "skeleton", gx: -2, gy: 0, hue: "sea", short: "distil the LLM out", lane: "machinery",
+  kicker: "machinery · I · direction", title: "Distil the LLM out",
+  feedKicker: "I · direction · walking skeleton",
+  big: { v: "14", u: "templates", l: "placeholder anchors, starter wiki/conjectures.md, and walking skeleton (`Target.loss`, `cli/loss.py`, 1 test)" },
+  verdict: "Start with an LLM carrying the path; move deterministic steps into typed modules until only real judgement remains.",
+  pill: "foundation 3 + kickoff",
+  lede: "Most AI demos stay thin wrappers around prompts forever. `foundation.md` §3 flips the arc: build one thin **walking skeleton** end-to-end first, letting an LLM carry any step — then, round by round, move parsing, lookups, rules, and rendering into typed, tested, cheap deterministic code [1]. A project matures into engineering rather than prompt glue [1][2].",
+  left: (id, nw) => nw ? skeletonHTML() : `<figure class="chart">${skeletonSVG()}<div class="cs">${rich("The distillation arc from `foundation.md` §3 and `skills/kickoff` §5 [1][3].", id)}</div></figure>`,
+  rightFacts: [["step 0", "Render **14 `.tmpl` files** (`{{project}}`, `{{package}}`, `{{owner}}`, `{{date}}`, including `wiki/conjectures.md.tmpl`), drop `ini`'s logs & `ci/tests/`, switch `[tool.uv]` to `uv_build` [3][4]", "FACT"],
+    ["why `.tmpl`", "Templates carry `.tmpl` so ruff, ty, and pytest never read placeholder files as code [5]", "FACT"],
+    ["Target.loss()", "Kickoff's walking skeleton wires `core/objective.py` (`loss(measured) == 0` when met), `cli/loss.py`, and one public-surface test [3]", "FACT"],
+    ["LLM ledger", "`now.md` explicitly lists which steps an LLM still carries so the next round knows what to distil into code [3]", "FACT"]],
+  tellLeft: true,
+  tell: "**Track the shrinking LLM surface.** Every round asks one question (`skills/mode` §1): which step an LLM carried yesterday is deterministic today [6]?",
+  src: [["ini — foundation.md (§direction 3)", INI + "foundation.md", "20 Nov 2026", "FACT"],
+    ["ini — README.md (opening & §start a project)", INI + "README.md", "23 Nov 2026", "FACT"],
+    ["ini — skills/kickoff/SKILL.md (§0, §1, §5)", INI + "skills/kickoff/SKILL.md", "23 Nov 2026", "FACT"],
+    ["ini — skills/kickoff/templates/ (14 .tmpl files)", INI + "skills/kickoff/templates/wiki/conjectures.md.tmpl", "23 Nov 2026", "FACT"],
+    ["ini — AGENTS.md (§what is special here)", INI + "AGENTS.md", "20 Nov 2026", "FACT"],
+    ["ini — skills/mode/SKILL.md (§1 LLM steps shrink)", INI + "skills/mode/SKILL.md", "20 Nov 2026", "FACT"]] },
+
+{ id: "gates", gx: -1, gy: 0, hue: "sea", short: "the 13 gates", lane: "machinery", h: 1080,
+  kicker: "machinery · II · proof", title: "The thirteen gates",
+  feedKicker: "II · proof · 1,764 lines of ci/",
+  big: { v: "13", u: "gates", l: "10 backed by maintained tools + 3 custom AST/file checks (shape, domain, harness)" },
+  verdict: "Never re-implement what ruff, ty, vulture, or pytest already do; build custom AST gates only where agents systematically drift.",
+  pill: "uv run python -m ci gates",
+  lede: "All 13 gates run from `ci/` in **1,764 production lines** (`gates/` 1,067 · `ontology/` 381 · `core/` 235 · `cli/` 72 · root 9), invoking each maintained tool as `sys.executable -m <tool>` with inherited `PYTHONPATH` replaced by the project's `src` [1][2]. Four areas no single tool holds (highlighted in gold below): **domain-driven design** (`domain`), **object orientation** (`shape`), the **AST ontology** (`domain`), and **self-commented code** (`docs`), alongside instruction budgets (`harness`) [1].",
+  left: id => `<div class="g-grid">${[
+    ["lint", "defects, relative imports, globals, format", "ruff", 0],
+    ["docs", "module/class docstrings; no commented code", "ruff D/ERA", 1],
+    ["annotations", "explicit contracts; no <code>Any</code> in sigs", "ruff ANN", 0],
+    ["types", "wrong types, unguarded <code>None</code>", "ty", 0],
+    ["surface", "bans <code>TypedDict</code>, <code>eval</code>/<code>exec</code>, <code>pickle</code>", "ruff+bandit", 0],
+    ["shape", "≤6 free fns, OOP pkgs, thin cli, scope", "AST", 1],
+    ["complexity", "McCabe ≤ 6 in code, ≤ 15 in tests", "ruff C901", 0],
+    ["duplication", "6+ identical lines copied twice", "symilar", 0],
+    ["deadcode", "unwired names in prod (60% conf.)", "vulture", 0],
+    ["domain", "wire field docs + fresh AST <code>domain.md</code>", "AST", 1],
+    ["harness", "AGENTS ≤120, skills ≤150, 1:1 table, kickoff", "files", 0],
+    ["behaviour", "full <code>testpaths</code> pytest suite (no ratchet)", "pytest", 0],
+    ["crap", "untested complexity: c²·(1−cov)³+c > 8", "ruff+cov", 0]
+  ].map(([n, d, t, c]) => `<div class="g-row${c ? " core" : ""}"><b>${n}</b><span>${d}</span><em>${t}</em></div>`).join("")}</div>`,
+  charts: [],
+  right: (id, nw) => chartBlock({ kind: "bar", title: "ci/ harness size by sub-package (lines of Python)", L: 130, rh: 24,
+    rows: [["ci/gates (12 files)", 1067, "gold", "1,067"], ["ci/tests (4 files)", 462, "ink", "462"], ["ci/ontology (4 files)", 381, "sea", "381"], ["ci/core (4 files)", 235, "fg", "235"], ["ci/cli + root (4)", 81, "dim", "81"]],
+    src: "Exact line counts of `ini/ci/` on 23 Nov 2026: 1,764 prod + 462 test = 2,226 lines total [1][3]." }, id, nw) +
+    cites(`<div class="prose"><p><b>Exact toolchain pins.</b> <code>ruff==0.17.5</code> and <code>ty==0.0.105</code> are pinned exact because rule sets shift between releases; <code>pytest</code>, <code>coverage</code>, <code>pylint</code>, and <code>vulture</code> float on floors [4].</p><p><b>Rule ownership.</b> Each ruff gate passes its own <code>--select</code> rather than trusting blanket project ignores, and every tool runs with inherited <code>PYTHONPATH</code> replaced by the project's <code>src</code> so host shells cannot poison the check [2].</p></div>`, id),
+  tellLeft: true,
+  tell: "**No ratchets on `behaviour` or `harness`.** Broken tests and oversized agent instructions cannot be deferred into debt — they stay red until fixed [5][6].",
+  src: [["ini — README.md (§the gates) & ci/gates/table.py", INI + "README.md", "20 Nov 2026", "FACT"],
+    ["ini — ci/core/tool.py & ci/gates/tools.py", INI + "ci/gates/tools.py", "20 Nov 2026", "FACT"],
+    ["Direct line count of ini/ci/**/*.py (24 prod files, 4 test files, 23 Nov 2026)", "https://github.com/adrianmatias/ini", "23 Nov 2026", "FACT"],
+    ["ini — pyproject.toml ([dependency-groups] dev)", INI + "pyproject.toml", "20 Nov 2026", "FACT"],
+    ["ini — ci/gates/suite.py (Behaviour.ratchet = False)", INI + "ci/gates/suite.py", "20 Nov 2026", "FACT"],
+    ["ini — ci/gates/harness.py (Harness.ratchet = False)", INI + "ci/gates/harness.py", "20 Nov 2026", "FACT"]] },
+
+{ id: "shape", gx: 0, gy: 0, hue: "gold", short: "OOP modular shape", lane: "machinery", h: 1090,
+  kicker: "machinery · III · domain & OOP", title: "OOP modular abstraction",
+  feedKicker: "III · domain & OOP · vs unbounded complexity",
+  big: { v: "PILE≤6", u: "Py 3.14", l: "a concept is a class; a component is a package — AST-enforced modular boundaries" },
+  verdict: "Counterbalance against unbounded complexity: agents left alone write piles of loose functions correcting one another. A named class is where sprawl stops.",
+  pill: "core · shape gate + ledger bench",
+  lede: "Object orientation in `ini` is not ceremony or enterprise patterns — it is **modular abstraction as a hard cap on generative entropy** [1][2]. Every concept becomes a named class owning its data, constants, and workflow; every component becomes a package with downward dependencies and a thin `cli/` run layer [1][2]. Built on near-native **Python ≥ 3.14** (deferred annotations, t-strings, free-threading [5]; 3.15 deferred on 18 Nov 2026 for missing `onnxruntime`/`pyyaml` `cp315` wheels), the AST **shape** gate enforces modularity without DI containers or service-layer bloat [2][3].",
+  rightFacts: [["concept = class", "At most **6 free functions** per domain module (`PILE = 6`) — past that, name the concept they share as a class [1][3]", "FACT"],
+    ["component = pkg", "Every non-CLI sub-package must define a public class — no `utils` dump of loose functions [1][3]", "FACT"],
+    ["source ≠ run", "`argparse`, `sys.argv`, and `__main__` live only in `cli/` or `__main__.py`: source declares, run invokes [2][3]", "FACT"],
+    ["bounded logic", "McCabe **complexity ≤ 6** (`C901`), constants in one frozen `CONST` tree, declarative tables over imperative cascades, zero `sys.path` edits [2][3]", "FACT"],
+    ["no DI / FP dogma", "Refuses DI containers, service layers, and enforced functional style (+42% lines, prevented no defect in the ledger study) [2][4]", "FACT"]],
+  charts: [{ kind: "bar", title: "agentic-ledger-bench: same frozen spec, production LOC", xf: "k", L: 176, rh: 25,
+    rows: [["Scala 3 (manual codec)", 1291, "ink", "1,291 · 0 deps"], ["Python unchecked", 1357, "dim", "1,357 · 0 gates"], ["Python + pydantic + beartype", 1384, "gold", "1,384 · 2 deps"], ["Python + gates (no deps)", 2187, "sea", "2,187 · matched Scala"]],
+    src: "Public case study (`agentic-ledger-bench`, 15 Sep 2026): spend the constraint budget on gates and the boundary, not language migration [4]." }],
+  take: { q: "A concept is a class; a component is a package. The class owns its data, its rules and its workflow; the package states its role. Agents left alone write piles of functions that correct one another — a named class is where that stops.", who: "ini/foundation.md §6, Nov 2026" },
+  tellLeft: true,
+  tell: "**Shape beats language wars.** In the ledger benchmark, one typed domain model + enforced gates closed the reliability gap without leaving Python or adopting functional boilerplate [2][4].",
+  src: [["ini — foundation.md (§engineering 6, 8) & README.md (§why Python 3.14)", INI + "foundation.md", "20 Nov 2026", "FACT"],
+    ["ini — code-standard.md (§environment, §shape 1–6, §refuses)", INI + "code-standard.md", "20 Nov 2026", "FACT"],
+    ["ini — ci/gates/shape.py (PILE=6, run-layer, component, scope)", INI + "ci/gates/shape.py", "20 Nov 2026", "FACT"],
+    ["agentic-ledger-bench — README & FINDINGS.md §12, §25", "https://github.com/adrianmatias/ml-sandbox/tree/master/agentic-ledger-bench", "15 Sep 2026", "FACT"],
+    ["Python 3.14 What's New (PEP 649, 750, 779)", "https://docs.python.org/3.14/whatsnew/3.14.html", "Oct 2025", "FACT"]] },
+
+{ id: "delegate", gx: 1, gy: 0, hue: "ink", short: "3 families & critic", lane: "machinery", h: 1040,
+  kicker: "machinery · IV · rhythm", title: "Three families & the critic",
+  feedKicker: "IV · rhythm · roles & routing",
+  big: { v: "3", u: "families", l: "integrator (plan / complement), cheap max-effort API lanes, distinct-family critic" },
+  verdict: "Default to one direct session. When you fan out, match billing to the role — and never let one family grade its own exam.",
+  pill: "skills/delegate + review",
+  lede: "Delegation trades focus against fragmentation and speed against cost [1]. `ini` separates roles from concrete model names (`AGENTS.md` holds the local model map; `skills/delegate` speaks only in roles) [1][2]. Every load-bearing change gets an adversarial pass by a **different model family** that never sees the author's reasoning — returning only evidence-backed findings with explicit dispositions [3].",
+  facts: [["director", "Human: sets objective, decides, judges taste, approves pushes — never asked what files already say [1]", "FACT"],
+    ["integrator", "`claude-opus` (fixed-cost plan) or `gemini-4` (pay-per-token complement) at high effort: plans, writes, merges, judges [1][2]", "FACT"],
+    ["lane", "`deepseek-v4.1-flash` API at **max effort**: bounded disjoint slice — never decides design or edits shared files [1][2]", "FACT"],
+    ["critic", "Distinct family (`claude-opus` ↔ `gemini-4` ↔ `deepseek-v4.1-flash`): reads contract + diff + test delta, returns checkable failing cases [2][3]", "FACT"],
+    ["dispositions", "Integrator reproduces blockers and marks every finding **accept**, **accept-and-defer**, or **reject** (with counter-evidence) — zero silent edits [3]", "FACT"]],
+  right: id => cites(`<div class="prose"><p><b>Six patterns worth their overhead:</b> <b>direct</b> (default for ≤10 calls), <b>sandwich</b> (plan → parallel lanes → independent check), <b>fan-out</b> (≥3 disjoint packages/questions), <b>adversarial</b> (cross-family critic), <b>cascade</b> (cheap → mechanical check → escalate on proof), and <b>expand/compress</b> [1].</p><p><b>Hard lessons encoded:</b> confirm model family before dispatch; restore temporary overrides immediately; never shell out to another LLM CLI; inspect interrupted worktrees instead of restarting from scratch; and never run parallel lanes on a plan quota (exhausted limits in ~3 minutes twice on 11 Nov 2026) [1][4].</p></div>`, id),
+  tell: "**A lane's summary is a claim.** Re-run every gate on the merged tree, spot-check citations, and recompute any count a child proposes [1].",
+  src: [["ini — skills/delegate/SKILL.md", INI + "skills/delegate/SKILL.md", "20 Nov 2026", "FACT"],
+    ["ini — AGENTS.md (§roles and models)", INI + "AGENTS.md", "20 Nov 2026", "FACT"],
+    ["ini — skills/review/SKILL.md", INI + "skills/review/SKILL.md", "20 Nov 2026", "FACT"],
+    ["ini — wiki/learnings.md (§5 delegation)", INI + "wiki/learnings.md", "20 Nov 2026", "FACT"]] },
+
+{ id: "skills", gx: 2, gy: 0, hue: "sea", short: "8 skills, budgeted", lane: "machinery", h: 1120,
+  kicker: "machinery · V · flow", title: "Eight skills on a budget",
+  feedKicker: "V · flow · plain files > plugins",
+  big: { v: "550", u: "lines", l: "all 8 skills combined (56–89 lines each vs 150-line cap) + 2 deterministic scripts" },
+  verdict: "Skills are the by-product of work, compressed like code — or they exhaust the context they were meant to save.",
+  pill: "harness budget gate",
+  lede: "Over 60,000 public repositories carry an agent context file, yet a February 2026 study (SWE-bench plus 12 repos with developer-written files) found context files added **>20% inference cost** with no general gain in task success, helping mainly on non-standard practices [1]. `ini` responds with **strict machine-enforced line budgets** (`AGENTS.md` ≤120, each skill ≤150, `learnings.md` ≤160) and plain markdown skills loaded on demand, pairing deterministic Python scripts (`dream.py`, `sweep_callsites.py`) where prose would drift [2][3].",
+  left: id => `<div class="sk-grid">${[
+    ["kickoff", "71", "Start a copy or change the bet; state loss + register <code>conjectures.md</code>"],
+    ["mode", "68", "Engineering loop: make it work → make it right → practice + mutmut audit"],
+    ["review", "56", "Cross-family critic over contract + diff; explicit finding dispositions"],
+    ["delegate", "89", "Roles, billing, 6 patterns, bounded briefs, worktree recovery"],
+    ["restructure", "77", "Pins first, slices, parallel wave lanes, AST <code>sweep_callsites.py</code>"],
+    ["compress", "63", "Judge threads, settle conjectures, fold code/docs/harness, measure delta"],
+    ["dream", "64", "Replay logs + conjectures, cross-family pairing via <code>dream.py</code>"],
+    ["harvest", "62", "Distil down (incl. conjectures starter); promote up when held in ≥2 projects"]
+  ].map(([n, l, d]) => `<div class="sk-box"><b>${n}</b><em>${l}/150 L</em><p>${d}</p></div>`).join("")}</div>`,
+  right: (id, nw) => chartBlock({ kind: "bar", title: "Harness budget usage (% of hard ceiling in ci/gates/harness.py)", xf: "pct", L: 120, rh: 20,
+    rows: [["AGENTS.md", 63.3, "gold", "76 / 120 (63%)"], ["learnings.md", 61.9, "gold", "99 / 160 (62%)"], ["delegate", 59.3, "sea", "89 / 150 (59%)"], ["restructure", 51.3, "sea", "77 / 150 (51%)"], ["kickoff", 47.3, "sea", "71 / 150 (47%)"], ["mode", 45.3, "sea", "68 / 150 (45%)"], ["dream", 42.7, "ink", "64 / 150 (43%)"], ["compress", 42.0, "ink", "63 / 150 (42%)"], ["harvest", 41.3, "ink", "62 / 150 (41%)"], ["review", 37.3, "ink", "56 / 150 (37%)"]],
+    src: "Verified on disk 23 Nov 2026 against `AGENTS_LINES=120`, `LEARNINGS_LINES=160`, `SKILL_LINES=150` [3][4]." }, id, nw) +
+    cites(`<div class="prose"><p><b>Skills over plugins.</b> Plain markdown files loaded on demand travel across harnesses, model vendors, and years; a plugin binds the method to one tool [2]. The harness gate enforces a 1:1 match between disk and <code>AGENTS.md</code> so no skill goes silent or orphaned [3].</p></div>`, id),
+  tellLeft: true,
+  tell: "**Pay for every added line.** Every line in `foundation.md`, `code-standard.md`, `learnings.md`, or `skills/` costs tokens in every project — adding a rule means merging or pruning a weaker one [2][5].",
+  src: [["Evaluating AGENTS.md (arXiv:2602.11988, v1 12 Feb; v3 29 Sep 2026)", "https://arxiv.org/abs/2602.11988", "2026", "FACT"],
+    ["ini — foundation.md (§the harness compounds)", INI + "foundation.md", "23 Nov 2026", "FACT"],
+    ["ini — ci/gates/harness.py (AGENTS_LINES, SKILL_LINES, LEARNINGS_LINES)", INI + "ci/gates/harness.py", "20 Nov 2026", "FACT"],
+    ["Direct line counts of ini/AGENTS.md, wiki/learnings.md, skills/*/SKILL.md (23 Nov 2026)", "https://github.com/adrianmatias/ini", "23 Nov 2026", "FACT"],
+    ["ini — AGENTS.md (§what is special here, §skills)", INI + "AGENTS.md", "23 Nov 2026", "FACT"]] },
+
+// ───────────────────────────── row 1: THE EVIDENCE (gy = 1)
+{ id: "learnings", gx: -2, gy: 1, hue: "rust", short: "6 failure classes", lane: "evidence", h: 1080,
+  kicker: "evidence · I · direction", title: "Six failure classes",
+  feedKicker: "I · direction · 35 dated lessons",
+  big: { v: "35", u: "lessons", l: "in 99/160 lines of wiki/learnings.md — plus negative knowledge in wiki/conjectures.md" },
+  verdict: "Nothing enters learnings.md as philosophy. Every imperative rule cites the dated failure that paid for it.",
+  pill: "ranked failure memory",
+  lede: "`wiki/learnings.md` groups 35 hard-won lessons into six failure classes, ordered by the cost of the failure each prevents [1][2]. `foundation.md` pairs it with **Record negative knowledge**: failed rounds enter `learnings.md`, while refuted bets stay in `wiki/conjectures.md` (`destroyed`) with their evidence [3].",
+  charts: [{ kind: "bar", title: "Lessons by failure class in wiki/learnings.md (35 total · 99/160 lines)", L: 185, rh: 24,
+    rows: [["1 · Boundaries own defects", 9, "rust", "9 lessons"], ["4 · Tests freeze contracts", 8, "sea", "8 lessons"], ["3 · Generated artifacts", 5, "gold", "5 lessons"], ["5 · Delegation", 5, "ink", "5 lessons"], ["2 · Requirements & agents", 4, "gold", "4 lessons"], ["6 · Environment", 4, "dim", "4 lessons"]],
+    src: "Exact bullet count of `ini/wiki/learnings.md` on 23 Nov 2026 [1]." }],
+  rightFacts: [["conjectures stall", "Pair conjecture registers with log replay and a falsifier, or they stall into lore (20 Nov 2026) [1]", "FACT"],
+    ["684 docstrings", "A literal-counting gate read Python field docstrings as product prose until the rule excluded docstrings (18 Nov 2026) [1]", "FACT"],
+    ["9 dropped items", "A key predicate existed but was never wired to the real entry point and silently dropped 9 items (21 Sep 2026) [1]", "FACT"],
+    ["5/6 corruptions", "A hand-written check parsed `must_fix: 'none'` character by character and accepted 5 of 6 corruptions [1]", "FACT"],
+    ["PYTHONPATH leak", "An exported `PYTHONPATH` made the venv import a foreign `pydantic_core` and turned 5 gates red on a green tree (11 Nov 2026) [1]", "FACT"]],
+  tellLeft: true,
+  tell: "**Rank, don't hoard.** When `learnings.md` nears 160 lines, the harness gate forces a choice: fold two incidents into one rule or delete the cheapest failure class at the bottom [1][2].",
+  src: [["ini — wiki/learnings.md (35 lessons across 6 sections)", INI + "wiki/learnings.md", "23 Nov 2026", "FACT"],
+    ["ini — skills/compress/SKILL.md (§the harness)", INI + "skills/compress/SKILL.md", "23 Nov 2026", "FACT"],
+    ["ini — foundation.md (§record negative knowledge)", INI + "foundation.md", "23 Nov 2026", "FACT"]] },
+
+{ id: "ratchet", gx: -1, gy: 1, hue: "sea", short: "ratchet & push", lane: "evidence", h: 1050,
+  kicker: "evidence · II · proof", title: "Ratchet & pre-push",
+  feedKicker: "II · proof · adoption without big bang",
+  big: { v: "846 → 231", u: "", l: "findings on a real ongoing repo after probing 3 projects and meeting them halfway" },
+  verdict: "An ongoing project adopts strict gates in one commit — then debt in ceilings.json can only shrink, and main stays deployable.",
+  pill: "ci/ceilings.json + hook",
+  lede: "Strict gates fail in practice if they demand a big-bang rewrite before day one. `ini` probed three real ongoing repositories in scratch copies first — finding flat layouts, runtimes 3.10–3.12, nested test suites, and `__main__.py` entry points — and adapted the gates to that real common denominator [1]. For remaining debt, `--adopt` writes `ci/ceilings.json` once; from then on any new finding **or any unrecorded improvement** (`ratchet-stale`) turns red until `--record` locks the lower ceiling in [2].",
+  charts: [{ kind: "bar", title: "Scratch probe of an ongoing repo before vs after meeting real layouts halfway", L: 185, rh: 26,
+    rows: [["Before · strict new-repo rules", 846, "rust", "846 findings"], ["After · nested tests, __main__, no PTH", 231, "gold", "231 (−73%)"]],
+    src: "Recorded in `ini/log/agt.md` (18 Nov 2026): nested test suites judged as tests, `__main__.py` as run layer, tests exempt from ANN, pathlib style dropped [1]." }],
+  rightFacts: [["one-way ratchet", "`Ceilings.record` uses `min(n, counts[key])` — a ceiling can never rise, and forgetting `--record` after fixing debt fails the gate [2]", "FACT"],
+    ["pre-push hook", "`.githooks/pre-push` (opt-in via `core.hooksPath`) gates pushes to `refs/heads/main` without needing external CI [3]", "FACT"],
+    ["detached worktree", "If `$local_sha` differs from a clean `HEAD`, the hook checks out the exact pushed commit into a temp detached worktree and gates that commit [3][4]", "FACT"],
+    ["branch safety", "Feature-branch pushes and all-zero branch deletions pass untouched [3]", "FACT"]],
+  tellLeft: true,
+  tell: "**Watch `ceilings.json` shrink.** A ratchet is a bridge, not an ignore list: the proof that adoption worked is an empty `ci/ceilings.json` [2][5].",
+  src: [["ini — log/agt.md (18 Nov 2026: three ongoing projects, met halfway)", INI + "log/agt.md", "18 Nov 2026", "FACT"],
+    ["ini — ci/gates/ratchet.py (Ceilings: judge, record, adopt, ratchet-stale)", INI + "ci/gates/ratchet.py", "20 Nov 2026", "FACT"],
+    ["ini — .githooks/pre-push (62 lines, detached worktree)", INI + ".githooks/pre-push", "20 Nov 2026", "FACT"],
+    ["ini — log/agt.md (20 Nov 2026: critic caught working-tree vs $local_sha bug)", INI + "log/agt.md", "20 Nov 2026", "FACT"],
+    ["ini — README.md (§bring ini into an ongoing project)", INI + "README.md", "20 Nov 2026", "FACT"]] },
+
+{ id: "testing", gx: 0, gy: 1, hue: "gold", short: "surface & CRAP", lane: "evidence", h: 1050,
+  kicker: "evidence · III · domain & OOP", title: "Public surface & CRAP",
+  feedKicker: "III · domain & OOP · contract tests",
+  big: { v: "crap ≤ 8", u: "", l: "complexity²·(1−coverage)³ + complexity — pin module boundaries, never private helpers" },
+  verdict: "Clean OOP modules make public-surface contracts testable — freeing internal refactoring while killing untested complexity.",
+  pill: "core · behaviour + CRAP",
+  lede: "When agents chase flat coverage numbers on loose functions, they write narrow unit tests against private helpers — freezing internal structure while leaving real entry points broken [1]. Because `ini` organises code into named components with clear public surfaces, tests pin **behaviour at the module boundary** (`main` in process or a component's public method) while **CRAP** (`budget = 8`) ensures every complex branch actually runs [2][3].",
+  charts: [{ kind: "bar", title: "Deleting structure tests without losing coverage (wiki/learnings.md §4)", L: 175, rh: 26,
+    rows: [["Before · suite lines", 13525, "rust", "13,525 L · 74 files"], ["After · public surface", 7000, "gold", "7,000 L · 45 files (−48%)"]],
+    src: "Recorded in `ini/wiki/learnings.md` §4 (74 → 45 files); §4 also records 41 unit files reaching 367 private names (6 Nov 2026) [1]." }],
+  rightFacts: [["49 functions at 0%", "Switching a suite to subprocesses left 49 complex functions at 0% coverage — invisible to pytest, caught immediately by CRAP [1]", "FACT"],
+    ["mocked CLI bug", "Mocking subprocesses hid a deleted `-m` build entry point while every test stayed green (12 Nov 2026) [1]", "FACT"],
+    ["CRAP math", "A complexity-2 function never breaches (2²+2=6 ≤ 8); complexity 6 needs ~62% coverage; complexity > 6 fails `complexity` outright [3][4]", "FACT"],
+    ["mutation audit", "`mutmut` runs one module at a time before release as an audit, not a gate — and sampled mutation still missed a dropped retry that a cross-family critic caught [1][2]", "FACT"]],
+  tellLeft: true,
+  tell: "**The empty-function test.** If a test would still pass with every function returning nothing, delete it; a behaviour-preserving refactor must not rewrite the suite [2].",
+  src: [["ini — wiki/learnings.md (§4 tests freeze contracts, not structure)", INI + "wiki/learnings.md", "20 Nov 2026", "FACT"],
+    ["ini — code-standard.md (§tests) & skills/mode/SKILL.md", INI + "code-standard.md", "20 Nov 2026", "FACT"],
+    ["ini — ci/gates/suite.py (Crap, BUDGET=8.0)", INI + "ci/gates/suite.py", "20 Nov 2026", "FACT"],
+    ["GMetrics — CRAP Metric definition", "https://dx42.github.io/gmetrics/metrics/CrapMetric.html", "2007–", "FACT"]] },
+
+{ id: "dream", gx: 1, gy: 1, hue: "rose", short: "conjectures & dream", lane: "evidence", h: 1120,
+  kicker: "evidence · IV · rhythm · 23 Nov 2026", title: "Conjectures & dream loop",
+  feedKicker: "IV · rhythm · Deutsch board + dream.py",
+  big: { v: "c1–c8", u: "3·2·3", l: "3 open · 2 promoted · 3 destroyed on ini's live Deutsch board + 315-line deterministic dream.py" },
+  verdict: "Knowledge grows by hard-to-vary claims paired with falsifiers — never by accumulating notes. A conjecture not on wiki/conjectures.md is a vibe.",
+  pill: "conjectures + dream.py",
+  lede: "On 23 Nov 2026 `ini` added a live Deutsch register (`wiki/conjectures.md`, `c1`–`c8`, permanent ids across `open` / `promoted` / `destroyed`) plus a kickoff starter (`conjectures.md.tmpl`) and `domain.md` term [1][2][3]. To keep boards from stalling into lore, `skills/dream/scripts/dream.py` (315 lines) distils pairing, `Candidate` parsing + normalised substring quote checks, and idempotent `pairs.tsv` + `## Dream links` updates into deterministic CLI code — leaving the LLM only cross-family synthesis and judging (`~1/6–10` keep rate) [4][5].",
+  left: (id, nw) => nw ? dreamHTML() : `<figure class="chart">${dreamSVG()}<div class="cs">${rich("From `skills/dream/SKILL.md` and `dream.py`: `pairs`, `check`, `feed` run deterministically; replay settles conjectures first [4][5].", id)}</div></figure>`,
+  rightFacts: [["live board (c1–c8)", "**Open** `c1`–`c3` (distil vs link, budget-bounded compounding, pre-3.14 transfer); **promoted** `c4`–`c5` (4 core gates, cross-family critic); **destroyed** `c6`–`c8` (`base/`/`origin`, enforced FP +42% L, silent missing-tool green) [1]", "FACT"],
+    ["dream.py (315 L)", "`pairs` samples unlinked pages ≥2 kB (max 3 uses/night); `check` parses `Candidate` rows and matches ≥20-char quotes by normalised substring (`kind: 'none'` skipped); `feed` appends `pairs.tsv` & `## Dream links` idempotently [4][5]", "FACT"],
+    ["negative knowledge", "Refuted bets keep their permanent id in `destroyed` with dated evidence beside `wiki/learnings.md` (`foundation.md`) — never deleted or edited silently [1][6]", "FACT"],
+    ["4-part judge", "Another family keeps a candidate only if **true** in context, **new** (grep-checked), **useful today**, and **hard-to-vary** (not a topic match) [4]", "FACT"]],
+  tellLeft: true,
+  tell: "**A conjecture not on the board is a vibe.** Standalone conjecture boards stall unless coupled to log replay, falsifiers, and machine-grounded quote checks (`wiki/learnings.md` §2, 20 Nov 2026) [1][4][7].",
+  src: [["ini — wiki/conjectures.md (live Deutsch board c1–c8)", INI + "wiki/conjectures.md", "23 Nov 2026", "FACT"],
+    ["ini — skills/kickoff/templates/wiki/conjectures.md.tmpl & domain.md", INI + "skills/kickoff/templates/wiki/conjectures.md.tmpl", "23 Nov 2026", "FACT"],
+    ["ini — log/agt.md (23 Nov 2026: Deutsch conjectures & dream.py)", INI + "log/agt.md", "23 Nov 2026", "FACT"],
+    ["ini — skills/dream/SKILL.md", INI + "skills/dream/SKILL.md", "23 Nov 2026", "FACT"],
+    ["ini — skills/dream/scripts/dream.py (315 lines: pairs, check, feed)", INI + "skills/dream/scripts/dream.py", "23 Nov 2026", "FACT"],
+    ["ini — foundation.md (§record negative knowledge, §lenses: Deutsch)", INI + "foundation.md", "23 Nov 2026", "FACT"],
+    ["ini — wiki/learnings.md (§2 standalone conjecture boards stall)", INI + "wiki/learnings.md", "23 Nov 2026", "FACT"]] },
+
+{ id: "tells", gx: 2, gy: 1, hue: "ink", short: "proof & kill", lane: "evidence", h: 1120,
+  kicker: "evidence · V · flow · 23 Nov 2026", title: "Field proof & kill criteria",
+  feedKicker: "V · flow · field scorecard & bets",
+  big: { v: "2+1+1", u: "repos", l: "2 ongoing codebases + 1 fresh 0.3.0 copy + 1 vault — before the 2026-12-31 deadline" },
+  verdict: "The bet is live and dated: four checkable targets, live conjectures (c1–c8), and two explicit kill criteria written down before the result.",
+  pill: "watchlist · 2026-12-31",
+  lede: "`ini` does not ask to be trusted on philosophy. Between 18–23 Nov 2026 it moved from package draft to v0.3.0 with a live `conjectures.md` register (`c1`–`c8`), survived three cross-family adversarial reviews (**6/6**, **11/11**, and **11/11** findings accepted and fixed), and entered four real repositories — while keeping explicit **2026-12-31** falsifiers in `objective.md` [1][2][3][6].",
+  left: id => `<table class="facts">${[
+    ["13/13 + 18", "Target 1 (Start): fresh copy green on every non-kickoff gate, `--prove` 13/13, 18 behaviour tests green (14 `.tmpl` files) [1][2]", "proof"],
+    ["2 + 1", "Target 2 (Distillation by 31 Dec): 2 ongoing repos carrying gates + 1 new copy started — already hit in field evidence [1][2]", "ratchet"],
+    ["up → down", "Target 3 (Compounding by 31 Dec): ≥1 lesson/skill promoted up reaches another repo — conjectures, `dream.py`, pre-push & routing queued [1][2]", "distil"],
+    ["76 / 99 / ≤89", "Target 4 (Budget): `AGENTS.md` 76/120, `learnings.md` 99/160, all 8 skills 56–89/150 [1][4]", "skills"],
+    ["6 · 11 · 11", "Three cross-family critic passes (18 Nov other-family; 20 & 23 Nov `claude-opus-5-5`): all 28 findings fixed [3]", "delegate"],
+    ["c1–c3 open", "`conjectures.md`: `c1` distil vs link, `c2` budget-bounded compounding, `c3` pre-3.14 transfer (`c4–c5` promoted, `c6–c8` destroyed) [6]", "dream"],
+    ["KILL 1–2 · 31 Dec", "Reframe if ongoing repos drop `ini` gates as too costly or if later refreshes cost more than distilling from scratch [1]", "objective"]
+  ].map(r => `<tr data-go="${r[2]}"><td class="v">${r[0]}</td><td class="c">${cites(md(r[1]), id)} <span class="go">→ ${r[2]}</span></td></tr>`).join("")}</table>`,
+  right: id => `<div class="prose"><p><b>The two-way scorecard (23 Nov 2026):</b></p></div>` +
+    factsTable([
+      ["18 Nov", "Package draft → 0.2.0 → 0.3.0: 13 witness-proven gates, 3 ongoing repos probed, `base/` & `origin` dissolved [3]", "FACT"],
+      ["20 Nov", "Harvested up from 4 active repos: `skills/dream`, `.githooks/pre-push`, AST `sweep_callsites.py`, 3-family routing, 8 lessons folded [2][3]", "FACT"],
+      ["20 Nov", "Harvested down into `pub` (this static site): rhythm, roles, and 5 plain-file skills; Python package harness declined [5]", "FACT"],
+      ["23 Nov", "Harvested up: `wiki/conjectures.md` (`c1`–`c8`) + kickoff starter, 315-line `dream.py` (`pairs`/`check`/`feed`), negative-knowledge rules (18 tests) [2][3][6]", "FACT"],
+      ["31 Dec", "Open bets: distil-vs-link refresh cost (`c1`), compounding within budget (`c2`), and pre-3.14 gate transfer (`c3`) [1][2][6]", "FORECAST"]], id),
+  tellLeft: true,
+  tell: "**Watch the second refresh.** The first distillation is exciting; the real test of *distil, don't link* (`c1`) is whether the third refresh six months later still feels lighter than a dependency [1][6].",
+  src: [["ini — objective.md (§target 1–4, §kill)", INI + "objective.md", "20 Nov 2026", "FACT"],
+    ["ini — now.md (field adoption & next moves)", INI + "now.md", "23 Nov 2026", "FACT"],
+    ["ini — log/agt.md (18, 20 & 23 Nov 2026 critic reviews & evolution)", INI + "log/agt.md", "23 Nov 2026", "FACT"],
+    ["Direct line counts of ini v0.3.0 on disk (23 Nov 2026)", "https://github.com/adrianmatias/ini", "23 Nov 2026", "FACT"],
+    ["pub — AGENTS.md & skills/ (static-site distillate)", "../../AGENTS.md", "20 Nov 2026", "FACT"],
+    ["ini — wiki/conjectures.md (c1–c8 live Deutsch board)", INI + "wiki/conjectures.md", "23 Nov 2026", "FACT"]] }
+],
+
+links: [
+  // crown links -> core counterbalances
+  ["ladder", "thesis", "6 tiers + 4 lenses"],
+  ["thesis", "domain", "vs hallucination"],
+  ["thesis", "proof", "vs untested claims"],
+  ["thesis", "method", "verified on disk"],
+  // center gold spine (Domain -> OOP Modular Abstraction -> Public Surface)
+  ["domain", "shape", "vs unbounded complexity"],
+  ["shape", "testing", "contract boundaries"],
+  // vertical pillar flows
+  ["objective", "skeleton", "loss → skeleton"],
+  ["skeleton", "learnings", "bought by incidents"],
+  ["proof", "gates", "13/13 witnesses"],
+  ["gates", "ratchet", "adopt → shrink → push"],
+  ["rhythm", "delegate", "roles & billing"],
+  ["delegate", "dream", "dream.py + c1–c8"],
+  ["distil", "skills", "plain files, budgeted"],
+  ["skills", "tells", "2026-12-31 targets"],
+  // horizontal cross-pillar connections
+  ["objective", "proof", "checkable target"],
+  ["proof", "domain", "AST + wire enforced"],
+  ["domain", "rhythm", "compress concepts"],
+  ["rhythm", "distil", "harvest up & down"],
+  ["gates", "shape", "PILE ≤ 6 · C901 ≤ 6"],
+  ["ratchet", "testing", "no test ratchet"],
+  ["dream", "tells", "conjectures c1–c8"]
+]
+};
+
+</script>
+<script>
+"use strict";
+// ---------- tiny helpers ----------
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const NS = "http://www.w3.org/2000/svg";
+const W = 1200, H = 960, GX = 1800, GY = 1480;
+const nodeRect = n => ({ x: n.gx * GX - W / 2, y: n.gy * GY - (n.h || H) / 2, w: W, h: n.h || H });          // tile size and grid pitch, world px
+const HUE = { gold: "#d4ad3a", sea: "#4fb3a9", rust: "#d0694a", ink: "#8f9bd6", rose: "#c96f8f", fg: "#ebe8e2", dim: "#7d786f" };
+
+// inline rich text: **b**, [n] cites → superscripts linked to the node's source list
+function cites(s, node) {   // superscript [n] in trusted HTML
+  return String(s).replace(/\[(\d+(?:,\d+)*)\]/g, (_, ns) => ns.split(",").map(n => `<sup class="cite" data-node="${node}" data-n="${n}">${n}</sup>`).join(""));
+}
+function rich(s, node) {
+  return esc(s).replace(/\[([^\]]+?)\]\(([^)\s]+)\)/g, '<a href="$2">$1</a>').replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/\*([^*\s][^*]*?)\*/g, "<i>$1</i>").replace(/\[(\d+(?:,\d+)*)\]/g, (_, ns) =>
+    ns.split(",").map(n => `<sup class="cite" data-node="${node}" data-n="${n}">${n}</sup>`).join(""));
+}
+
+// ---------- charts (pure SVG, world-px sized) ----------
+function scale(d0, d1, r0, r1, log) {
+  if (log) { const a = Math.log10(d0), b = Math.log10(d1); return v => r0 + (Math.log10(v) - a) / (b - a) * (r1 - r0); }
+  return v => r0 + (v - d0) / (d1 - d0) * (r1 - r0);
+}
+const parseT = t => { const [y, m = 1, d = 1] = String(t).split("-").map(Number); return y + (m - 1) / 12 + (d - 1) / 365; };
+function niceTicks(lo, hi, n, log) {
+  if (log) { const out = []; for (let e = Math.floor(Math.log10(lo)); e <= Math.ceil(Math.log10(hi)); e++) for (const m of [1, 3]) { const v = +(m * 10 ** e).toPrecision(6); if (v >= lo && v <= hi) out.push(v); } return out; }
+  const step0 = (hi - lo) / n, mag = 10 ** Math.floor(Math.log10(step0)), step = [1, 2, 2.5, 5, 10].map(k => k * mag).find(s => s >= step0);
+  const out = []; for (let v = Math.ceil(lo / step) * step; v <= hi + 1e-9; v += step) out.push(+v.toFixed(10)); return out;
+}
+function fmt(v, f) {
+  if (f === "pct") return v + "%";
+  if (f === "usd") return v >= 1000 ? "$" + (v >= 1e6 ? v / 1e6 + "M" : v / 1000 + "k") : "$" + v;
+  if (f === "x") return v + "×";
+  if (f === "h") return v + " h";
+  if (f === "k") return v >= 1000 ? v / 1000 + "k" : v;
+  return v;
+}
+function lineChart(c) {
+  const w = c.w || 640, h = c.h || 250, L = 44, R = 12, T = 10, B = 22;
+  const all = c.series.flatMap(s => s.data);
+  const xs = all.map(p => parseT(p[0])), x0 = c.x0 ?? Math.min(...xs), x1 = c.x1 ?? Math.max(...xs);
+  const ys = all.map(p => p[1]).filter(v => v != null);
+  const y0 = c.y0 ?? (c.log ? Math.min(...ys) * 0.8 : Math.min(0, Math.min(...ys))), y1 = c.y1 ?? Math.max(...ys) * (c.log ? 1.4 : 1.08);
+  const X = scale(x0, x1, L, w - R), Y = scale(y0, y1, h - B, T, c.log);
+  let g = `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(c.title)}">`;
+  for (const t of niceTicks(y0, y1, 4, c.log)) g += `<line class="gl" x1="${L}" x2="${w - R}" y1="${Y(t)}" y2="${Y(t)}"/><text class="tk" x="${L - 6}" y="${Y(t) + 3}" text-anchor="end">${fmt(t, c.yf)}</text>`;
+  const span = x1 - x0, step = span > 16 ? 4 : span > 8 ? 2 : 1;
+  if (span < 1.5) { const M = "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split(" "); for (let t = Math.ceil(x0 * 12) / 12; t <= x1 + 1e-6; t += 1 / 12) g += `<text class="tk" x="${X(t)}" y="${h - 6}" text-anchor="middle">${M[Math.round((t % 1) * 12) % 12]}</text>`; }
+  else for (let yr = Math.ceil(x0); yr <= x1; yr += step) g += `<text class="tk" x="${X(yr)}" y="${h - 6}" text-anchor="middle">${yr}</text>`;
+  g += `<line class="ax" x1="${L}" x2="${w - R}" y1="${h - B}" y2="${h - B}"/>`;
+  for (const m of c.marks || []) {
+    const mx = X(parseT(m[0]));
+    const r = mx > w * .62;   // labels near the right edge grow leftwards
+    g += `<line class="mk" x1="${mx}" x2="${mx}" y1="${T}" y2="${h - B}"/><text class="ml" x="${r ? mx - 3 : mx + 3}" y="${T + 9 + (m[2] || 0) * 11}"${r ? ' text-anchor="end"' : ""}>${esc(m[1])}</text>`;
+  }
+  c.series.forEach((s, i) => {
+    const col = HUE[s.hue] || s.hue || HUE.gold, pts = s.data.filter(p => p[1] != null).map(p => [X(parseT(p[0])), Y(p[1])]);
+    const d = pts.map((p, j) => (j ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1)).join("");
+    if (s.area) g += `<path class="ar" fill="${col}" d="${d}L${pts.at(-1)[0]} ${h - B}L${pts[0][0]} ${h - B}Z"/>`;
+    g += `<path class="ln" stroke="${col}" d="${d}"${s.dash ? ' stroke-dasharray="4 4"' : ""}/>`;
+    if (s.label) g += `<text class="lg" fill="${col}" x="${L + 8}" y="${T + 12 + i * 13}">${esc(s.label)}</text>`;
+  });
+  for (const p of c.dots || []) { const px = X(parseT(p[0])), py = Y(p[1]), r = px > w * .62;   // labels near the right edge grow leftwards
+    g += `<circle cx="${px}" cy="${py}" r="3.5" fill="${HUE[p[3]] || HUE.fg}"/><text class="ml" x="${r ? px - 6 : px + 6}" y="${py + (p[4] || -6)}" fill="${HUE.fg}"${r ? ' text-anchor="end"' : ""}>${esc(p[2])}</text>`; }
+  return g + "</svg>";
+}
+function barChart(c) {   // horizontal bars; c.rows = [[label, value, hue, note]]; signed values supported (linear)
+  const w = c.w || 640, rh = c.rh || 26, L = c.L || 210, R = 92, h = c.rows.length * rh + 22;
+  const vs = c.rows.map(r => r[1]), neg = Math.min(...vs) < 0;
+  const lo = c.log ? Math.min(...vs) / 2 : Math.min(0, Math.min(...vs)) * 1.04, hi = Math.max(...vs) * (c.log ? 2 : 1.06);
+  const X = scale(lo, hi, L, w - R, c.log), base = c.log ? L : X(0);
+  let g = `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(c.title)}">`;
+  for (const t of niceTicks(c.log ? lo : lo, hi, neg ? 6 : 4, c.log)) g += `<line class="gl" x1="${X(t)}" x2="${X(t)}" y1="0" y2="${h - 20}"/><text class="tk" x="${X(t)}" y="${h - 6}" text-anchor="middle">${fmt(t, c.xf)}</text>`;
+  if (neg) g += `<line class="ax" x1="${base}" x2="${base}" y1="0" y2="${h - 20}"/>`;
+  c.rows.forEach((r, i) => {
+    const y = i * rh + 4, col = HUE[r[2]] || HUE.dim, xv = X(r[1]), x0 = Math.min(base, xv), bw = Math.max(2, Math.abs(xv - base));
+    g += `<text class="tk" x="${L - 8}" y="${y + rh / 2 + 2}" text-anchor="end" style="fill:var(--fg2);font-size:10.5px">${esc(r[0])}</text>`;
+    g += `<rect x="${x0}" y="${y + 3}" width="${bw}" height="${rh - 9}" rx="3" fill="${col}" opacity=".85"/>`;
+    g += r[1] < 0 ? `<text class="bv" x="${xv + 6}" y="${y + rh / 2 + 2}" style="fill:var(--bg)">${esc(r[3] ?? fmt(r[1], c.xf))}</text>`
+                  : `<text class="bv" x="${xv + 6}" y="${y + rh / 2 + 2}">${esc(r[3] ?? fmt(r[1], c.xf))}</text>`;
+  });
+  return g + "</svg>";
+}
+function spark(series, log) {
+  const d = series.filter(p => p[1] != null), xs = d.map(p => parseT(p[0])), ys = d.map(p => p[1]);
+  const X = scale(Math.min(...xs), Math.max(...xs), 0, 420), lo = Math.min(...ys), hi = Math.max(...ys);
+  const Y = scale(log ? lo : Math.min(0, lo), hi, 150, 0, log);
+  const p = d.map((q, i) => (i ? "L" : "M") + X(xs[i]).toFixed(1) + " " + Y(q[1]).toFixed(1)).join("");
+  return `<svg class="spark" viewBox="0 0 420 150"><path class="a" d="${p}L420 150L0 150Z"/><path d="${p}"/></svg>`;
+}
+function barNarrow(c) {   // phone: the label on its own line, the bar under it; a long value drops below the bar
+  const w = 340, vs = c.rows.map(r => r[1]), neg = Math.min(...vs) < 0;
+  const lo = c.log ? Math.min(...vs) / 2 : Math.min(0, Math.min(...vs)) * 1.04, hi = Math.max(...vs) * (c.log ? 2 : 1.06);
+  const X = scale(lo, hi, 4, w - 70, c.log), base = c.log ? 4 : X(0);
+  let body = "", y = 0;
+  for (const r of c.rows) {
+    const col = HUE[r[2]] || HUE.dim, xv = X(r[1]), x0 = Math.min(base, xv), bw = Math.max(2, Math.abs(xv - base));
+    const v = String(r[3] ?? fmt(r[1], c.xf)), vx = Math.max(xv, base) + 6, fits = vx + v.length * 6.7 < w;
+    body += `<text class="nl" x="4" y="${y + 12}">${esc(r[0])}</text><rect x="${x0}" y="${y + 17}" width="${bw}" height="11" rx="3" fill="${col}" opacity=".85"/>` +
+      (fits ? `<text class="nv" x="${vx}" y="${y + 27}">${esc(v)}</text>` : `<text class="nv" x="${w - 2}" y="${y + 41}" text-anchor="end">${esc(v)}</text>`);
+    y += fits ? 36 : 50;
+  }
+  const h = y + 6;
+  return `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(c.title)}">${neg ? `<line class="ax" x1="${base}" x2="${base}" y1="14" y2="${h}"/>` : ""}${body}</svg>`;
+}
+function chartBlock(c, node, nw) {
+  const body = c.kind === "bar" ? (nw ? barNarrow(c) : barChart(c)) : lineChart(nw ? { ...c, w: 340, h: 236 } : c);
+  return `<figure class="chart"${nw ? "" : " data-zoom"}><div class="ct">${esc(c.title)}</div>${body}<div class="cs">${rich(c.src || "", node)}</div></figure>`;
+}
+
+// ---------- render ----------
+function factsTable(rows, node) {
+  return `<table class="facts">${rows.map(r => `<tr><td class="v">${esc(r[0])}</td><td class="c">${rich(r[1], node)}${r[2] && r[2] !== "REPORTED" ? `<span class="lab ${r[2]}">${r[2]}</span>` : r[2] ? `<span class="lab">REP</span>` : ""}</td></tr>`).join("")}</table>`;
+}
+function takeBlock(t, node) {
+  if (!t) return "";
+  return `<div class="take"><q>${esc(t.q)}</q>${t.tr ? `<div class="tr">${esc(t.tr)}</div>` : ""}<div class="who">— ${esc(t.who)}</div>${t.verdict ? `<div class="score"><b class="${t.verdict}">${t.verdict.replace("-", " ")}</b><span>${rich(t.why, node)}</span></div>` : ""}</div>`;
+}
+function srcList(n, nw) {
+  if (!n.src) return "";
+  const li = n.src.map((s, i) => `<li${nw ? "" : ` id="${n.id}-s${i + 1}"`}><b>${i + 1}</b> ${s[3] ? `<span class="lab ${s[3] === "REPORTED" ? "" : s[3]}">${s[3] === "REPORTED" ? "REP" : s[3]}</span> ` : ""}${s[1] ? `<a href="${esc(s[1])}" target="_blank" rel="noopener">${esc(s[0])}</a>` : `<span class="priv">${esc(s[0])}</span>`}${s[2] ? " · " + esc(s[2]) : ""}</li>`).join("");
+  return nw ? `<details class="fs"><summary>sources · ${n.src.length}</summary><ol class="src">${li}</ol></details>` : `<ol class="src" data-zoom>${li}</ol>`;
+}
+function bodyHTML(n, nw) {   // the reading face; nw = narrow (phone feed)
+  let h = n.lede ? `<p class="lede">${rich(n.lede, n.id)}</p>` : "";
+  h += `<div class="cols"><div class="col">`;
+  for (const c of n.charts || []) h += chartBlock(c, n.id, nw);
+  if (n.facts) h += factsTable(n.facts, n.id);
+  if (n.left) h += n.left(n.id, nw);
+  if (n.tell && n.tellLeft) h += `<div class="tell"><h4>the tell</h4>${rich(n.tell, n.id)}</div>`;
+  h += `</div><div class="col">`;
+  for (const t of [].concat(n.take || [])) h += takeBlock(t, n.id);
+  if (n.rightFacts) h += factsTable(n.rightFacts, n.id);
+  if (n.right) h += n.right(n.id, nw);
+  if (n.bull || n.bear) h += `<div class="bb"><div class="bull"><h4>${esc(n.bullT || "bull")}</h4>${rich(n.bull, n.id)}</div><div class="bear"><h4>${esc(n.bearT || "bear")}</h4>${rich(n.bear, n.id)}</div></div>`;
+  if (n.tell && !n.tellLeft) h += `<div class="tell"><h4>the tell</h4>${rich(n.tell, n.id)}</div>`;
+  return h + `</div></div>` + srcList(n, nw);
+}
+function renderNode(n) {
+  const el = document.createElement("article");
+  el.className = "node"; el.id = n.id; el.tabIndex = 0; el.dataset.hue = n.hue;
+  el.style.left = n.gx * GX - W / 2 + "px"; el.style.top = n.gy * GY - (n.h || H) / 2 + "px"; if (n.h) el.style.height = n.h + "px";
+  const b = n.big || {}, short = esc(n.short || n.title);
+  let h = `<div class="lm"><h4>${short}</h4>${b.v ? `<div class="mv">${esc(b.v)}${b.u ? " " + esc(b.u) : ""}</div>` : ""}</div>`;
+  h += `<div class="l0"><div class="k">${esc(n.kicker)}</div><h2>${esc(n.title)}</h2>${n.spark ? spark(n.spark, n.sparkLog) : ""}`;
+  if (b.v) h += `<div class="big">${esc(b.v)}<small>${esc(b.u || "")}</small></div><div class="bl">${esc(b.l || "")}</div>`;
+  h += `<div class="v">${esc(n.verdict)}</div></div>`;
+  h += `<div class="l1"><header><span class="k">${esc(n.kicker)}</span><h3>${esc(n.title)}</h3>${n.pill ? `<span class="pill">${esc(n.pill)}</span>` : ""}</header>`;
+  el.innerHTML = h + bodyHTML(n, false) + "</div>";
+  return el;
+}
+const world = $("#world"), vp = $("#vp");
+const nodes = DATA.nodes, byId = Object.fromEntries(nodes.map(n => [n.id, n]));
+const gxs = nodes.map(n => n.gx), gys = nodes.map(n => n.gy);
+const bandYs = (DATA.bands || []).map(b => b.y), bandXs = (DATA.bands || []).map(b => b.x);
+const BOUNDS = {
+  x: Math.min(Math.min(...gxs) * GX - W / 2 - 300, bandXs.length ? Math.min(...bandXs) - 200 : 1e9),
+  y: Math.min(Math.min(...gys) * GY - H / 2 - 300, bandYs.length ? Math.min(...bandYs) - 180 : 1e9)
+};
+BOUNDS.w = Math.max(...gxs) * GX + W / 2 + 300 - BOUNDS.x;
+BOUNDS.h = Math.max(...nodes.map(n => n.gy * GY + (n.h || H) / 2)) + 300 - BOUNDS.y;
+const grid = $("#grid"); Object.assign(grid.style, { left: BOUNDS.x - 3000 + "px", top: BOUNDS.y - 3000 + "px", width: BOUNDS.w + 6000 + "px", height: BOUNDS.h + 6000 + "px" });
+for (const n of nodes) world.appendChild(renderNode(n));
+// era and layer bands: large quiet labels on the open ground between tiles
+for (const b of DATA.bands || []) {
+  const el = document.createElement("div"); el.className = "band " + (b.cls || "");
+  el.style.left = b.x + "px"; el.style.top = b.y + "px"; el.innerHTML = b.html;
+  world.insertBefore(el, grid.nextSibling);
+}
+
+// links: soft curves between tile centres, label at the midpoint
+const svg = $("#links");
+Object.assign(svg.style, { left: BOUNDS.x + "px", top: BOUNDS.y + "px", width: BOUNDS.w + "px", height: BOUNDS.h + "px" });
+svg.setAttribute("viewBox", `${BOUNDS.x} ${BOUNDS.y} ${BOUNDS.w} ${BOUNDS.h}`);
+let linkSvg = ""; const CHIPS = [];
+DATA.links.forEach(([a, b, label]) => {
+  const A = byId[a], B = byId[b]; if (!A || !B) return;
+  const ax = A.gx * GX, ay = A.gy * GY, bx = B.gx * GX, by = B.gy * GY, mx = (ax + bx) / 2, my = (ay + by) / 2;
+  const dx = bx - ax, dy = by - ay, len = Math.hypot(dx, dy), px = -dy / len, py = dx / len;
+  // choose the bend that puts the label (curve midpoint) on open ground: off every tile, clear of other labels
+  let best = null, bs = 1e18;
+  for (const c of [0, 300, -300, 600, -600, 900, -900, 1200, -1200, GY, -GY, 1800, -1800, 2400, -2400, 2800, -2800, 3200, -3200]) {
+    const x = mx + px * c / 2, y = my + py * c / 2;
+    let sc = Math.abs(c);
+    for (const n of nodes) { const r = nodeRect(n), m = 40; if (x > r.x - m && x < r.x + r.w + m && y > r.y - m && y < r.y + r.h + m) sc += 1e7; }
+    for (const k of CHIPS) if (Math.abs(k.x - x) < 1000 && Math.abs(k.y - y) < 380) sc += 1e6;
+    if (sc < bs) { bs = sc; best = { c, x, y }; }
+  }
+  const cx = mx + px * best.c, cy = my + py * best.c;
+  linkSvg += `<path data-a="${a}" data-b="${b}" d="M${ax} ${ay}Q${cx} ${cy} ${bx} ${by}"/>`;
+  CHIPS.push({ a, b, x: best.x, y: best.y, label });
+});
+svg.innerHTML = linkSvg;
+const chipBox = $("#chips");
+for (const c of CHIPS) {
+  const el = document.createElement("button");
+  el.textContent = c.label; el.title = `${byId[c.a].short} ↔ ${byId[c.b].short}`;
+  el.addEventListener("click", () => {   // fly to both ends of the link
+    const A = nodeRect(byId[c.a]), B = nodeRect(byId[c.b]), x = Math.min(A.x, B.x), y = Math.min(A.y, B.y);
+    setFocus(null); flyTo({ x, y, w: Math.max(A.x + A.w, B.x + B.w) - x, h: Math.max(A.y + A.h, B.y + B.h) - y }, 750, .9);
+  });
+  c.el = el; chipBox.appendChild(el);
+}
+function placeChips(o1) {
+  for (const c of CHIPS) {
+    const hot = focus && (focus.id === c.a || focus.id === c.b);
+    c.el.classList.toggle("hot", !!hot);
+    c.el.classList.toggle("off", o1 > .55 && !hot);
+    c.el.style.transform = `translate(${c.x * cam.s + cam.x}px,${c.y * cam.s + cam.y}px) translate(-50%,-50%)`;
+  }
+}
+
+// ---------- camera ----------
+let cam = { x: 0, y: 0, s: .2 }, anim = null, focus = null;
+const vw = () => vp.clientWidth, vh = () => vp.clientHeight;
+const minScale = () => Math.min(.008, fitRect(BOUNDS, .96).s * .42);
+function apply() {
+  world.style.transform = `translate(${cam.x}px,${cam.y}px) scale(${cam.s})`;
+  const tilePx = W * cam.s;
+  const o1 = Math.min(1, Math.max(0, (tilePx - 480) / 180));
+  world.style.setProperty("--o1", o1.toFixed(3));
+  document.body.classList.toggle("z0", o1 < .5);
+  document.body.classList.toggle("z-far", tilePx < 78);
+  placeChips(o1);
+  mini();
+}
+function zoomBy(k) {
+  cancelAnimationFrame(anim);
+  const s = Math.min(9, Math.max(minScale(), cam.s * k)), r = s / cam.s;
+  const mx = vw() / 2, my = vh() / 2;
+  cam.x = mx - (mx - cam.x) * r; cam.y = my - (my - cam.y) * r; cam.s = s; apply(); fade();
+}
+function fitRect(r, pad = .9) {
+  const s = Math.min(vw() * pad / r.w, vh() * pad / r.h);
+  return { s, cx: r.x + r.w / 2, cy: r.y + r.h / 2 };
+}
+function flyTo(r, ms = 750, pad) {
+  const t = fitRect(r, pad);
+  if (ms <= 1) { cancelAnimationFrame(anim); cam.s = t.s; cam.x = vw() / 2 - t.cx * cam.s; cam.y = vh() / 2 - t.cy * cam.s; apply(); return; }
+  const c0 = { cx: (vw() / 2 - cam.x) / cam.s, cy: (vh() / 2 - cam.y) / cam.s, s: cam.s };
+  const dist = Math.hypot(t.cx - c0.cx, t.cy - c0.cy), dip = Math.min(.9, dist / 6000);
+  const t0 = performance.now(); cancelAnimationFrame(anim);
+  const step = now => {
+    let k = Math.min(1, (now - t0) / ms); const e = k < .5 ? 4 * k * k * k : 1 - (-2 * k + 2) ** 3 / 2;
+    const ls = Math.log(c0.s) + (Math.log(t.s) - Math.log(c0.s)) * e - dip * Math.sin(Math.PI * e);
+    cam.s = Math.exp(ls);
+    const cx = c0.cx + (t.cx - c0.cx) * e, cy = c0.cy + (t.cy - c0.cy) * e;
+    cam.x = vw() / 2 - cx * cam.s; cam.y = vh() / 2 - cy * cam.s; apply();
+    if (k < 1) anim = requestAnimationFrame(step);
+  };
+  anim = requestAnimationFrame(step);
+}
+function elRect(el) {   // world rect of any element inside the world
+  const b = el.getBoundingClientRect(), v = vp.getBoundingClientRect();
+  return { x: (b.left - v.left - cam.x) / cam.s, y: (b.top - v.top - cam.y) / cam.s, w: b.width / cam.s, h: b.height / cam.s };
+}
+function setFocus(n, sub) {
+  focus = n;
+  $$(".node.cur").forEach(e => e.classList.remove("cur"));
+  $$("#links .hot").forEach(e => e.classList.remove("hot"));
+  if (n) {
+    $("#" + n.id).classList.add("cur");
+    $$(`#links [data-a="${n.id}"],#links [data-b="${n.id}"]`).forEach(e => e.classList.add("hot"));
+  }
+  $("#crumbTail").innerHTML = n ? ` › <a data-act="node">${esc(n.short || n.title)}</a>${sub ? " › <b>" + esc(sub) + "</b>" : ""}` : "";
+  history.replaceState(null, "", n ? "#" + n.id : location.pathname + location.search);
+}
+function home(ms) { setFocus(null); flyTo(BOUNDS, ms, .96); }
+function goNode(n, ms) { setFocus(n); flyTo(nodeRect(n), ms, .94); }
+
+// ---------- input ----------
+let ptrs = new Map(), downAt = null, moved = 0, pinch0 = null;
+vp.addEventListener("wheel", e => {
+  e.preventDefault(); cancelAnimationFrame(anim);
+  const f = Math.exp(-(e.ctrlKey ? e.deltaY * 3 : e.deltaY) * .0016), s = Math.min(9, Math.max(minScale(), cam.s * f)), k = s / cam.s;
+  const r = vp.getBoundingClientRect(), mx = e.clientX - r.left, my = e.clientY - r.top;
+  cam.x = mx - (mx - cam.x) * k; cam.y = my - (my - cam.y) * k; cam.s = s; apply(); fade();
+}, { passive: false });
+vp.addEventListener("pointerdown", e => {
+  if (document.body.classList.contains("read")) return;
+  ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY }); downAt = { x: e.clientX, y: e.clientY }; moved = 0;
+  if (ptrs.size === 2) { const [p, q] = [...ptrs.values()]; pinch0 = { d: Math.hypot(p.x - q.x, p.y - q.y), s: cam.s }; }
+  vp.setPointerCapture(e.pointerId); cancelAnimationFrame(anim);
+});
+vp.addEventListener("pointermove", e => {
+  if (!ptrs.has(e.pointerId)) return;
+  const p0 = ptrs.get(e.pointerId), dx = e.clientX - p0.x, dy = e.clientY - p0.y;
+  ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  moved += Math.abs(dx) + Math.abs(dy);
+  if (ptrs.size === 2 && pinch0) {
+    const [p, q] = [...ptrs.values()], d = Math.hypot(p.x - q.x, p.y - q.y), mx = (p.x + q.x) / 2, my = (p.y + q.y) / 2;
+    const s = Math.min(9, Math.max(minScale(), pinch0.s * d / pinch0.d)), k = s / cam.s;
+    cam.x = mx - (mx - cam.x) * k + dx / 2; cam.y = my - (my - cam.y) * k + dy / 2; cam.s = s;
+  } else if (moved > 4) { cam.x += dx; cam.y += dy; vp.classList.add("drag"); }
+  apply(); if (moved > 4) fade();
+});
+const up = e => {
+  ptrs.delete(e.pointerId); vp.classList.remove("drag"); if (ptrs.size < 2) pinch0 = null;
+  if (moved <= 4 && downAt && ptrs.size === 0) click(e);
+};
+vp.addEventListener("pointerup", up); vp.addEventListener("pointercancel", e => { ptrs.delete(e.pointerId); pinch0 = null; });
+function click(e) {
+  const t = document.elementFromPoint(e.clientX, e.clientY);
+  if (!t || t.closest("a")) return;
+  const cite = t.closest(".cite"); if (cite) return jumpCite(cite);
+  const go = t.closest("[data-go]"); if (go && focus && focus.id === go.closest(".node").id) return goNode(byId[go.dataset.go]);
+  const nodeEl = t.closest(".node"); if (!nodeEl) return;
+  const n = byId[nodeEl.id], z = t.closest("[data-zoom]");
+  const o1 = parseFloat(world.style.getPropertyValue("--o1")) || 0;
+  if (focus === n && o1 < .5) return act("read");
+  if (focus !== n || o1 < .9 || !z) return goNode(n);
+  setFocus(n, z.classList.contains("src") ? "sources" : "chart"); flyTo(elRect(z), 650, .92);
+}
+function jumpCite(c) {
+  if (document.body.classList.contains("read")) {   // feed: open this card's sources and flash the line
+    const card = c.closest(".fc"), fs = card && card.querySelector(".fs"); if (!fs) return;
+    fs.open = true; const li = fs.querySelectorAll("li")[c.dataset.n - 1]; if (!li) return;
+    li.classList.add("flash"); setTimeout(() => li.classList.remove("flash"), 2200);
+    return li.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+  const n = byId[c.dataset.node], li = $(`#${n.id}-s${c.dataset.n}`); if (!li) return;
+  li.classList.add("flash"); setTimeout(() => li.classList.remove("flash"), 2200);
+  setFocus(n, "sources"); flyTo(elRect(li.parentElement), 650, .92);
+}
+function openCard(id, smooth = true) {
+  const d = $("#c-" + id); if (!d) return;
+  d.open = true; requestAnimationFrame(() => d.scrollIntoView({ behavior: smooth ? "smooth" : "auto", block: "start" }));
+}
+document.addEventListener("click", e => {
+  const a = e.target.closest("[data-act]"); if (a) { e.preventDefault(); act(a.dataset.act); }
+  const c = e.target.closest(".cite"); if (c && document.body.classList.contains("read")) { e.preventDefault(); jumpCite(c); }
+  if (e.target.id === "help") act("help");
+  const g = e.target.closest("[data-go]"); if (g && document.body.classList.contains("read")) openCard(g.dataset.go);
+});
+function act(a) {
+  if (a === "home") { if (document.body.classList.contains("read")) act("read"); home(); }
+  if (a === "zout") zoomBy(.58);
+  if (a === "zin") zoomBy(1.72);
+  if (a === "node" && focus) goNode(focus);
+  if (a === "help") $("#help").classList.toggle("on");
+  if (a === "read") {
+    const on = document.body.classList.toggle("read");
+    $$("#tools [data-act=read]")[0].textContent = on ? "map" : "read";
+    if (on) { buildFeed(); focus ? openCard(focus.id, false) : window.scrollTo(0, 0); }
+    else { window.scrollTo(0, 0); requestAnimationFrame(() => focus ? goNode(focus, 1) : home(1)); }
+  }
+}
+// arrows walk the grid: nearest tile in that direction
+function walk(dx, dy) {
+  const from = focus || byId[DATA.start];
+  if (!focus) return goNode(from);
+  let best = null, bd = 1e9;
+  for (const n of nodes) {
+    const ddx = n.gx - from.gx, ddy = n.gy - from.gy; if (n === from) continue;
+    const along = ddx * dx + ddy * dy, across = Math.abs(ddx * dy - ddy * dx); if (along <= 0) continue;
+    const d = along + across * 2; if (d < bd) { bd = d; best = n; }
+  }
+  if (best) goNode(best);
+}
+document.addEventListener("keydown", e => {
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  const k = e.key;
+  if (k === "?" ) return act("help");
+  if (k === "r" || k === "R") return act("read");
+  if (document.body.classList.contains("read")) return;
+  if (k === "Escape") { if ($("#help").classList.contains("on")) return act("help"); return focus && cam.s > (fitRect(nodeRect(focus), .94).s * 1.2) ? goNode(focus) : home(); }
+  if (k === "0" || k === "Home") return home();
+  if (k === "-" || k === "_") return zoomBy(.58);
+  if (k === "=" || k === "+") return zoomBy(1.72);
+  const dir = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[k];
+  if (dir) { e.preventDefault(); walk(...dir); }
+  if (k === "Enter" && document.activeElement?.classList.contains("node")) goNode(byId[document.activeElement.id]);
+});
+let fadeT; function fade() { $("#hint").style.opacity = 0; clearTimeout(fadeT); }
+
+// ---------- minimap ----------
+const mm = $("#mini"), mk = 190 / BOUNDS.w, mh = 120 / BOUNDS.h, mkk = Math.min(mk, mh);
+const mox = (190 - BOUNDS.w * mkk) / 2, moy = (120 - BOUNDS.h * mkk) / 2;
+mm.innerHTML = nodes.map(n => { const r = nodeRect(n); return `<i data-id="${n.id}" style="left:${mox + (r.x - BOUNDS.x) * mkk}px;top:${moy + (r.y - BOUNDS.y) * mkk}px;width:${W * mkk}px;height:${r.h * mkk}px"></i>`; }).join("") + "<u></u>";
+function mini() {
+  const u = mm.lastChild, x = -cam.x / cam.s, y = -cam.y / cam.s, w = vw() / cam.s, h = vh() / cam.s;
+  Object.assign(u.style, { left: mox + (x - BOUNDS.x) * mkk + "px", top: moy + (y - BOUNDS.y) * mkk + "px", width: w * mkk + "px", height: h * mkk + "px" });
+  $$("i", mm).forEach(i => i.classList.toggle("cur", focus?.id === i.dataset.id));
+}
+mm.addEventListener("click", e => {
+  const r = mm.getBoundingClientRect(), wx = (e.clientX - r.left - mox) / mkk + BOUNDS.x, wy = (e.clientY - r.top - moy) / mkk + BOUNDS.y;
+  let best = nodes[0], bd = 1e18; for (const n of nodes) { const d = (n.gx * GX - wx) ** 2 + (n.gy * GY - wy) ** 2; if (d < bd) { bd = d; best = n; } }
+  goNode(best);
+});
+$$(".node").forEach(el => el.addEventListener("focus", () => { if (!document.body.classList.contains("read") && focus?.id !== el.id && !ptrs.size) goNode(byId[el.id]); }));
+
+
+// ---------- the feed: the same tiles as a chronological column (phones, read mode, print) ----------
+let feedBuilt = false;
+function cardHTML(n, open) {
+  const b = n.big || {}, lane = n.lane || "";
+  return `<details class="fc" data-hue="${n.hue}" id="c-${n.id}"${open ? " open" : ""}><summary>` +
+    `<div class="fk"><span>${esc(n.feedKicker ?? n.kicker.replace(/^(the field|his practice|the evidence) · /, ""))}</span>${lane ? `<i class="lane ${lane}">${lane}</i>` : ""}</div><h3>${esc(n.feedTitle || n.title)}</h3>` +
+    (b.v ? `<div class="fbig">${esc(b.v)}<small>${esc(b.u || "")}</small></div><div class="fbl">${esc(b.l || "")}</div>` : "") +
+    `<p class="fv">${esc(n.feedVerdict ?? n.verdict)}</p><span class="fm"></span></summary><div class="l1 fl1">${n.pill ? `<span class="pill">${esc(n.pill)}</span>` : ""}${bodyHTML(n, true)}</div></details>`;
+}
+function buildFeed() {   // DATA.sections (an argument order) or DATA.eras (one group per grid column)
+  if (feedBuilt) return; feedBuilt = true;
+  const top = nodes.filter(n => n.gy === DATA.topRow);
+  const lead = DATA.lead ? DATA.lead.map(id => byId[id]) : top.filter(n => n.gx < DATA.lastTopX).sort((a, b) => (a.id === DATA.start ? -1 : b.id === DATA.start ? 1 : a.gx - b.gx));
+  const tail = DATA.tail ? DATA.tail.map(id => byId[id]) : top.filter(n => n.gx >= DATA.lastTopX);
+  const used = new Set([...lead, ...tail]);
+  const groups = DATA.sections ? DATA.sections.map(g => ({ ...g, ns: g.ids.map(id => byId[id]) }))
+    : DATA.eras.map(g => ({ ...g, ns: nodes.filter(n => !used.has(n) && Math.round(n.gx) === g.gx).sort((a, b) => a.gy - b.gy) }));
+  let h = `<header class="fh"><div class="k">${esc(DATA.kicker)}</div><h1>${esc(DATA.title)}</h1><p>${esc(DATA.subtitle)}</p><p class="fhint">${esc(DATA.feedHint)}</p></header>`;
+  h += lead.map(n => cardHTML(n, n.id === DATA.start)).join("");
+  for (const g of groups) if (g.ns.length)
+    h += `<section class="era${g.now ? " now" : ""}"><div class="eh"><b>${esc(g.t)}</b><span>${esc(g.s)}</span>${g.span ? `<em>${esc(g.span)}</em>` : ""}</div>${g.ns.map(n => cardHTML(n)).join("")}</section>`;
+  h += tail.map(n => cardHTML(n)).join("");
+  $("#feed").innerHTML = h;
+}
+
+addEventListener("beforeprint", () => { if (!document.body.classList.contains("read")) act("read"); $$("#feed details").forEach(d => d.open = true); });
+// ---------- boot ----------
+let lastVw = vw();
+addEventListener("resize", () => {
+  if (document.body.classList.contains("read")) return;
+  if (Math.abs(vw() - lastVw) < 2) return;
+  lastVw = vw(); focus ? goNode(focus, 1) : home(1);
+});
+const h0 = location.hash.slice(1);
+cam.s = fitRect(BOUNDS, .96).s * .6; cam.x = vw() / 2 - (BOUNDS.x + BOUNDS.w / 2) * cam.s; cam.y = vh() / 2 - (BOUNDS.y + BOUNDS.h / 2) * cam.s; apply();
+if (h0 === "read") { act("read"); } else { byId[h0] ? goNode(byId[h0], 900) : home(900); }
+setTimeout(() => $("#hint").style.opacity = .0, 9000);
+</script>
+</body>
+</html>

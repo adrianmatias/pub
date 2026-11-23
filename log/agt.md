@@ -73,3 +73,70 @@
   6. *(should-fix)* `AGENTS.md` still documented phone feed-first boot — updated to match the map-first contract.
   7. *(note)* `port_tsunami.py` missed `−/+` in `#hint` and `#help` — updated both strings.
 - **Verification (headless Chromium, local `file://`):** `closing-doors` (`1440×900` `z0` `s=0.0853`, `390×844` `z-far` `s=0.0231` → extra `−` `s=0.0134` → `l0` `s=0.3055` → `read` `scrollW=390`, `844×390` tap-2 `read` open); `tsunami-and-printing-press` (`1440×900` `z0` `s=0.1536`, `390×844` `z-far` `s=0.0416` → extra `−` `s=0.0241` → `l0` `s=0.3055` → `read` `scrollW=390`, `844×390` tap-2 `read` open); closed-repo/client privacy scan clean.
+
+## reply — harvested down from ini into pub; new infographic `infog/ini/` built, reviewed, and held locally for inspection
+
+- **Harvest down (`AGENTS.md`, `skills/{review,delegate,compress,dream,harvest}/SKILL.md`):**
+  - Distilled into `pub`'s own terms with no dependency, symlink, or pointer back: expand/compress rhythm, proof-over-prose checks, three-family role routing, and a 1:1 `## skills` table in `AGENTS.md` (78/120 lines). Five plain-file skills added under `skills/`: `review` (51/150), `delegate` (53/150), `compress` (36/150), `dream` (41/150), `harvest` (29/150), all descriptions 54–58/60 chars starting with `"Use when"`.
+  - Declined (do not apply to a static HTML site with no Python package): `ci/`, `pyproject.toml`, `uv.lock`, `.githooks/pre-push`, `code-standard.md`, `domain.md`, `skills/{kickoff,mode,restructure}`. Preserved every `pub` invariant.
+- **New piece `infog/ini/` (*ini: Distil, Don't Link*):**
+  - Built via `infog/ini/research/src/build.py` reusing the shared CSS and `engine.js` from `infog/closing-doors/research/src/` into one self-contained offline HTML (`infog/ini/index.html`, 133 KB) plus a 1200×630 Open Graph card (`infog/ini/og.png`).
+  - Architecture: 18 tiles across 5 pillars (**I · Direction**, **II · Shape**, **III · Proof**, **IV · Rhythm**, **V · Flow**) × 3 layers (**principles**, **machinery**, **evidence**) + crown row (*the steering ladder*, *the thesis*, *method & limits*), 21 screen-space links, 7 custom inline SVG diagrams with narrow phone equivalents, and argument-order `DATA.sections` feed. Every count, quote, gate threshold, and date verified directly from `ini` v0.3.0 on disk (`uv run pytest` 16 passed; `uv run python -m ci gates` 13/13 green).
+  - Updated `index.html` (new top piece card, `.piece + .piece` spacing, OG/Twitter descriptions) and `README.md` (`skills/` layout row + pieces table).
+- **Adversarial review (`claude-opus-5-5`, cross-family from author `gemini-4-neon`):** 13 findings (0 blockers, 6 should-fix, 7 notes); 12 accepted and fixed, 1 repo-hygiene note deferred to director before push:
+  1. *(should-fix · accept)* CRAP coverage threshold for complexity 6 was `~56%` (yields 9.07 > 8) — fixed to `~62%` (`1 − (2/36)^(1/3) = 61.8%`).
+  2. *(should-fix · accept)* `arXiv:2602.11988` evaluated SWE-bench + 12 repos, not 60,000+ (60,000+ is public adoption) — split adoption clause from study sample.
+  3. *(should-fix · accept)* Gate split was `9 + 4` with `docs` counted as custom; `docs` runs ruff — fixed to `10 tool-backed + 3 custom AST/file` (`shape`, `domain`, `harness`) and matched README's four highlighted areas (`domain`, `shape`, AST `ontology`, `docs`).
+  4. *(should-fix · accept)* Evolution span (`48 hours`) and `0.2.0` `origin` timing inaccurate — fixed to `18 Nov 2026` with `origin` as a short-lived step between `0.2.0` and `0.3.0`.
+  5. *(should-fix · accept)* Ledger wording (`0 extra defects` → `prevented no defect`) and stray `[5]` citation on chart — fixed both.
+  6. *(should-fix · accept)* `log/agt.md` entry added in this close; 18 Nov critic no longer attributed to `claude-opus-5-5` (author/critic cross-family confirmed: `gemini-4-neon` vs `claude-opus-5-5`).
+  7. *(note · accept)* `non-Python repos` cited `ini/skills/harvest` — re-cited to `ini/log/agt.md` (non-code vault evidence) + `pub/AGENTS.md`.
+  8. *(note · accept)* `dream` sampling unit `files` → `pairs` in both `data.js` and `viz.js`.
+  9. *(note · accept)* `PYTHONPATH` `stripped`/`cleared` → `inherited PYTHONPATH replaced by the project's src`.
+  10. *(note · accept)* Restored full verbatim quote from `foundation.md` §1 on `objective` tile.
+  11. *(note · accept)* Uncoupled the 4 lenses from specific tiers in `steeringSVG()`/`steeringHTML()` into a separate `FOUR LENSES` box matching `foundation.md`.
+  12. *(note · accept)* Tightened three overstatements: `empty exit-1` → `empty failure`, `16 copy-based behaviour tests` → `16 behaviour tests, most starting a fresh copy of ini`, `now propagating` → `queued to propagate`.
+  13. *(note · accept-and-defer)* Untracked root symlink `pat -> ../pat` and local path `~/pro/ini` in `log/mat.md` flagged for director before staging/pushing (nothing committed or pushed).
+- **Verification (headless Chromium, local `file://`, post-fixes):** `1440×900` `z0` `s=0.138` (`18` tiles, `21` chips, `0` clipped tiles, `0` chip-chip overlaps, `0` band overlaps, `0` `l1` vertical overflows, `0` bad cites, `0` raw brackets, `0` console/page errors); `390×844` `z-far` `s=0.0416` → `−` `s=0.0241` → `l0` `s=0.3055` → `read` all 18 cards + sources open `scrollW=390` (`0` overflow); `844×390` tap-2 `read` open; `og.png` visually verified at 1200×630.
+- **Pre-push flags for mat:** (a) `https://github.com/adrianmatias/ini` still returns `PRIVATE` / HTTP 404 on GitHub — flip it to public before pushing `pub` so source links resolve; (b) confirm whether to ignore/exclude the untracked `pat` symlink and whether to keep or redact `~/pro/ini` in `log/mat.md` before pushing.
+
+# 2026-11-23
+
+## reply — cleaned `pat` symlink; recentered `infog/ini/` on domain & OOP modular abstraction
+
+- **Cleaned `pat/` (`unlink /home/mat/pro/pub/pat`):** removed the untracked root symlink (`pat -> ../pat`); `/home/mat/pro/pat` untouched, no git hooks, `.git/info/exclude` entries, or tracked `pat` installation files in `pub`.
+- **Recentered `infog/ini/` (*ini: Constraining the Generative*):**
+  - Elevated the core AI engineering thesis to the title, hero tile (`thesis`), OG card (`og.png`), `index.html`, and `README.md`: constraining the generative nature of LLMs into typed, deterministic, modular abstractions — via domain modelling, object orientation, and witness-proven gates — to counterbalance hallucination, untested claims, and unbounded complexity.
+  - Reordered the 5-pillar map so **III · Domain & OOP** forms a continuous central gold spine (`thesis` → `domain` *vs hallucination* → `shape` *OOP modular abstraction vs unbounded complexity* → `testing` *public-surface & CRAP contracts*), flanked by **II · Proof** (`proof` → `gates` → `ratchet`) on the left and **IV · Rhythm** (`rhythm` → `delegate` → `dream`) on the right. Added `counterbalanceSVG()` / `counterbalanceHTML()` on `thesis`, moved `paradoxSVG()` / `paradoxHTML()` onto `distil` (`V · Flow`), and put **III · Domain & OOP** first in the mobile feed (`DATA.sections`).
+- **Resolved pre-push flag:** verified `https://github.com/adrianmatias/ini` is now `PUBLIC` (HTTP 200).
+- **Adversarial review (`claude-opus-5-5`, cross-family from author `gemini-4-neon`):** 10 findings (0 blockers, 3 should-fix, 7 notes); 9 accepted and fixed, 1 outside-diff hygiene note logged:
+  1. *(should-fix · accept)* `domain` tell extended `wiki/learnings.md:34–35` — aligned to source wording (*"kept the codebase from a pile of functions correcting one another"*).
+  2. *(should-fix · accept)* `thesis` lede cited `[1][2]` on the 3-axis framing — removed `[1][2]` from the framing sentence and kept citations on `ini`'s mechanisms.
+  3. *(should-fix · accept)* `distil` & `tells` version labels (`0.1`, `origin` under `0.2.0`) didn't match git — fixed to *"a first package draft, then `0.2.0` (`base/`); `origin` drafted next, both cut in `0.3.0`"*.
+  4. *(note · accept)* `thesis` *"vs Untested Claims"* cell mentioned critic under `[1][3]` — dropped critic from that cell (covered on `delegate`).
+  5. *(note · accept)* `shape` lede now cites `[5]` (Python 3.14 What's New) on the 3.14 feature clause.
+  6. *(note · accept)* `shape` ledger chart relabelled 1,384 LOC row to `"Python + pydantic + beartype"` (`1,384 · 2 deps`) and aligned caption to `"gates and the boundary"`.
+  7. *(note · accept)* `testing` chart caption separated the two `learnings.md §4` bullets (74→45 files vs 41 unit files / 367 private names on 6 Nov 2026).
+  8. *(note · accept)* `testing` tell kept verbatim `code-standard.md:65` (*delete*) and `code-standard.md:68` (*must not rewrite the suite*).
+  9. *(note · accept)* `thesis` `.big` unit spelled out `"3 drifts → 1 discipline"`.
+  10. *(note · accept-and-defer)* `log/mat.md:11,61` still holds `~/pro/pub` and `~/pro/ini` (mat's own prompt text, confirm before push); `ini/now.md:26` (*"Make the repository public"*) is now stale in `~/pro/ini`.
+- **Verification (headless Chromium, local `file://`, post-fixes):** `1440×900` `z0` `s=0.138` (`18` tiles, `21` chips, `0` clipped tiles, `0` chip overlaps, `0` band overlaps, `0` `l1` overflows, `0` bad cites, `0` raw brackets, `0` errors); `390×844` `z-far` `s=0.0416` → `−` `s=0.0241` → `l0` `s=0.3055` → `read` all 18 cards + sources open `scrollW=390`; `844×390` tap-2 `read` open; `og.png` rebuilt (1200×630) and visually verified. Held locally, nothing pushed.
+
+## reply — updated `infog/ini/` with Deutsch conjectures (`c1–c8`) and `dream.py`
+
+- **Synced `infog/ini/` with `ini` commit `8b4d424` (`2026-11-23`):**
+  - Updated `dream` tile (*Conjectures & dream loop*, `c1–c8` · `3 open · 2 promoted · 3 destroyed`), `dreamSVG()`/`dreamHTML()` in `viz.js` (including widened `560`-px diagram boxes for clean label padding), and the `31 Dec` scorecard + `c1–c3` row in `tells` (`data.js`).
+  - Updated every shifted count and rule verified from `ini` on disk: knowledge `830 → 848` lines (`foundation.md` `95`, `code-standard.md` `104`, `wiki/learnings.md` `99`, 8 skills `550`), `35` lessons in `wiki/learnings.md` (`9/4/5/8/5/4`, adding *Record negative knowledge* and *conjectures stall*), `14` `.tmpl` files (adding `wiki/conjectures.md.tmpl`), `18` behaviour tests (`test_skills.py` + `test_gates.py`), `ci/tests` `462` lines (`1,764` prod + `462` test = `2,226` total), `AGENTS.md` `76/120`, and all 8 individual skill budget bars (`56–89/150`). Fixed literal backticks in `kickoff` box on `skills` tile.
+  - Updated `pub/index.html`, `pub/README.md`, and `build.py` (`help` date `23 Nov 2026`); rebuilt `infog/ini/index.html` (140.7 KB) and `infog/ini/og.png` (1200×630).
+- **Adversarial review (`claude-opus-5-5`, cross-family from author `gemini-4-hydrogen`):** 5 findings (0 blockers, 2 should-fix, 3 notes); 3 accepted and fixed, 2 accepted-and-deferred/noted:
+  1. *(should-fix · accept)* `tells` `31 Dec` row misstated `c2` as `empty ci/ceilings.json` — fixed to match `c1–c3` (`distil-vs-link refresh cost (c1)`, `compounding within budget (c2)`, `pre-3.14 gate transfer (c3)`).
+  2. *(should-fix · accept)* `gates` chart had stale `369` test lines from `20 Nov` — verified `wc -l ci/tests/*.py = 462` on disk (`1,764 + 462 = 2,226`) and updated chart + caption to `23 Nov 2026`.
+  3. *(note · accept)* `dream` & `viz.js` credited Pydantic for the quote check itself — clarified `Candidate` parses rows while `Wiki.grounded` runs a normalised substring match (`≥20` chars).
+  4. *(note · accept-and-defer)* `infog/ini/` still carries `20 Nov 2026 · updated 23 Nov 2026` before first push — confirm whether to collapse to the push date when pushing `pub`.
+  5. *(note · defer to ini)* `ini`'s own `c5` row still says *"two cross-family passes"* — no edit to `ini` from `pub`; flag for next `ini` round.
+- **Verification (headless Chromium, local `file://`, post-fixes):** `1440×900` `z0` `s=0.1376` (`18` tiles, `21` chips, `0` clipped tiles, `0` chip overlaps, `0` band overlaps, `0` `l1` overflows, `0` bad cites, `0` raw brackets, `0` errors); `390×844` `z-far` `s=0.0416` → `−` `s=0.0241` → `l0` `s=0.3055` → `read` all 18 cards + sources open `scrollW=390`; `844×390` tap-2 `read` open; `dreamSVG()`, `skills`, and `og.png` visually inspected. Held locally, nothing pushed.
+
+## reply — commit, push, publish
+
+- **Committed and pushed** the harvest-down (`AGENTS.md` + 5 distilled skills), the new `infog/ini/` piece (*ini: Constraining the Generative*, `20 Nov 2026 · updated 23 Nov 2026`), the `pat` symlink removal, and the `2026-11-23` round logs.
+- **Verified on the live site** (GitHub Pages, `master`): `https://taoaieng.io/pub/` lists the three pieces and `https://taoaieng.io/pub/infog/ini/` (plus `og.png`) returns the built HTML with the conjectures/dream additions.

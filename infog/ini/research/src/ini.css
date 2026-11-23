@@ -1,0 +1,35 @@
+/* ---------- ini piece: diagram & narrow-mode additions ---------- */
+.px-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.px-card{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:13px;line-height:1.4}
+.px-card.win{border-color:var(--gold2);background:linear-gradient(160deg,var(--goldsoft),var(--bg2) 60%)}
+.px-card b{display:block;font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--fg3);margin-bottom:4px}
+.px-card.win b{color:var(--gold)}
+.px-card span{color:var(--fg2)}
+.cb-list{display:flex;flex-direction:column;gap:8px}
+.cb-row{background:var(--bg2);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:10px;padding:9px 12px;font-size:13px;line-height:1.4}
+.cb-row .risk{font:500 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--rust)}
+.cb-row .ans{font:500 14.5px var(--serif);color:var(--fg);margin:2px 0 3px}
+.cb-row .how{color:var(--fg2);font-size:12.5px}
+.tier-list{list-style:none;display:flex;flex-direction:column;gap:6px}
+.tier-list li{display:flex;gap:10px;align-items:baseline;border-left:3px solid var(--line2);padding:5px 0 5px 10px;font-size:13.5px}
+.tier-list li.top{border-left-color:var(--gold)}
+.tier-list li b{font:500 11px var(--mono);color:var(--gold);min-width:48px}
+.tier-list li span{color:var(--fg);font-family:var(--serif);font-size:15.5px}
+.tier-list li em{font-style:normal;font-size:12px;color:var(--fg3);margin-left:auto}
+.g-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;font-size:12.5px;line-height:1.35}
+.g-row{display:flex;gap:8px;align-items:baseline;border-bottom:1px solid var(--line);padding:4px 0}
+.g-row b{font:500 11px var(--mono);color:var(--fg);min-width:86px;white-space:nowrap}
+.g-row.core b{color:var(--gold)}
+.g-row span{color:var(--fg2)}
+.g-row em{margin-left:auto;font:normal 10px var(--mono);color:var(--fg4);white-space:nowrap}
+.sk-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sk-box{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:12.5px;line-height:1.35}
+.sk-box b{font:500 11.5px var(--mono);color:var(--sea)}
+.sk-box em{float:right;font:normal 10px var(--mono);color:var(--fg3)}
+.sk-box p{color:var(--fg2);margin-top:3px}
+#feed .px-grid,#feed .g-grid,#feed .sk-grid{grid-template-columns:1fr}
+#feed .tier-list li{flex-wrap:wrap}
+#feed .tier-list li em{margin-left:0;width:100%}
+.fk .lane.principles{color:var(--gold);border-color:rgba(212,173,58,.4)}
+.fk .lane.machinery{color:var(--sea);border-color:rgba(79,179,169,.4)}
+.fk .lane.evidence{color:var(--ink);border-color:rgba(143,155,214,.4)}

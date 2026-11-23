@@ -53,3 +53,27 @@ live now
 ok
 - apply the same phone-friendly traits to https://taoaieng.io/pub/infog/tsunami-and-printing-press/
 - push both updated infog to the repo to serve them at https://taoaieng.io/pub
+
+# 2026-11-20
+
+## prompt
+
+- harvest down from ~/pro/ini into this ~/pro/pub
+- i have open  ini as a public repo
+- i feel it coalesces many of my core ideas, insights and approaches
+- publish here a new infograph about it
+- it will serve to anyone interested, to support my portfolio and for me to better understand these ideas
+- let me have a look at it before pushing
+# 2026-11-23
+
+## prompt
+
+- uninstall and clean pat/ from this repo
+- about the inin infog, i miss centrality or focus in the main thesis of my ai eng about domain and object orientation for modular abstraction: constraining the generative nature of llms into a typed deterministic modular to counterbalance hallucination, untested claims and unbounded complexity
+## prompt
+
+- good, update with the recent addition of conjectures into ini
+
+## prompt
+
+- ok, commit-push-publish
