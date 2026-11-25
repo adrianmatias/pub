@@ -11,7 +11,7 @@ and docs across time to catch silent drift, stale counts, broken links, and cont
 
 ## the rule that protects the record
 
-**A dream adds a verified link or surfaces a drift — never an unverified fact.** Every finding
+**A dream adds a verified link or surfaces a drift, never an unverified fact.** Every finding
 quotes verbatim text (`path:line`). Never rewrite `log/mat.md` or `log/agt.md`, and never hand-edit
 archived posts under `archive/`.
 
@@ -25,13 +25,13 @@ archived posts under `archive/`.
 
 ## 2 · daydream (cross-family)
 
-1. **Sample** 10–20 unlinked pairs across pieces, `archive/` summaries, `README.md`, and `AGENTS.md`
+1. **Sample** 10-20 unlinked pairs across pieces, `archive/` summaries, `README.md`, and `AGENTS.md`
    (e.g. a new piece's claim paired against an older piece's take or an archived talk).
 2. **Generate** via a read-only lane in a **different model family** (`skills/delegate`), asking
    for `contradiction | drift | link | gap | none` with verbatim quotes (≥ 20 chars). Expect `none`
    for most pairs.
 3. **Ground** every quote verbatim against disk with a scratch script. Kill any ungrounded item
-   immediately — no repair.
+   immediately, with no repair.
 4. **Judge** from the session's family. Keep only items that are *true* in full context, *new*,
    and *useful* (change a concrete line, link, or watchlist tell today).
 

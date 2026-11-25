@@ -5,10 +5,10 @@ import pathlib, sys
 D = pathlib.Path(__file__).parent
 OUT = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else D / "index.html"
 URL = "https://taoaieng.io/pub/infog/closing-doors/"
-TITLE = "Closing Doors — data science in the age of agents"
+TITLE = "Closing Doors: data science in the age of agents"
 DESC = ("Agents made opening doors nearly free; his bet is that the scarce work is closing them. One data scientist's "
         "work from the tunnel face (2007) to agent orchestration (2026) and the next rung (2030), on one zoomable "
-        "map — every number sourced.")
+        "map, with every number sourced.")
 
 head = f"""<!DOCTYPE html>
 <html lang="en">
@@ -46,7 +46,7 @@ body = """</style>
 <div id="chips"></div>
 <div id="vp"><div id="world"><div id="grid"></div><svg id="links"></svg></div></div>
 <main id="feed"></main>
-<nav id="crumb" class="hud"><a href="../../" title="taoaieng.io/pub — all pieces and the archive">pub</a><span>›</span><a data-act="home">closing doors</a><span id="crumbTail"></span></nav>
+<nav id="crumb" class="hud"><a href="../../" title="taoaieng.io/pub: all pieces and the archive">pub</a><span>›</span><a data-act="home">closing doors</a><span id="crumbTail"></span></nav>
 <div id="tools" class="hud"><button data-act="zout" title="zoom out (−)">−</button><button data-act="zin" title="zoom in (+)">+</button><button data-act="home" title="whole map (0)">map</button><button data-act="read" title="read as an article (R)">read</button><button data-act="help" title="how to move (?)">?</button></div>
 <div id="hint" class="hud">scroll or pinch to zoom · drag to pan · click a tile · ← → walk · −/+ zoom · R read · ? help</div>
 <div id="mini" class="hud"></div>

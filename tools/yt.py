@@ -82,14 +82,14 @@ def main(out: Path) -> None:
     rows = sorted(items.values(), key=lambda r: r.get("date", "0000"), reverse=True)
     out.mkdir(parents=True, exist_ok=True)
     (out / "videos.json").write_text(json.dumps(rows, ensure_ascii=False, indent=1), encoding="utf-8")
-    lines = ["# not the tao — video index", "",
+    lines = ["# not the tao: video index", "",
              f"Public channel: [{CHANNEL}]({CHANNEL}). Linked, not re-hosted. Exact dates come from the "
              "channel feed (last 15); older items carry YouTube's relative date.", "",
              "| date | kind | title | link |", "|---|---|---|---|"]
     for r in rows:
         url = f"https://www.youtube.com/{'shorts/' if r['kind'] == 'short' else 'watch?v='}{r['id']}"
         title = r["title"].replace("|", "·")
-        lines.append(f"| {r.get('date') or r['when'] or '—'} | {r['kind']} | {title} | [watch]({url}) |")
+        lines.append(f"| {r.get('date') or r['when'] or '-'} | {r['kind']} | {title} | [watch]({url}) |")
     described = [r for r in rows if r.get("description")]
     if described:
         lines += ["", "## descriptions", ""]

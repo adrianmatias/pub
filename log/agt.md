@@ -169,3 +169,16 @@
 - **`essays/sovereign-ai/` (`index.html` + `og.png`):** elevated Stanley Druckenmiller's November 2026 TomorrowX Summit observation (frontier labs moving up the value chain from low-margin tokens to completed tasks in verticals like cybersecurity and healthcare, `REPORTED`) into the Core Frame, Part 01, the IP-exposure collision, the *Tsunami & Printing Press* bridge, `og.png`, `index.html`, and `README.md`.
 - **Re-verified (headless Chromium, local `file://`, mechanical audit):** 0 privacy/PDF/client/link errors; 10/10 viewport PASS (`1440×900` & `390×844`, `scrollW <= clientW`, 0 console errors); both regenerated `1200×630` `og.png` cards visually checked.
 - **Committed & pushed** on mat's explicit approval (`log/mat.md`, 2026-11-25: *"i verified the content is great... with that, commit-push-publish"*).
+
+
+
+## reply: persisted no-AI-watermark writing rule and propagated across pub (held locally)
+
+- **Contract & docs (`AGENTS.md`, `README.md`, `skills/*`):**
+  - Added `## writing` to `AGENTS.md` (88/120 lines) banning AI watermarks, em-dashes, en-dashes in prose, rhetorical "not X, but Y" contrasts, and salesy phrasing, anchoring to calm, plain, detached prose (with `archive/` explicitly exempt).
+  - Added the plain-prose rule to `README.md` (`## rules`) and cleaned em-dashes across `AGENTS.md`, `README.md`, `index.html`, `skills/{compress,delegate,dream,harvest}/SKILL.md`, and `tools/{blog,yt}.py`.
+- **Essays & zoomable maps:**
+  - Cleaned all em-dashes, en-dashes, and AI clichés across `essays/ambiguity-to-production/index.html` and `essays/sovereign-ai/index.html`.
+  - Cleaned `infog/ini/research/src/{build.py,viz.js,data.js}`, `infog/closing-doors/research/src/{build.py,engine.js,extra.css,finalize.js,viz2026.js,data.js,tiles2026.js}`, and `infog/tsunami-and-printing-press/index.html`; rebuilt all three maps (`ini`, `closing-doors`, and `tsunami-and-printing-press` via `port_tsunami.py`) on the shared engine.
+- **Verification:** 0 em-dashes, 0 en-dashes, 0 banned AI clichés, 0 privacy leaks, 0 broken HTML links, and 0 JS syntax errors across all authored files; 12/12 headless Chromium checks passed across all 6 published pages at `1440x900` and `390x844` (`scrollW <= clientW`, `0` console errors, `hasEm=False`).
+- **Status:** held locally in `~/pro/pub` (`AGENTS.md`: do not push unless mat says so).

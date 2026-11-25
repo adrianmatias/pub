@@ -8,11 +8,11 @@ SHARED = D.parent.parent.parent / "closing-doors" / "research" / "src"
 OUT = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else D.parent.parent / "index.html"
 
 URL = "https://taoaieng.io/pub/infog/ini/"
-TITLE = "ini: Constraining the Generative — typed modular AI engineering"
+TITLE = "ini: Constraining the Generative | typed modular AI engineering"
 DESC = (
     "Domain modelling, object orientation, and typed deterministic modularity to counterbalance "
-    "hallucination, untested claims, and unbounded complexity — Adrian Matias's core AI engineering "
-    "thesis coalesced in ini v0.3.0 on one zoomable map."
+    "hallucination, untested claims, and unbounded complexity. Adrian Matias's AI engineering "
+    "standard coalesced in ini v0.3.0 on one zoomable map."
 )
 
 head = f"""<!DOCTYPE html>
@@ -52,13 +52,13 @@ body = """</style>
 <div id="chips"></div>
 <div id="vp"><div id="world"><div id="grid"></div><svg id="links"></svg></div></div>
 <main id="feed"></main>
-<nav id="crumb" class="hud"><a href="../../" title="taoaieng.io/pub — all pieces and the archive">pub</a><span>›</span><a data-act="home">ini</a><span id="crumbTail"></span></nav>
+<nav id="crumb" class="hud"><a href="../../" title="taoaieng.io/pub: all pieces and the archive">pub</a><span>›</span><a data-act="home">ini</a><span id="crumbTail"></span></nav>
 <div id="tools" class="hud"><button data-act="zout" title="zoom out (−)">−</button><button data-act="zin" title="zoom in (+)">+</button><button data-act="home" title="whole map (0)">map</button><button data-act="read" title="read as an article (R)">read</button><button data-act="help" title="how to move (?)">?</button></div>
 <div id="hint" class="hud">scroll or pinch to zoom · drag to pan · click a tile · ← → walk · −/+ zoom · R read · ? help</div>
 <div id="mini" class="hud"></div>
 <div id="help"><div>
   <h4>How to move</h4>
-  <p>Five pillars run left to right around a central gold spine: <b>I · Direction</b> (objective &amp; distilling the LLM out), <b>II · Proof</b> (13 witness-proven gates), <b>III · Domain &amp; OOP</b> (the center spine — domain schema, OOP modular abstraction, public-surface CRAP contracts), <b>IV · Rhythm</b> (expand/compress, 3 families, Deutsch conjectures &amp; deterministic dream loop), and <b>V · Flow</b> (distil don't link, 8 budgeted skills, field proof). Three layers run top to bottom: <b>the principles</b>, <b>the machinery</b>, and <b>the evidence</b>. Four depths: <b>overview</b>, <b>far</b>, <b>near</b> (click a tile), and <b>closer</b> (click a chart or source list).</p>
+  <p>Five pillars run left to right around a central gold spine: <b>I · Direction</b> (objective &amp; distilling the LLM out), <b>II · Proof</b> (13 witness-proven gates), <b>III · Domain &amp; OOP</b> (the center spine: domain schema, OOP modular abstraction, public-surface CRAP contracts), <b>IV · Rhythm</b> (expand/compress, 3 families, Deutsch conjectures &amp; deterministic dream loop), and <b>V · Flow</b> (distil don't link, 8 budgeted skills, field proof). Three layers run top to bottom: <b>the principles</b>, <b>the machinery</b>, and <b>the evidence</b>. Four depths: <b>overview</b>, <b>far</b>, <b>near</b> (click a tile), and <b>closer</b> (click a chart or source list).</p>
   <p style="margin-top:10px"><kbd>scroll</kbd> / <kbd>−</kbd> <kbd>+</kbd> zoom · <kbd>drag</kbd> pan · <kbd>click</kbd> dive · <kbd>Esc</kbd> rise · <kbd>← ↑ → ↓</kbd> walk the map · <kbd>0</kbd> whole map · <kbd>R</kbd> read as an article · a superscript number jumps to its source.</p>
   <p style="margin-top:10px">Labels: <span class="lab FACT">FACT</span> verified directly from <code>ini</code> v0.3.0 or a primary source · <span class="lab">REP</span> single or second-hand · <span class="lab FORECAST">FORECAST</span> a dated target or open test · <span class="lab UNVERIFIED">UNVERIFIED</span> could not be confirmed. Verified as of 23 November 2026.</p>
 </div></div>

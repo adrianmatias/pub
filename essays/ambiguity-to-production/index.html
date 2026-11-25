@@ -3,24 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>From Ambiguity to a Trusted AI System — tao · ai · eng</title>
+<title>From Ambiguity to a Trusted AI System | tao · ai · eng</title>
 <meta name="description" content="A six-stage deployment playbook for ML and agentic AI systems: decision cost first, lowest-rung choice, ontology and Domain-Driven Design with Clean Architecture boundaries, evaluation without clean labels, witness-proven gates, and handover.">
 <meta name="theme-color" content="#0b0b0c">
 <link rel="canonical" href="https://taoaieng.io/pub/essays/ambiguity-to-production/">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="tao · ai · eng">
 <meta property="og:title" content="From Ambiguity to a Trusted AI System">
-<meta property="og:description" content="Models are commoditizing; building got cheap. Six stages — framing, lowest rung, ontology &amp; DDD boundaries, hidden-fold eval, witness-proven gates, handover.">
+<meta property="og:description" content="Models are commoditizing and first drafts got cheap. Six stages: framing, lowest rung, ontology and DDD boundaries, hidden-fold eval, witness-proven gates, handover.">
 <meta property="og:url" content="https://taoaieng.io/pub/essays/ambiguity-to-production/">
 <meta property="og:image" content="https://taoaieng.io/pub/essays/ambiguity-to-production/og.png">
 <meta property="og:image:secure_url" content="https://taoaieng.io/pub/essays/ambiguity-to-production/og.png">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="From Ambiguity to a Trusted AI System — tao · ai · eng">
+<meta property="og:image:alt" content="From Ambiguity to a Trusted AI System | tao · ai · eng">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="From Ambiguity to a Trusted AI System">
-<meta name="twitter:description" content="Six stages from ambiguous problem to trusted ML or agentic AI production: framing, lowest-rung choice, ontology &amp; DDD boundaries, eval without clean labels, proven gates, handover.">
+<meta name="twitter:description" content="Six stages from ambiguous problem to trusted ML or agentic AI production: framing, lowest-rung choice, ontology and DDD boundaries, eval without clean labels, proven gates, handover.">
 <meta name="twitter:image" content="https://taoaieng.io/pub/essays/ambiguity-to-production/og.png">
 <meta name="author" content="Adrian Matias">
 <meta property="article:published_time" content="2026-11-25">
@@ -100,7 +100,7 @@ footer.end a{color:var(--fg3);text-decoration:underline}
 
   <div class="kicker">playbook · ml &amp; agentic engineering</div>
   <h1>From Ambiguity to a Trusted AI System</h1>
-  <p class="lede">Models are commoditizing and first drafts got cheap. What stays scarce is deciding what «correct» means, picking the lowest rung that holds, proving the boundaries red, and handing over a system a team can operate without its author.</p>
+  <p class="lede">Models are commoditizing and first drafts got cheap. What stays scarce is deciding what "correct" means, picking the lowest rung that holds, proving the boundaries red, and handing over a system a team can operate without its author.</p>
   <div class="meta">
     <span>Adrian Matias</span>
     <span>25 Nov 2026</span>
@@ -110,7 +110,7 @@ footer.end a{color:var(--fg3);text-decoration:underline}
 
   <div class="box">
     <h3>The short version</h3>
-    <p>Across eleven years of applied ML <span class="lab fact">FACT</span> [6] (scoring, ranking, fraud, financial NLP) and recent enterprise LLM work, systems rarely fail because the model lacked parameters. They fail because nobody fixed the decision cost before modelling, because an LLM was given work a deterministic check should own, because offline and online features drifted apart, or because an impressive demo hid a broken edge case. Every durable deployment follows the same six stages.</p>
+    <p>Across eleven years of applied ML <span class="lab fact">FACT</span> [6] (scoring, ranking, fraud, financial NLP) and recent enterprise LLM work, systems rarely fail because the model lacked parameters. They fail because nobody fixed the decision cost before modelling, because an LLM was given work a deterministic check should own, because offline and online features drifted apart, or because an early demo hid broken edge cases. Durable deployments follow the same six stages.</p>
   </div>
 
   <figure class="fig">
@@ -180,12 +180,12 @@ footer.end a{color:var(--fg3);text-decoration:underline}
   </figure>
 
   <h2><span class="num">Stage 01</span>Start from the decision and its error cost</h2>
-  <p>A request usually arrives as a model wish: «classify these documents», «build an agent to automate bookkeeping», «improve our ranking model». The first hour is spent refusing to talk about models until four facts are written down in plain language:</p>
+  <p>A request usually arrives as a model wish: "classify these documents", "build an agent to automate bookkeeping", or "improve our ranking model". The first hour goes to setting models aside until four facts are written down plainly:</p>
   <ul>
     <li><strong>The action taken on the output.</strong> Does the system execute autonomously (straight-through processing), draft a suggestion for a domain expert, or abstain and escalate?</li>
-    <li><strong>The cost asymmetry.</strong> In high-trust workflows — fraud filtering, financial categorization, enterprise vendor assessment, real-time bidding — a silent wrong automation destroys user trust far faster than a conservative abstention.</li>
-    <li><strong>The decision metric with uncertainty.</strong> Aggregate accuracy hides the operating point. A better contract fixes the metric that moves the business — for example, automation coverage at a capped human-correction rate, or expected loss under a posterior spread when rewards are scarce — instead of a point estimate where <code>7/10</code> looks identical to <code>70/100</code>.</li>
-    <li><strong>Quoted requirements, not paraphrases.</strong> Ambiguous business rules get quoted verbatim from the domain expert or specification. When engineers or coding agents work from paraphrased summaries, review quietly checks the code against the paraphrase rather than against intent [1].</li>
+    <li><strong>The cost asymmetry.</strong> In high-trust workflows (fraud filtering, financial categorization, enterprise vendor assessment, real-time bidding), a silent wrong automation breaks user trust much faster than a conservative abstention.</li>
+    <li><strong>The decision metric with uncertainty.</strong> Aggregate accuracy hides the operating point. A better contract fixes the metric tied to the business (for example, automation coverage at a capped human-correction rate, or expected loss under a posterior spread when rewards are scarce) instead of a point estimate where <code>7/10</code> looks the same as <code>70/100</code>.</li>
+    <li><strong>Quoted requirements, not paraphrases.</strong> Ambiguous business rules get quoted verbatim from the domain expert or specification. When engineers or coding agents work from paraphrased summaries, review checks the code against the paraphrase rather than against intent [1].</li>
   </ul>
 
   <h2><span class="num">Stage 02</span>Choose the lowest rung that works</h2>
@@ -197,68 +197,68 @@ footer.end a{color:var(--fg3);text-decoration:underline}
         <tr><th>rung</th><th>when it wins</th><th>typical failure when misused</th></tr>
       </thead>
       <tbody>
-        <tr><td><strong>1 · Deterministic logic</strong></td><td>Known invariants, arithmetic, schema validation, exact rules, lookups, reconciliation math.</td><td>Handing arithmetic or exact accounting checks to an LLM turns a 0-error rule into a probabilistic leak.</td></tr>
-        <tr><td><strong>2 · Classical ML</strong></td><td>Structured tabular signals, calibrated probabilities, imbalanced risk/fraud, fast CPU latency, strong baselines.</td><td>Jumping to neural nets or LLMs before a clean gradient-boosted baseline tells you whether signal even exists.</td></tr>
+        <tr><td><strong>1 · Deterministic logic</strong></td><td>Known invariants, arithmetic, schema validation, exact rules, lookups, reconciliation math.</td><td>Handing arithmetic or exact accounting checks to an LLM turns a zero-error rule into a probabilistic leak.</td></tr>
+        <tr><td><strong>2 · Classical ML</strong></td><td>Structured tabular signals, calibrated probabilities, imbalanced risk/fraud, fast CPU latency, strong baselines.</td><td>Jumping to neural nets or LLMs before a clean gradient-boosted baseline tells you whether signal exists.</td></tr>
         <tr><td><strong>3 · Deep learning / embeddings</strong></td><td>High-cardinality entities, transfer learning across cold-start items, semantic retrieval, dense representation.</td><td>Training bespoke towers without locking feature parity between offline training and online serving.</td></tr>
-        <tr><td><strong>4 · Generative AI &amp; agents</strong></td><td>Unstructured documents, zero/few-label cold start, open-ended synthesis, multi-step tool orchestration.</td><td>Shipping thin prompt wrappers with untyped output, unmeasured hallucination, and no fallback path.</td></tr>
+        <tr><td><strong>4 · Generative AI &amp; agents</strong></td><td>Unstructured documents, zero/few-label cold start, open-ended synthesis, multi-step tool orchestration.</td><td>Shipping untyped prompt wrappers with unmeasured hallucination and no fallback path.</td></tr>
       </tbody>
     </table>
   </div>
 
-  <p>In practice, the fastest path combines the top and bottom rungs: ship a <strong>walking skeleton</strong> on day one — data in, decision out, a number a human can inspect — letting an LLM carry rough stages early so real failure modes surface immediately. Then, round by round, <strong>distil deterministic steps back into typed code</strong> until only irreducible judgement remains generative [2].</p>
+  <p>In practice, the fastest path combines the top and bottom rungs: ship a <strong>walking skeleton</strong> on day one (data in, decision out, a number a human can inspect), letting an LLM carry rough stages early so real failure modes surface right away. Then, round by round, <strong>distil deterministic steps back into typed code</strong> until only irreducible judgement remains generative [2].</p>
 
   <h2><span class="num">Stage 03</span>Model the domain, render the ontology, freeze the boundary</h2>
-  <p>Prompt wording will change every week; models and vendor SDKs will change every quarter. What has to stay rigid is the <strong>domain ontology</strong> — the named concepts, closed vocabularies, and boundaries between probabilistic generation and business rules.</p>
+  <p>Prompt wording changes every week; models and vendor SDKs change every quarter. What needs to stay rigid is the <strong>domain ontology</strong>: the named concepts, closed vocabularies, and boundaries between probabilistic generation and business rules.</p>
   <ul>
-    <li><strong>Domain-Driven Design (DDD) as an anti-hallucination device.</strong> Eric Evans's <em>ubiquitous language</em> and bounded contexts were written for human teams [7]; with coding agents they become load-bearing. Without explicit domain terms, agents invent competing synonyms across files and drift into loose utility functions patching one another. Matt Pocock has popularized turning this into concrete agent skills — grilling requirements before code (<code>/grill-me</code>) and enforcing a checked glossary and domain model (<code>domain-modeling</code>) so fuzzy terms get caught before an implementation wave multiplies them [8].</li>
-    <li><strong>Clean Architecture and OOP boundaries at machine speed.</strong> Robert C. Martin's («Uncle Bob») Dependency Rule — source dependencies point inward toward domain entities and policy, never outward toward frameworks, databases, or LLM providers [9] — turns from craft preference into a survival constraint when agents generate code. Agents pattern-match the repository rather than prose wikis: one leaked SDK or persistence call inside core logic gets copied across every new module. In <a href="../../infog/ini/"><code>ini</code></a>, a concept is a named class owning its data and rules, a component is a package, and an AST gate (<code>shape</code>) caps free functions per module (<code>PILE ≤ 6</code>) while confining CLI/run wiring to the outer shell [2].</li>
-    <li><strong>AST-rendered ontology, never hand-drawn maps.</strong> Architecture diagrams maintained by hand silently rot across refactors. Rendering the project ontology directly from Python's AST (<code>python -m ci domain --write</code>) turns the component graph, entity inventory, and acyclic import edges into a mechanical check: if code drifts from the declared domain, the <code>domain</code> gate turns red [2].</li>
-    <li><strong>Typed wire contracts &amp; output provenance.</strong> Every payload crossing a boundary — an extracted invoice, a structured assessment, a tool call, an agent verdict — decodes once into a strict schema (frozen Pydantic models and closed enums) that makes illegal states unconstructible, with every wire field self-described (<em>the schema is the prompt</em>) [2]. In high-trust workflows, every generated claim or rolled-up score carries a structured citation pointing back to its raw source span, turning disputes from arguments into evidence lookups.</li>
+    <li><strong>Domain-Driven Design (DDD) as an anti-hallucination device.</strong> Eric Evans's <em>ubiquitous language</em> and bounded contexts were written for human teams [7]; with coding agents they become structural. Without explicit domain terms, agents invent competing synonyms across files and drift into loose utility functions patching one another. Matt Pocock has turned this into concrete agent skills, grilling requirements before code (<code>/grill-me</code>) and enforcing a checked glossary and domain model (<code>domain-modeling</code>) so fuzzy terms get caught before an implementation wave multiplies them [8].</li>
+    <li><strong>Clean Architecture and OOP boundaries at machine speed.</strong> Robert C. Martin's ("Uncle Bob") Dependency Rule states that source dependencies point inward toward domain entities and policy, never outward toward frameworks, databases, or LLM providers [9]. When agents generate code, that rule shifts from craft preference to practical necessity. Agents pattern-match the repository rather than prose wikis: one leaked SDK or persistence call inside core logic gets copied across every new module. In <a href="../../infog/ini/"><code>ini</code></a>, a concept is a named class owning its data and rules, a component is a package, and an AST gate (<code>shape</code>) caps free functions per module (<code>PILE &le; 6</code>) while confining CLI and run wiring to the outer shell [2].</li>
+    <li><strong>AST-rendered ontology instead of hand-drawn maps.</strong> Architecture diagrams maintained by hand silently rot across refactors. Rendering the project ontology directly from Python's AST (<code>python -m ci domain --write</code>) turns the component graph, entity inventory, and acyclic import edges into a mechanical check: if code drifts from the declared domain, the <code>domain</code> gate turns red [2].</li>
+    <li><strong>Typed wire contracts and output provenance.</strong> Every payload crossing a boundary (an extracted invoice, a structured assessment, a tool call, an agent verdict) decodes once into a strict schema (frozen Pydantic models and closed enums) that makes illegal states unconstructible, with every wire field self-described (<em>the schema is the prompt</em>) [2]. In high-trust workflows, every generated claim or rolled-up score carries a structured citation pointing back to its raw source span, turning disputes into evidence lookups.</li>
   </ul>
 
   <h2><span class="num">Stage 04</span>Evaluate without clean ground truth</h2>
-  <p>Real business workflows rarely come with a clean labelled test set. Waiting for perfect labels stalls delivery; shipping without measurement invites silent failure. In my own pre-registered out-of-fold agent benchmark (MBPP+, <code>n = 120</code>), agents passing <strong>98–100%</strong> of visible checks still failed full hidden test suites on roughly <strong>one task in six</strong> (~83% hidden pass), while an LLM judge systematically overestimated reliability (<code>0.913</code> mean predicted pass vs <code>0.837</code> observed) <span class="lab fact">FACT</span> [3]. At the frontier, Scale Labs reported a similar <strong>17.8-point</strong> gap between public (<code>99.4%</code>) and private (<code>81.6%</code>) sets on SWE-Bench Pro V2 <span class="lab fact">FACT</span> [4].</p>
+  <p>Real business workflows rarely come with a clean labelled test set. Waiting for perfect labels stalls delivery; shipping without measurement invites silent failure. In my own pre-registered out-of-fold agent benchmark (MBPP+, <code>n = 120</code>), agents passing <strong>98-100%</strong> of visible checks still failed full hidden test suites on roughly <strong>one task in six</strong> (~83% hidden pass), while an LLM judge systematically overestimated reliability (<code>0.913</code> mean predicted pass vs <code>0.837</code> observed) <span class="lab fact">FACT</span> [3]. At the frontier, Scale Labs reported a similar <strong>17.8-point</strong> gap between public (<code>99.4%</code>) and private (<code>81.6%</code>) sets on SWE-Bench Pro V2 <span class="lab fact">FACT</span> [4].</p>
 
   <p>Three practical patterns hold when labels are scarce or expensive:</p>
   <ol>
-    <li><strong>Domain-expert golden sets &amp; reconciliation lanes.</strong> Build a small, versioned set of real messy cases early — presswire duplicates, contested invoices, or expert-scored evaluation sheets — and build deterministic code that reconciles human scores against model outputs on the exact same hierarchy.</li>
-    <li><strong>Calibration and hidden folds.</strong> Always hold out cases the prompt-tuner or agent never sees. Score confidence calibration alongside ranking or precision so abstention thresholds reflect real risk rather than raw model logits.</li>
-    <li><strong>User corrections as a flywheel.</strong> Treat every human override in production as labelled training and error-analysis data — tracking correction rate by segment, supplier, or document class, while guarding against selection bias and delayed feedback.</li>
+    <li><strong>Domain-expert golden sets and reconciliation lanes.</strong> Build a small, versioned set of real messy cases early (presswire duplicates, contested invoices, or expert-scored evaluation sheets) and write deterministic code that reconciles human scores against model outputs on the exact same hierarchy.</li>
+    <li><strong>Calibration and hidden folds.</strong> Hold out cases the prompt-tuner or agent never sees. Score confidence calibration alongside ranking or precision so abstention thresholds reflect real risk rather than raw model logits.</li>
+    <li><strong>User corrections as a feedback loop.</strong> Treat every human override in production as labelled training and error-analysis data, tracking correction rate by segment, supplier, or document class while guarding against selection bias and delayed feedback.</li>
   </ol>
 
   <h2><span class="num">Stage 05</span>Prove every gate red and lock train/serve parity</h2>
-  <p>Trust in production AI remains fragile: in Stack Overflow's 2026 developer survey, only <strong>6.6%</strong> of developers reported trusting AI output for important decisions <span class="lab fact">FACT</span> [5]. Prose guidelines do not close that gap; mechanical verification does.</p>
+  <p>Trust in production AI remains low: in Stack Overflow's 2026 developer survey, only <strong>6.6%</strong> of developers reported trusting AI output for important decisions <span class="lab fact">FACT</span> [5]. Prose guidelines do not close that gap; mechanical verification does.</p>
   <ul>
     <li><strong>A gate is only a gate once seen red.</strong> An inert check looks identical to a clean codebase. In <a href="../../infog/ini/"><code>ini</code> v0.3.0</a>, all <strong>13 deterministic gates</strong> (types, banned surfaces, AST module shape, complexity, ontology parity, public-surface behaviour tests, CRAP) must fail on a planted defect inside a scratch replica (<code>--prove</code>) before they count <span class="lab fact">FACT</span> [2].</li>
     <li><strong>Train/serve parity as an automated workflow.</strong> Whenever offline evaluation disagrees with live behaviour, trace the discrepancy to the exact feature, tokenization, or prompt transformation that drifted, fix the root cause, and freeze it with an automated parity test so that failure class cannot return quietly.</li>
-    <li><strong>Cross-family review for non-mechanical judgement.</strong> Where no deterministic check can rule — requirements fidelity, subtle domain drift, architectural trade-offs — have a reviewer from a different model family inspect the contract and the artifact, returning concrete failing cases rather than adjectives [2].</li>
+    <li><strong>Cross-family review for non-mechanical judgement.</strong> Where no deterministic check can rule (requirements fidelity, subtle domain drift, architectural trade-offs), have a reviewer from a different model family inspect the contract and the artifact, returning concrete failing cases rather than adjectives [2].</li>
   </ul>
 
   <h2><span class="num">Stage 06</span>Handover, observability, and kill criteria</h2>
   <p>A system only counts as shipped when the team owning the product can monitor, debug, and change it without the original builder in the room.</p>
   <ul>
-    <li><strong>Live failure dashboards tied to user trust.</strong> Monitor schema-parse failures, abstention/escalation rates, human correction rate, latency, token/compute cost per decision, and input distribution shift — not just HTTP 200s.</li>
+    <li><strong>Live failure dashboards tied to user trust.</strong> Monitor schema-parse failures, abstention and escalation rates, human correction rate, latency, token and compute cost per decision, and input distribution shift, not only HTTP 200s.</li>
     <li><strong>Progressive promotion.</strong> Shadow deployment first, then staged challenger-to-champion rollout gated by pre-set risk milestones, with one-step rollback to the deterministic or prior baseline.</li>
-    <li><strong>Pre-registered kill criteria.</strong> Before scaling investment, write down what observed outcome — by what date — stops or reframes the system. Green gates prove internal correctness; they never prove product value or user adoption.</li>
+    <li><strong>Pre-registered kill criteria.</strong> Before scaling investment, write down what observed outcome and date stop or reframe the system. Green gates prove internal correctness; they never prove product value or user adoption.</li>
   </ul>
 
   <div class="box sea">
     <h3>Where this discipline comes from</h3>
-    <p>This playbook compresses patterns that held across domains — programmatic bidding, telecom risk, financial transaction categorization, news document similarity, mobile install prediction, and enterprise LLM assessment — into one transferable engineering loop. The concrete Python harness implementing Stages 02, 03, and 05 is open in <a href="https://github.com/adrianmatias/ini">github.com/adrianmatias/ini</a> and mapped in <a href="../../infog/ini/">ini: Constraining the Generative</a>.</p>
+    <p>This playbook compresses patterns that held across domains (programmatic bidding, telecom risk, financial transaction categorization, news document similarity, mobile install prediction, and enterprise LLM assessment) into one transferable engineering loop. The concrete Python harness implementing Stages 02, 03, and 05 is open in <a href="https://github.com/adrianmatias/ini">github.com/adrianmatias/ini</a> and mapped in <a href="../../infog/ini/">ini: Constraining the Generative</a>.</p>
   </div>
 
   <section class="sources">
     <h2>Sources &amp; evidence</h2>
     <ol>
-      <li>Zietsman — <em>The specification as quality gate</em> (<a href="https://arxiv.org/abs/2603.25773">arXiv:2603.25773</a>, 26 Mar 2026) <span class="lab fact">FACT</span></li>
-      <li>Adrian Matias — <em>ini: Constraining the Generative</em> (v0.3.0: 13 witness-proven gates, 41 AST-tracked entities, <code>--prove</code> replica harness; <a href="../../infog/ini/">infog/ini</a> · <a href="https://github.com/adrianmatias/ini">github.com/adrianmatias/ini</a>, 23 Nov 2026) <span class="lab fact">FACT</span></li>
-      <li>Adrian Matias — <em>Closing Doors</em>, tile <em>An eval is a model</em> (pre-registered MBPP+ out-of-fold run, <code>n = 120</code>, 98–100% visible vs ~83% hidden, judge 0.913 vs 0.837; <a href="../../infog/closing-doors/#oof">infog/closing-doors/#oof</a>, 9 Oct 2026) <span class="lab fact">FACT</span></li>
-      <li>Scale Labs — <em>SWE-Bench Pro V2</em> (Claude Opus 5: 99.4% public vs 81.6% private across separate task sets; <a href="https://labs.scale.com/blog/swe-bench-pro-v2">labs.scale.com</a>, 22 Sep 2026) <span class="lab fact">FACT</span></li>
-      <li>Stack Overflow — <em>2026 Developer Survey, AI data</em> (6.6% trust AI output for important decisions; <a href="https://survey.stackoverflow.co/2026/ai/data">survey.stackoverflow.co</a>, 2026) <span class="lab fact">FACT</span></li>
-      <li>Adrian Matias — <em>How I work</em> (12 fixed engineering principles; applied ML since 2015; <a href="https://taoaieng.io/principles/">taoaieng.io/principles</a>, Nov 2026) <span class="lab fact">FACT</span></li>
-      <li>Eric Evans — <em>Domain-Driven Design: Tackling Complexity in the Heart of Software</em> (ubiquitous language &amp; bounded contexts; Addison-Wesley, 2003) <span class="lab fact">FACT</span></li>
-      <li>Matt Pocock — <em>mattpocock/skills</em> (<code>grill-me</code>, <code>grill-with-docs</code>, <code>domain-modeling</code>; <a href="https://github.com/mattpocock/skills">github.com/mattpocock/skills</a> · <a href="https://aihero.dev">aihero.dev</a>, 2026) <span class="lab fact">FACT</span></li>
-      <li>Robert C. Martin («Uncle Bob») — <em>The Clean Architecture</em> (The Dependency Rule &amp; concentric domain boundaries; <a href="https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html">blog.cleancoder.com</a>, 13 Aug 2012) <span class="lab fact">FACT</span></li>
+      <li>Zietsman: <em>The specification as quality gate</em> (<a href="https://arxiv.org/abs/2603.25773">arXiv:2603.25773</a>, 26 Mar 2026) <span class="lab fact">FACT</span></li>
+      <li>Adrian Matias: <em>ini: Constraining the Generative</em> (v0.3.0: 13 witness-proven gates, 41 AST-tracked entities, <code>--prove</code> replica harness; <a href="../../infog/ini/">infog/ini</a> · <a href="https://github.com/adrianmatias/ini">github.com/adrianmatias/ini</a>, 23 Nov 2026) <span class="lab fact">FACT</span></li>
+      <li>Adrian Matias: <em>Closing Doors</em>, tile <em>An eval is a model</em> (pre-registered MBPP+ out-of-fold run, <code>n = 120</code>, 98-100% visible vs ~83% hidden, judge 0.913 vs 0.837; <a href="../../infog/closing-doors/#oof">infog/closing-doors/#oof</a>, 9 Oct 2026) <span class="lab fact">FACT</span></li>
+      <li>Scale Labs: <em>SWE-Bench Pro V2</em> (Claude Opus 5: 99.4% public vs 81.6% private across separate task sets; <a href="https://labs.scale.com/blog/swe-bench-pro-v2">labs.scale.com</a>, 22 Sep 2026) <span class="lab fact">FACT</span></li>
+      <li>Stack Overflow: <em>2026 Developer Survey, AI data</em> (6.6% trust AI output for important decisions; <a href="https://survey.stackoverflow.co/2026/ai/data">survey.stackoverflow.co</a>, 2026) <span class="lab fact">FACT</span></li>
+      <li>Adrian Matias: <em>How I work</em> (12 fixed engineering principles; applied ML since 2015; <a href="https://taoaieng.io/principles/">taoaieng.io/principles</a>, Nov 2026) <span class="lab fact">FACT</span></li>
+      <li>Eric Evans: <em>Domain-Driven Design: Tackling Complexity in the Heart of Software</em> (ubiquitous language &amp; bounded contexts; Addison-Wesley, 2003) <span class="lab fact">FACT</span></li>
+      <li>Matt Pocock: <em>mattpocock/skills</em> (<code>grill-me</code>, <code>grill-with-docs</code>, <code>domain-modeling</code>; <a href="https://github.com/mattpocock/skills">github.com/mattpocock/skills</a> · <a href="https://aihero.dev">aihero.dev</a>, 2026) <span class="lab fact">FACT</span></li>
+      <li>Robert C. Martin ("Uncle Bob"): <em>The Clean Architecture</em> (The Dependency Rule &amp; concentric domain boundaries; <a href="https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html">blog.cleancoder.com</a>, 13 Aug 2012) <span class="lab fact">FACT</span></li>
     </ol>
   </section>
 
@@ -272,7 +272,7 @@ footer.end a{color:var(--fg3);text-decoration:underline}
   </div>
 
   <footer class="end">
-    Self-contained static HTML — no trackers, no cookies, no external fonts or scripts. Text <a href="../../LICENSE">CC BY 4.0</a> · source <a href="https://github.com/adrianmatias/pub">github.com/adrianmatias/pub</a>.
+    Self-contained static HTML: no trackers, no cookies, no external fonts or scripts. Text <a href="../../LICENSE">CC BY 4.0</a> · source <a href="https://github.com/adrianmatias/pub">github.com/adrianmatias/pub</a>.
   </footer>
 </main>
 </body>

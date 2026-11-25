@@ -114,7 +114,7 @@ function factsTable(rows, node) {
 }
 function takeBlock(t, node) {
   if (!t) return "";
-  return `<div class="take"><q>${esc(t.q)}</q>${t.tr ? `<div class="tr">${esc(t.tr)}</div>` : ""}<div class="who">— ${esc(t.who)}</div>${t.verdict ? `<div class="score"><b class="${t.verdict}">${t.verdict.replace("-", " ")}</b><span>${rich(t.why, node)}</span></div>` : ""}</div>`;
+  return `<div class="take"><q>${esc(t.q)}</q>${t.tr ? `<div class="tr">${esc(t.tr)}</div>` : ""}<div class="who">${esc(t.who)}</div>${t.verdict ? `<div class="score"><b class="${t.verdict}">${t.verdict.replace("-", " ")}</b><span>${rich(t.why, node)}</span></div>` : ""}</div>`;
 }
 function srcList(n, nw) {
   if (!n.src) return "";

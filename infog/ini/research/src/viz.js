@@ -59,7 +59,7 @@ function paradoxSVG() {
 
   g += `<rect class="box h" x="116" y="138" width="408" height="98" rx="12" style="fill:rgba(212,173,58,.08)"/>`;
   g += `<text class="dgm" x="320" y="159" text-anchor="middle" style="fill:#d4ad3a">INI'S RESOLUTION · DELIBERATE REDUNDANCY</text>`;
-  g += `<text class="dgb" x="320" y="183" text-anchor="middle" style="font-size:17px">An agent distils by meaning — zero links kept</text>`;
+  g += `<text class="dgb" x="320" y="183" text-anchor="middle" style="font-size:17px">An agent distils by meaning, with zero links kept</text>`;
   g += `<text class="dg" x="320" y="205" text-anchor="middle">Each project owns its distillate in its own words and layout.</text>`;
   g += `<text class="dgm" x="320" y="223" text-anchor="middle" style="fill:#4fb3a9">If ini vanished tomorrow, every project would stay 100% green.</text>`;
   return g + `</svg>`;
@@ -78,7 +78,7 @@ function steeringSVG() {
     ["TIER 3", "domain.md", "words + AST-rendered ontology"],
     ["TIER 4", "code-standard.md", "shape, boundaries, refusals"],
     ["TIER 5", "gates & tests", "13 witness-proven checks, public surface"],
-    ["TIER 6", "implementation", "code the agent writes — lowest authority"]
+    ["TIER 6", "implementation", "code the agent writes (lowest authority)"]
   ];
   const L = [
     ["Taleb", "antifragile routing"],
@@ -113,9 +113,9 @@ const steeringHTML = () => `<ol class="tier-list">
   <li class="top"><b>Tier 1</b><span>objective.md</span><em>claim, checkable loss, kill criterion</em></li>
   <li><b>Tier 2</b><span>foundation.md</span><em>12 principles, rhythm, 4 lenses</em></li>
   <li><b>Tier 3</b><span>domain.md</span><em>words + AST ontology</em></li>
-  <li><b>Tier 4</b><span>code-standard.md</span><em>shape, seams, refusals</em></li>
+  <li><b>Tier 4</b><span>code-standard.md</span><em>shape, boundaries, refusals</em></li>
   <li class="top"><b>Tier 5</b><span>gates &amp; behaviour tests</span><em>13 witnesses, public surface</em></li>
-  <li><b>Tier 6</b><span>implementation</span><em>lowest authority — rewritten freely</em></li>
+  <li><b>Tier 6</b><span>implementation</span><em>lowest authority, rewritten freely</em></li>
 </ol>`;
 
 // 3. Walking skeleton -> Distil the LLM out
@@ -123,7 +123,7 @@ function skeletonSVG() {
   let g = `<svg viewBox="0 0 640 218" role="img" aria-label="Walking skeleton first, then distil the LLM out round by round">${SVGDEF}`;
   const cols = [
     [16, "ROUND 1 · SKELETON", "LLM carries the path", [["Parse input", 1], ["Apply rules", 1], ["Judgement", 1], ["Format output", 1]]],
-    [226, "ROUND N · HARDENING", "Deterministic seams extracted", [["Typed parser", 0], ["Domain rules", 0], ["Judgement", 1], ["Pure renderer", 0]]],
+    [226, "ROUND N · HARDENING", "Deterministic boundaries extracted", [["Typed parser", 0], ["Domain rules", 0], ["Judgement", 1], ["Pure renderer", 0]]],
     [436, "MATURE · ENGINEERING", "Only judgement stays LLM", [["Pydantic wire", 0], ["Tested core", 0], ["Judgement + schema", 1], ["Proven gates", 0]]]
   ];
   cols.forEach(([x, k, sub, rows], ci) => {
@@ -141,7 +141,7 @@ function skeletonSVG() {
   return g + `</svg>`;
 }
 const skeletonHTML = () => `<div class="loop hot"><b>Round 1 · Walking skeleton</b><span>One thin end-to-end path through cli/ + 1 behaviour test; the LLM may carry every step.</span></div>
-<div class="loop"><b>Round N · Distil the LLM out</b><span>Move parsing, lookups, rules, and rendering into typed deterministic code — the model keeps only irreducible judgement.</span></div>`;
+<div class="loop"><b>Round N · Distil the LLM out</b><span>Move parsing, lookups, rules, and rendering into typed deterministic code; the model keeps only irreducible judgement.</span></div>`;
 
 // 4. ini's real AST-rendered ontology graph (verified from domain.md)
 function ontologySVG() {
@@ -186,11 +186,11 @@ function proveSVG() {
   [[126, 144], [268, 290], [414, 430], [554, 555]].forEach(([x1, x2]) => {
     if (x2 > x1) g += `<path class="ar2 h" d="M${x1} 72 H${x2}" marker-end="url(#ahg)"/>`;
   });
-  g += `<text class="dgm" x="320" y="128" text-anchor="middle" style="fill:#d0694a">If a gate stays green on its planted defect → FAIL ("witness ACCEPTED — the gate is inert")</text>`;
+  g += `<text class="dgm" x="320" y="128" text-anchor="middle" style="fill:#d0694a">If a gate stays green on its planted defect → FAIL ("witness ACCEPTED: the gate is inert")</text>`;
   return g + `</svg>`;
 }
 const proveHTML = () => `<ol class="round">
-  <li><b>Replica</b> copies gate inputs to scratch and symlinks data directories — working tree stays untouched.</li>
+  <li><b>Replica</b> copies gate inputs to scratch and symlinks data directories; working tree stays untouched.</li>
   <li><b>Plant</b> writes one targeted failing file per gate (e.g. undescribed wire field, 8-line twin, failing test).</li>
   <li><b>Judge</b> requires a red finding inside the planted file; green means the gate is inert and fails <code>--prove</code>.</li>
 </ol>`;
@@ -249,5 +249,5 @@ const dreamHTML = () => `<ol class="round">
   <li><b>Replay</b> sync anchors, learnings and <code>wiki/conjectures.md</code> (<code>open</code> / <code>promoted</code> / <code>destroyed</code>) to recent logs before sampling.</li>
   <li><b>Pairs &amp; Daydream</b> <code>dream.py pairs</code> samples unlinked pages; another model family proposes candidate links with ≥20-char quotes.</li>
   <li><b>Check</b> <code>dream.py check</code> parses rows as <code>Candidate</code> and matches ≥20-char quotes via normalised substring; any mismatch kills the candidate immediately.</li>
-  <li><b>Judge &amp; Feed</b> keep ~1 in 6–10 true, new, useful, hard-to-vary claims; assign a permanent <code>cNN</code> id + falsifier and run <code>dream.py feed</code> (idempotent on <code>pairs.tsv</code> and <code>## Dream links</code>).</li>
+  <li><b>Judge &amp; Feed</b> keep ~1 in 6-10 true, new, useful, hard-to-vary claims; assign a permanent <code>cNN</code> id + falsifier and run <code>dream.py feed</code> (idempotent on <code>pairs.tsv</code> and <code>## Dream links</code>).</li>
 </ol>`;

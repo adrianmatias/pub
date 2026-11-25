@@ -1,4 +1,4 @@
-# PUB — agent contract
+# PUB: agent contract
 
 Portable project rules. Auto-loaded when cwd is this repo root. This repo is **public** and is
 served as a website: everything committed is published the moment it is pushed.
@@ -6,14 +6,14 @@ served as a website: everything committed is published the moment it is pushed.
 ## entry (every session)
 
 1. Read `README.md` (why, layout, rules).
-2. Read the **latest prompt at the bottom of `log/mat.md`** — that is the task.
+2. Read the **latest prompt at the bottom of `log/mat.md`**: that is the task.
 3. Load any matching skill from `skills/` (table below), then only the files the task needs.
 4. Do the work, verify mechanically, compress the round, and append `log/agt.md`.
 
 ## log
 
-- `log/mat.md` — mat's log. Append-only. The task is the latest prompt at the bottom.
-- `log/agt.md` — the agent's replies. Append-only, one entry per round, **H1 = `# YYYY-MM-DD`**,
+- `log/mat.md`: mat's log. Append-only. The task is the latest prompt at the bottom.
+- `log/agt.md`: the agent's replies. Append-only, one entry per round, **H1 = `# YYYY-MM-DD`**,
   topic subsections under `##`. Never rewrite, reorder or delete earlier entries.
 
 ## rhythm & proof
@@ -24,14 +24,24 @@ served as a website: everything committed is published the moment it is pushed.
   Chromium before claiming done. Every review finding gets an explicit disposition (accept, defer,
   or reject with counter-evidence) in `log/agt.md`.
 
+## writing
+
+- **No AI watermark or AI smell** in any authored page, essay, map tile, doc, or log entry. Avoid
+  em-dashes (`—`), en-dashes (`–`) in prose, rhetorical "not X, but Y" contrasts, catchy or salesy
+  phrasing ("beyond demos", "thin wrappers", "high-agency", "seam", "lightning-strike",
+  "rare leverage", "compare notes"), and filler listicles.
+- **Voice:** plain, direct, calm, detached (Zen). Use simple ASCII punctuation (periods, commas,
+  colons, parentheses) and clear, grounded sentences closer to mat's own prose. State facts and
+  arguments plainly without pitching. (`archive/` is exempt: archived text stays as published.)
+
 ## roles and models
 
 | role | model (2026-11) | effort |
 |---|---|---|
-| director | mat | — |
+| director | mat | - |
 | integrator | `claude-opus` (plan, fixed cost) or `gemini-4` (pay-per-token complement) | high |
 | lane | `deepseek-v4.1-flash` on the DeepSeek API | max |
-| critic | distinct family from author (`claude-opus` ↔ `gemini-4` ↔ `deepseek-v4.1-flash`) | high |
+| critic | distinct family from author (`claude-opus` <-> `gemini-4` <-> `deepseek-v4.1-flash`) | high |
 
 ## skills
 
@@ -55,13 +65,13 @@ served as a website: everything committed is published the moment it is pushed.
   published.
 - Relative links only: the site is served at `adrianmatias.github.io/pub/` and `taoaieng.io/pub/`.
   The one exception is link-preview metadata (`og:*`, `twitter:*`, `canonical`): crawlers need
-  absolute URLs, so those point at `https://taoaieng.io/pub/…`. Every page carries them; a piece
-  ships an `og.png` (1200×630) beside its `index.html`.
+  absolute URLs, so those point at `https://taoaieng.io/pub/...`. Every page carries them; a piece
+  ships an `og.png` (1200x630) beside its `index.html`.
 - Pieces share one map engine (`infog/closing-doors/research/src/engine.js`). Every device opens
   on the zoomable map (phones land on `z-far` whole-graph overview and can zoom out one extra level
-  via `−` or pinch; a second tap on a focused `l0` tile, `read`, or `#read` switches to the feed of
+  via `-` or pinch; a second tap on a focused `l0` tile, `read`, or `#read` switches to the feed of
   `DATA.eras` or `DATA.sections`). Check desktop (no clipped tile), landscape/portrait phone
-  (`z-far` → `l0` → `read`), and 390 px feed with every card open (no horizontal overflow).
+  (`z-far` -> `l0` -> `read`), and 390 px feed with every card open (no horizontal overflow).
 - Never set a custom domain on this repo; `taoaieng.io` belongs to the user site (see README).
 - English for pieces and logs; quotes keep their original language with a translation beside them.
 - Do not push unless mat says so.

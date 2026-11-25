@@ -23,11 +23,11 @@ never run parallel lanes on a plan quota or two strong families on the same job.
 
 ## patterns
 
-- **direct** (default) — one session closes tasks under ~10 tool calls without delegation overhead.
-- **fan-out** — one research slice per read-only lane (e.g. primary sources + dates + labels),
+- **direct** (default): one session closes tasks under ~10 tool calls without delegation overhead.
+- **fan-out**: one research slice per read-only lane (e.g. primary sources + dates + labels),
   integrator verifies and writes the single piece.
-- **adversarial** — one critic pass by another model family (`skills/review`).
-- **expand / compress** — lanes may gather evidence; compression and voice belong to the integrator.
+- **adversarial**: one critic pass by another model family (`skills/review`).
+- **expand / compress**: lanes may gather evidence; compression and voice belong to the integrator.
 
 Never split one piece's argument or voice across multiple writing lanes.
 

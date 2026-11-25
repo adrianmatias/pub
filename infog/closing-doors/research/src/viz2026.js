@@ -5,10 +5,10 @@ const Y26 = [
   ["Feb", 22, [["AGENTS.md study", "context files: no general gain, >20% cost"], ["selection bias", "METR: some work withheld from the no-AI arm"]], [["ep 0012", "episode 0012: build by removal"]]],
   ["Mar", 23, [["spec as gate", "review checks code against itself, not intent"]], [["RAG on 1 GPU", "local RAG over his blog, scored"]]],
   ["Apr", 15, [], [["Uqbar", "Uqbar: an LLM-wiki an agent keeps"]]],
-  ["May", 28, [["self-report", "METR survey: 1.4–2× self-reported value"]], [["contract", "contract work: agents built against a spec"], ["Mirror", "The Mirror, the wiki's public method"]]],
+  ["May", 28, [["self-report", "METR survey: 1.4-2× self-reported value"]], [["contract", "contract work: agents built against a spec"], ["Mirror", "The Mirror, the wiki's public method"]]],
   ["Jun", 18, [["Sol ≈11 h", "GPT-5.6 Sol ≈11 h, not robust"]], []],
   ["Jul", 15, [["71% senior", "71% of the posting rebound is senior"]], []],
-  ["Aug", 131, [["−11% at 22–25", "young workers in exposed jobs −11%"], ["AI Futures", "automated-coder medians 2027–30"]], [["the house", "the house: one vault per project"]]],
+  ["Aug", 131, [["−11% at 22-25", "young workers in exposed jobs −11%"], ["AI Futures", "automated-coder medians 2027-30"]], [["the house", "the house: one vault per project"]]],
   ["Sep", 124, [["Pro V2 split", "Pro V2: 99.4% public, 81.6% private"]], [["ledger bench", "ledger bench: the boundary, not the language"], ["you-nut", "one plan engine, two domains"]]],
   ["Oct", 198, [], [["pat · alx · oof", "pattern book, library, instrument, this shelf"]]]];
 function strip26SVG() {
@@ -32,7 +32,7 @@ function strip26HTML() {
       `${f.map(e => `<div class="ev f">${esc(e[1])}</div>`).join("")}${p.map(e => `<div class="ev p">${esc(e[1])}</div>`).join("")}</div>`).join("") + `</div>`;
 }
 // narrow (phone) versions of the diagrams: the same content as text, readable at 340 px
-const ladderHTML = () => `<ol class="rungs">${[["20??", "writes the objective and the condition that kills it", "agents write the contracts — a conjecture"],
+const ladderHTML = () => `<ol class="rungs">${[["20??", "writes the objective and the condition that kills it", "agents write the contracts (a conjecture)"],
   ["2026", "writes the contract, keeps the gates", "agents write the code"], ["2023", "reviews every line", "the copilot types"],
   ["2015", "chooses the features, the model and the fold", "the cluster fits it"], ["2008", "reads the rock, designs the blast", "the jumbo drills the face"]]
   .map((r, i) => `<li class="${i === 1 ? "now" : i === 0 ? "next" : ""}"><b>${r[0]}</b><span>${r[1]}</span><em>below: ${r[2]}</em></li>`).join("")}</ol>`;

@@ -78,7 +78,7 @@ def main(out: Path) -> None:
         index.append((date, title, fname, url, len(body.split()), n_img))
         print(f"{date} {len(body.split()):>6}w {n_img:>3}img {title[:60]}")
     index.sort(reverse=True)
-    lines = ["# delightful observaciones — archive", "",
+    lines = ["# delightful observaciones: archive", "",
              "Every post of [delightfulobservaciones.blogspot.com](https://delightfulobservaciones.blogspot.com/),"
              " pulled from its public feed. Text as published; images stored beside the posts.", "",
              "| date | post | words | original |", "|---|---|---|---|"]

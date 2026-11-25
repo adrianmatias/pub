@@ -21,7 +21,7 @@ agent instructions at the end of every round so context stays lean and every lin
 ## pieces & engine
 
 - **One shared engine**: fix map/mobile bugs once in `infog/closing-doors/research/src/engine.js`
-  and propagate — never let pieces diverge into incompatible forks.
+  and propagate; never let pieces diverge into incompatible forks.
 - **No filler**: cut adjectives, throat-clearing, and unverified numbers. A gap drawn honestly beats
   a padded paragraph.
 - **Reproducible builds**: keep each piece's readable sources and `build.py` under

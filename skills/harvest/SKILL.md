@@ -7,9 +7,9 @@ description: Use when distilling shared rules into pub or promoting up.
 
 Shared engineering knowledge moves between repositories by **deliberate redundancy**: an agent
 reads the shared knowledge source, compares by meaning against `pub`, and writes what fits in
-`pub`'s own terms. `pub` owns its distillate outright — no dependency, no symlink, no back-pointer.
+`pub`'s own terms. `pub` owns its distillate outright: no dependency, no symlink, no back-pointer.
 
-## down — distil into pub
+## down: distil into pub
 
 1. Compare shared principles, skills, and lessons by meaning against `pub`'s `AGENTS.md` and
    `skills/` (never blindly diff).
@@ -22,7 +22,7 @@ reads the shared knowledge source, compares by meaning against `pub`, and writes
 5. Verify line budgets (`AGENTS.md` ≤ 120, skills ≤ 150, descriptions ≤ 60 chars, 1:1 skills table)
    and record what came in and what was declined in `log/agt.md`.
 
-## up — promote from pub
+## up: promote from pub
 
 When a publishing, review, citation, or visual-verification lesson holds in `pub` and at least one
 other repository, generalise it (strip repo-specific paths, pay for added lines by pruning weaker
