@@ -17,7 +17,8 @@ it opens from disk in twenty years exactly as it opens today.
 ## layout
 
 ```
-index.html                  the home page (taoaieng.io/pub): pieces, archive, links
+index.html                  the home page (taoaieng.io/pub): start-here guide, essays, maps, archive, links
+essays/<slug>/index.html    one essay or playbook per folder, self-contained (inline CSS/SVG + og.png)
 infog/<slug>/index.html     one infographic per folder, self-contained (data, charts and sources inline)
 archive/                    what was published elsewhere, pulled and kept
   blog/                     delightfulobservaciones.blogspot.com — every post as markdown + its images
@@ -34,6 +35,8 @@ AGENTS.md                   agent contract
 
 | date | piece | what |
 |---|---|---|
+| 2026-11-25 | [From Ambiguity to a Trusted AI System](essays/ambiguity-to-production/) | six-stage deployment playbook for ML and agentic AI: decision cost first, deterministic-to-generative ladder, ontology &amp; DDD with Clean Architecture boundaries (Evans, Uncle Bob, Matt Pocock), evaluation without clean labels, witness-proven gates, and handover |
+| 2026-11-25 | [Closed AI vs. Sovereign AI](essays/sovereign-ai/) | tokens-to-tasks value-chain move (Druckenmiller) and geopolitical/monetary critique of closed frontier-AI capture paired with lived local-first practice (`ragblog` on one 16 GB GPU, `The Mirror` / Uqbar compiled-memory architecture, `ini`, and bridge to *Tsunami &amp; Printing Press*) |
 | 2026-11-20 | [ini: Constraining the Generative](infog/ini/) | domain modelling, object orientation, and typed deterministic modularity to counterbalance hallucination, untested claims, and unbounded complexity — thirteen witness-proven gates, Deutsch conjectures + deterministic dream loop, eight budgeted skills, and deliberate redundancy on one zoomable map |
 | 2026-10-14 | [Closing Doors](infog/closing-doors/) | data science in the age of agents — the tunnel face, classic ML, the copilot years, agent orchestration and the next rung on one zoomable map, his own experiments and takes scored |
 | 2026-10-14 | [Tsunami & Printing Press](infog/tsunami-and-printing-press/) | money in the age of AI — bitcoin, zcash, bonds, equity, housing, the yen carry trade, quantum FUD and the AI capex sink, on one zoomable map with every number sourced |

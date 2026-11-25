@@ -140,3 +140,32 @@
 
 - **Committed and pushed** the harvest-down (`AGENTS.md` + 5 distilled skills), the new `infog/ini/` piece (*ini: Constraining the Generative*, `20 Nov 2026 · updated 23 Nov 2026`), the `pat` symlink removal, and the `2026-11-23` round logs.
 - **Verified on the live site** (GitHub Pages, `master`): `https://taoaieng.io/pub/` lists the three pieces and `https://taoaieng.io/pub/infog/ini/` (plus `og.png`) returns the built HTML with the conjectures/dream additions.
+
+
+# 2026-11-25
+
+## reply — `pub` v2 staged locally: 90-second shelf upgrade + two essays (`ambiguity-to-production`, `sovereign-ai`) + map cross-links
+
+- **Shelf upgrade (`index.html`, `README.md`):**
+  - Updated lede around framing ML/agentic systems, proving boundaries red, and measuring what holds when models commoditize.
+  - Added a 4-row `start here (90-second path)` guide above `essays & playbooks` and `zoomable maps`.
+  - Updated `elsewhere` links (`taoaieng.io`, `taoaieng.io/principles/`, `github.com/adrianmatias/ini`).
+- **New essay `essays/ambiguity-to-production/` (`index.html` + `og.png`, 1200×630):**
+  - Six-stage ML & agentic deployment playbook (*Decision & error cost → Rules/ML/DL/LLM rung → Typed wire & provenance → Hidden fold & HITL eval → Red gates & parity → Handover & kill rule*), inline qualitative SVG distillation diagram, 6 sourced citations (`arXiv:2603.25773`, `ini` v0.3.0, `Closing Doors` `#oof`, Scale Labs SWE-Bench Pro V2, Stack Overflow 2026, `taoaieng.io/principles/`). Zero client names or confidential employer material.
+- **New essay `essays/sovereign-ai/` (`index.html` + `og.png`, 1200×630):**
+  - Geopolitical, industrial, silicon, and monetary critique of the closed-AI capture thesis — **strictly anonymized** (zero mention of any private PDF/report, zero verbatim quotes or proprietary figures from it) — paired with lived local-first practice across three public layers: **Layer 1** `ragblog` on one 16 GB consumer GPU (52 posts / 904 chunks, Ragas 16-case scores, Ep 0014), **Layer 2** `The Mirror` / public Uqbar compiled-memory architecture (Ep 0017; zero private Uqbar details disclosed), and **Layer 3** `ini` portable harness, bridging directly to `infog/tsunami-and-printing-press/`.
+- **Cross-links:**
+  - `infog/ini/research/src/data.js` (`method` tile) → rebuilt `infog/ini/index.html` (`140,878` bytes) with link to `../../essays/ambiguity-to-production/` (`article:modified_time` `2026-11-25`).
+  - `infog/tsunami-and-printing-press/index.html` (`method` tile) → link to `../../essays/sovereign-ai/`.
+- **Verification (headless Chromium, local `file://`, mechanical audit):**
+  - Privacy/PDF-leak/client-name/external-asset/relative-link checks: **0 errors**.
+  - Headless Chromium (`1440×900` & `390×844`): all 5 pages (`pub/index.html`, `ambiguity-to-production`, `sovereign-ai`, `infog/ini`, `infog/tsunami-and-printing-press`) passed `scrollW <= clientW` and `0` console/runtime errors; both `og.png` cards (1200×630) and desktop/mobile renders visually inspected.
+- **Cross-family adversarial review status:** **pending before push.** Author is `gemini-4`; this session has only Gemini family available (`skills/delegate` forbids same-family masquerade and forbids shelling out to another LLM CLI). Held locally in `~/pro/pub` — **not committed or pushed** (`AGENTS.md`: do not push unless mat says so).
+
+
+## reply — added DDD/ontology/Uncle Bob/Matt Pocock and Druckenmiller tokens→tasks upgrades; commit, push, publish
+
+- **`essays/ambiguity-to-production/` (`index.html` + `og.png`):** expanded Stage 03 (*Model the domain, render the ontology, freeze the boundary*) with explicit focus on Domain-Driven Design (Eric Evans's ubiquitous language & bounded contexts), Matt Pocock's agentic domain-modeling/grilling skills (`mattpocock/skills`), Robert C. Martin's («Uncle Bob») Clean Architecture Dependency Rule & OOP boundaries at agent speed, and AST-rendered `domain.md` ontology parity in `ini`. Updated SVG (`03 · DOMAIN · Ontology, DDD & wire`), meta tags, `og.png`, `index.html`, and `README.md`.
+- **`essays/sovereign-ai/` (`index.html` + `og.png`):** elevated Stanley Druckenmiller's November 2026 TomorrowX Summit observation (frontier labs moving up the value chain from low-margin tokens to completed tasks in verticals like cybersecurity and healthcare, `REPORTED`) into the Core Frame, Part 01, the IP-exposure collision, the *Tsunami & Printing Press* bridge, `og.png`, `index.html`, and `README.md`.
+- **Re-verified (headless Chromium, local `file://`, mechanical audit):** 0 privacy/PDF/client/link errors; 10/10 viewport PASS (`1440×900` & `390×844`, `scrollW <= clientW`, 0 console errors); both regenerated `1200×630` `og.png` cards visually checked.
+- **Committed & pushed** on mat's explicit approval (`log/mat.md`, 2026-11-25: *"i verified the content is great... with that, commit-push-publish"*).

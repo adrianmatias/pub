@@ -41,7 +41,7 @@ head = f"""<!DOCTYPE html>
 <meta name="twitter:image" content="{URL}og.png">
 <meta name="author" content="Adrian Matias">
 <meta property="article:published_time" content="2026-11-20">
-<meta property="article:modified_time" content="2026-11-23">
+<meta property="article:modified_time" content="2026-11-25">
 <style>
 """
 

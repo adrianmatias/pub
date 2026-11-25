@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>tao · ai · eng — pub</title>
-<meta name="description" content="Adrian Matias — public pieces: infographics, essays and the archive of what was published elsewhere.">
+<meta name="description" content="Adrian Matias — public work on ML and agentic AI engineering: essays, zoomable infographics, and the archive of what was published elsewhere.">
 <meta name="theme-color" content="#0b0b0c">
 <link rel="canonical" href="https://taoaieng.io/pub/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="tao · ai · eng">
 <meta property="og:title" content="pub — tao · ai · eng">
-<meta property="og:description" content="Learn by compression, build by removal. Maps, essays and the archive of Adrian Matias: zoomable infographics on ini, Closing Doors, and Tsunami &amp; Printing Press, 59 blog posts, and the not-the-tao videos.">
+<meta property="og:description" content="Learn by compression, build by removal. Essays on AI deployment and sovereign AI, zoomable maps on ini, Closing Doors, and Tsunami &amp; Printing Press, 59 blog posts, and the not-the-tao videos.">
 <meta property="og:url" content="https://taoaieng.io/pub/">
 <meta property="og:image" content="https://taoaieng.io/pub/og.png">
 <meta property="og:image:secure_url" content="https://taoaieng.io/pub/og.png">
@@ -20,26 +20,33 @@
 <meta property="og:image:alt" content="pub — tao · ai · eng">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="pub — tao · ai · eng">
-<meta name="twitter:description" content="Learn by compression, build by removal. Maps, essays and the archive of Adrian Matias: zoomable infographics on ini, Closing Doors, and Tsunami &amp; Printing Press, 59 blog posts, and the not-the-tao videos.">
+<meta name="twitter:description" content="Learn by compression, build by removal. Essays on AI deployment and sovereign AI, zoomable maps on ini, Closing Doors, and Tsunami &amp; Printing Press, 59 blog posts, and the not-the-tao videos.">
 <meta name="twitter:image" content="https://taoaieng.io/pub/og.png">
 <meta name="author" content="Adrian Matias">
 <style>
 :root{--bg:#0b0b0c;--card:#141416;--line:#26262a;--fg:#ebe8e2;--fg2:#b9b4ab;--fg3:#7d786f;--gold:#d4ad3a;--sea:#4fb3a9}
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--fg2);font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
-main{max-width:760px;margin:0 auto;padding:12vh 22px 80px}
+main{max-width:760px;margin:0 auto;padding:10vh 22px 80px}
 a{color:inherit;text-decoration:none}
 .k{font:12px ui-monospace,Menlo,monospace;letter-spacing:.24em;text-transform:uppercase;color:var(--gold)}
 h1{font:500 54px/1.05 "Iowan Old Style",Palatino,Georgia,serif;color:var(--fg);letter-spacing:-.015em;margin:14px 0 12px}
-.lede{font:italic 21px/1.45 "Iowan Old Style",Palatino,Georgia,serif;color:var(--fg2);max-width:34em}
-h2{font:500 12px ui-monospace,Menlo,monospace;letter-spacing:.2em;text-transform:uppercase;color:var(--fg3);margin:64px 0 16px}
+.lede{font:italic 21px/1.45 "Iowan Old Style",Palatino,Georgia,serif;color:var(--fg2);max-width:36em}
+h2{font:500 12px ui-monospace,Menlo,monospace;letter-spacing:.2em;text-transform:uppercase;color:var(--fg3);margin:56px 0 16px}
+.guide{border:1px solid var(--line);border-radius:16px;padding:6px 20px;background:var(--card)}
+.guide li:last-child{border-bottom:0}
+.guide li a{justify-content:space-between}
+.guide .tag{font:11.5px ui-monospace,Menlo,monospace;color:var(--gold);white-space:nowrap}
 .piece{display:block;border:1px solid var(--line);border-radius:22px;padding:26px 28px;background:linear-gradient(160deg,rgba(212,173,58,.10),transparent 50%),var(--card);transition:border-color .2s}
+.piece.essay{background:linear-gradient(160deg,rgba(79,179,169,.10),transparent 50%),var(--card)}
 .piece + .piece{margin-top:16px}
 .piece:hover{border-color:var(--gold)}
+.piece.essay:hover{border-color:var(--sea)}
 .piece .d{font:12px ui-monospace,Menlo,monospace;color:var(--fg3)}
-.piece h3{font:500 30px/1.15 "Iowan Old Style",Palatino,Georgia,serif;color:var(--fg);margin:6px 0 8px}
+.piece h3{font:500 28px/1.15 "Iowan Old Style",Palatino,Georgia,serif;color:var(--fg);margin:6px 0 8px}
 .piece p{font-size:15px;color:var(--fg2)}
 .piece .go{display:inline-block;margin-top:14px;font:12px ui-monospace,Menlo,monospace;color:var(--gold);letter-spacing:.06em}
+.piece.essay .go{color:var(--sea)}
 ul{list-style:none}
 li{border-bottom:1px solid var(--line)}
 li a{display:flex;gap:16px;align-items:baseline;padding:12px 0}
@@ -48,18 +55,40 @@ li b{font-weight:500;color:var(--fg);min-width:13em}
 li span{font-size:14px;color:var(--fg3)}
 footer{margin-top:70px;font:12px ui-monospace,Menlo,monospace;color:var(--fg3)}
 footer a{color:var(--fg3);text-decoration:underline}
-@media (max-width:600px){h1{font-size:40px}li a{flex-direction:column;gap:2px}li b{min-width:0}}
+@media (max-width:600px){h1{font-size:40px}.piece{padding:20px 20px}.piece h3{font-size:24px}li a{flex-direction:column;gap:2px}li b{min-width:0}}
 </style>
 </head>
 <body>
 <main>
   <div class="k">tao · ai · eng</div>
   <h1>pub</h1>
-  <p class="lede">Learn by compression, build by removal. The public shelf of Adrian Matias — maps, essays, and the archive of what was already said elsewhere.</p>
+  <p class="lede">Learn by compression, build by removal. Public work of Adrian Matias — framing ML and agentic systems, proving boundaries red, and measuring what holds when models commoditize.</p>
 
-  <h2>pieces</h2>
+  <h2>start here (90-second path)</h2>
+  <ul class="guide">
+    <li><a href="essays/ambiguity-to-production/"><b>Ambiguity → production</b><span>6-stage ML &amp; agentic deployment playbook — framing, lowest rung, eval, gates</span><span class="tag">5 min →</span></a></li>
+    <li><a href="infog/ini/"><b>Constraining LLMs &amp; agents</b><span>domain schemas, OOP modularity, 13 witness-proven gates, cross-family critic</span><span class="tag">map →</span></a></li>
+    <li><a href="essays/sovereign-ai/"><b>Sovereign AI in practice</b><span>geopolitics, open weights, local RAG on one GPU (ragblog) &amp; The Mirror</span><span class="tag">6 min →</span></a></li>
+    <li><a href="https://taoaieng.io/principles/"><b>How I work &amp; full record</b><span>12 fixed rules on taoaieng.io/principles/ and full CV at taoaieng.io</span><span class="tag">site →</span></a></li>
+  </ul>
+
+  <h2>essays &amp; playbooks</h2>
+  <a class="piece essay" href="essays/ambiguity-to-production/">
+    <div class="d">25 Nov 2026 · 5-min playbook</div>
+    <h3>From Ambiguity to a Trusted AI System</h3>
+    <p>How an ambiguous ML or agentic problem becomes an operable production system: decision cost before modelling, choosing the simplest reliable rung, ontology &amp; Domain-Driven Design with Clean Architecture boundaries (Evans, Uncle Bob, Matt Pocock), evaluation without clean labels, witness-proven gates, and handover.</p>
+    <span class="go">read the playbook →</span>
+  </a>
+  <a class="piece essay" href="essays/sovereign-ai/">
+    <div class="d">25 Nov 2026 · 6-min essay</div>
+    <h3>Closed AI vs. Sovereign AI</h3>
+    <p>Frontier labs moving up the value chain from tokens to tasks (Druckenmiller), why closed-AI capture collides with TSMC, open stacks, and monetary contradictions — paired with lived local-first practice on one 16 GB GPU (ragblog), compiled sovereign memory (The Mirror / Uqbar architecture), and a bridge to Tsunami &amp; Printing Press.</p>
+    <span class="go">read the essay →</span>
+  </a>
+
+  <h2>zoomable maps</h2>
   <a class="piece" href="infog/ini/">
-    <div class="d">20 Nov 2026 · updated 23 Nov 2026 · zoomable infographic</div>
+    <div class="d">20 Nov 2026 · updated 25 Nov 2026 · zoomable infographic</div>
     <h3>ini: Constraining the Generative</h3>
     <p>Domain modelling, object orientation, and typed deterministic modularity to counterbalance hallucination, untested claims, and unbounded complexity — Adrian Matias’s core AI engineering thesis coalesced into thirteen witness-proven gates, Deutsch conjectures with a deterministic dream loop, eight budgeted skills, and deliberate redundancy.</p>
     <span class="go">open the map →</span>
@@ -71,7 +100,7 @@ footer a{color:var(--fg3);text-decoration:underline}
     <span class="go">open the map →</span>
   </a>
   <a class="piece" href="infog/tsunami-and-printing-press/">
-    <div class="d">14 Oct 2026 · zoomable infographic</div>
+    <div class="d">14 Oct 2026 · updated 25 Nov 2026 · zoomable infographic</div>
     <h3>Tsunami &amp; Printing Press</h3>
     <p>Money in the age of AI on one zoomable map: bitcoin, zcash, bonds, equity, housing, the yen carry trade, the AI capex sink, AI deflation vs inflation, quantum FUD and the Austrian lens. Every number sourced; his own takes scored against the evidence.</p>
     <span class="go">open the map →</span>
@@ -87,7 +116,9 @@ footer a{color:var(--fg3);text-decoration:underline}
 
   <h2>elsewhere</h2>
   <ul>
-    <li><a href="https://adrianmatias.github.io/"><b>adrianmatias.github.io</b><span>CV and portfolio</span></a></li>
+    <li><a href="https://taoaieng.io/"><b>taoaieng.io</b><span>CV and portfolio</span></a></li>
+    <li><a href="https://taoaieng.io/principles/"><b>taoaieng.io/principles</b><span>How I work — 12 fixed rules</span></a></li>
+    <li><a href="https://github.com/adrianmatias/ini"><b>github.com/adrianmatias/ini</b><span>open agentic engineering standard</span></a></li>
     <li><a href="https://youtube.com/@notTheTaoWithAdrianMatias"><b>youtube</b><span>@notTheTaoWithAdrianMatias</span></a></li>
     <li><a href="https://github.com/adrianmatias"><b>github</b><span>adrianmatias</span></a></li>
     <li><a href="https://x.com/adrian2mat"><b>x</b><span>@adrian2mat</span></a></li>

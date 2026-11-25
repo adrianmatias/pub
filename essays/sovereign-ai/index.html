@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Closed AI vs. Sovereign AI — tao · ai · eng</title>
+<meta name="description" content="Why a closed frontier-AI monopoly collides with industrial reality, silicon chokepoints, open-weight percolation, and monetary contradictions — paired with lived local-first practice on one consumer GPU (ragblog, The Mirror, and ini).">
+<meta name="theme-color" content="#0b0b0c">
+<link rel="canonical" href="https://taoaieng.io/pub/essays/sovereign-ai/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="tao · ai · eng">
+<meta property="og:title" content="Closed AI vs. Sovereign AI">
+<meta property="og:description" content="Geopolitics, silicon, open weights, monetary contradictions — and why sovereign AI already runs on one consumer GPU and a compiled local wiki.">
+<meta property="og:url" content="https://taoaieng.io/pub/essays/sovereign-ai/">
+<meta property="og:image" content="https://taoaieng.io/pub/essays/sovereign-ai/og.png">
+<meta property="og:image:secure_url" content="https://taoaieng.io/pub/essays/sovereign-ai/og.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Closed AI vs. Sovereign AI — tao · ai · eng">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Closed AI vs. Sovereign AI">
+<meta name="twitter:description" content="Why closed frontier capture breaks on TSMC, open stacks, and Triffin's dilemma — and what sovereign AI looks like today on one 16 GB GPU and a local compiled memory.">
+<meta name="twitter:image" content="https://taoaieng.io/pub/essays/sovereign-ai/og.png">
+<meta name="author" content="Adrian Matias">
+<meta property="article:published_time" content="2026-11-25">
+<style>
+:root{
+  --bg:#0b0b0c; --bg2:#111113; --card:#141416; --line:#26262a; --line2:#34343a;
+  --fg:#ebe8e2; --fg2:#b9b4ab; --fg3:#7d786f;
+  --gold:#d4ad3a; --gold2:#8f7524; --goldsoft:rgba(212,173,58,.10);
+  --sea:#4fb3a9; --seasoft:rgba(79,179,169,.10);
+  --rust:#d0694a; --rustsoft:rgba(208,105,74,.10);
+  --ink:#8f9bd6;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--fg2);font:17px/1.68 var(--serif);-webkit-font-smoothing:antialiased}
+main{max-width:740px;margin:0 auto;padding:56px 22px 96px}
+a{color:var(--gold);text-decoration:none}
+a:hover{text-decoration:underline}
+nav.crumb{font:12px var(--mono);letter-spacing:.08em;color:var(--fg3);margin-bottom:36px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+nav.crumb a{color:var(--fg3)}
+nav.crumb a:hover{color:var(--gold);text-decoration:none}
+.kicker{font:12px var(--mono);letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+h1{font:500 clamp(32px,6vw,46px)/1.08 var(--serif);color:var(--fg);letter-spacing:-.015em;margin:12px 0 14px}
+.lede{font:italic 20px/1.48 var(--serif);color:var(--fg);margin-bottom:22px}
+.meta{font:12px var(--mono);color:var(--fg3);display:flex;flex-wrap:wrap;gap:8px 18px;padding-bottom:28px;border-bottom:1px solid var(--line)}
+h2{font:500 25px/1.22 var(--serif);color:var(--fg);margin:52px 0 14px;letter-spacing:-.01em}
+h2 .num{font:12px var(--mono);color:var(--gold);letter-spacing:.14em;display:block;margin-bottom:5px;text-transform:uppercase}
+h3{font:600 18px/1.35 var(--serif);color:var(--fg);margin:28px 0 10px}
+p{margin:0 0 16px}
+p strong,li strong{color:var(--fg);font-weight:600}
+ul,ol{margin:0 0 18px;padding-left:22px}
+li{margin:0 0 9px}
+code{font:13.5px var(--mono);color:var(--fg);background:var(--card);border:1px solid var(--line);padding:1px 5px;border-radius:4px}
+blockquote{margin:24px 0;padding:16px 20px;border-left:3px solid var(--gold);background:var(--card);border-radius:0 12px 12px 0;color:var(--fg);font-style:italic}
+blockquote footer{margin-top:8px;font:normal 12px var(--mono);color:var(--fg3)}
+.box{background:linear-gradient(160deg,var(--goldsoft),transparent 52%),var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin:26px 0}
+.box.sea{background:linear-gradient(160deg,var(--seasoft),transparent 52%),var(--card)}
+.box h4{font:500 12px var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.box.sea h4{color:var(--sea)}
+.box p:last-child,.box ul:last-child{margin-bottom:0}
+.fig{margin:28px 0;background:var(--bg2);border:1px solid var(--line);border-radius:16px;padding:18px 16px 14px}
+.fig svg{display:block;width:100%;height:auto}
+.fig figcaption{margin-top:10px;font:12.5px/1.5 var(--sans);color:var(--fg3)}
+.tbl-wrap{overflow-x:auto;margin:22px 0}
+table{width:100%;border-collapse:collapse;font:14px/1.5 var(--sans);min-width:520px}
+th,td{text-align:left;padding:10px 10px 10px 0;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:11.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--fg3);font-weight:500}
+td strong{color:var(--fg)}
+.numcol{font-family:var(--mono);white-space:nowrap}
+.lab{display:inline-block;font:10px var(--mono);letter-spacing:.08em;padding:1px 5px;border-radius:4px;border:1px solid var(--line2);color:var(--fg3);vertical-align:1px;margin-left:4px}
+.lab.fact{border-color:var(--sea);color:var(--sea)}
+.lab.thesis{border-color:var(--gold2);color:var(--gold)}
+.sources{margin-top:54px;padding-top:24px;border-top:1px solid var(--line)}
+.sources h2{font:500 12px var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--fg3);margin:0 0 14px}
+.sources ol{font:13.5px/1.55 var(--sans);color:var(--fg3);padding-left:20px}
+.sources li{margin:0 0 8px}
+.related{margin-top:34px;padding:18px 20px;background:var(--card);border:1px solid var(--line);border-radius:14px;font:14px/1.6 var(--sans)}
+.related strong{display:block;font:11.5px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--fg3);margin-bottom:8px}
+footer.end{margin-top:46px;font:12px var(--mono);color:var(--fg3);line-height:1.7}
+footer.end a{color:var(--fg3);text-decoration:underline}
+@media (max-width:600px){
+  main{padding:36px 18px 72px}
+  body{font-size:16px}
+  .lede{font-size:18px}
+  table{min-width:0;font-size:13px}
+}
+@media print{
+  body{background:#fff;color:#111;font-size:10.5pt}
+  main{max-width:none;padding:0}
+  .box,.fig,.related,blockquote{background:#fff;border-color:#ccc;break-inside:avoid}
+  a{color:#111;text-decoration:underline}
+}
+</style>
+</head>
+<body>
+<main>
+  <nav class="crumb"><a href="../../">pub</a><span>/</span><span>essays</span><span>/</span><span>sovereign-ai</span></nav>
+
+  <div class="kicker">essay · geopolitics, compute &amp; local practice</div>
+  <h1>Closed AI vs. Sovereign AI</h1>
+  <p class="lede">The strongest argument against an AI bubble is national capture of closed frontier models. Industrial reality, unreplicated silicon, open-weight percolation, and monetary contradictions push the other way — and sovereign AI is already testable on one consumer GPU.</p>
+  <div class="meta">
+    <span>Adrian Matias</span>
+    <span>25 Nov 2026</span>
+    <span>~6 min read</span>
+    <span>argument &amp; local evidence · not advice</span>
+  </div>
+
+  <div class="box">
+    <h4>Core frame</h4>
+    <p>A recurring macro thesis treats closed US frontier AI as the mirror image of an AI bubble: keep frontier capabilities concentrated inside a handful of labs and hyperscalers, move up the value chain from selling commodity tokens to executing high-margin vertical tasks, capture industrial rents through robotized reshoring, and outgrow sovereign debt while external blocs stay dependent on US silicon and APIs. Two pieces of that view hold — the <strong>bimodal outcome</strong> and <strong>Stanley Druckenmiller's tokens-to-tasks value-chain shift</strong> [1]. Yet that exact upward move collides with four structural counterforces — and turns centralized AI providers into their customers' future rivals — pushing instead toward a multipolar, <strong>sovereign AI</strong> paradigm <span class="lab thesis">THESIS</span>.</p>
+  </div>
+
+  <h2><span class="num">Part 01</span>Where the closed-AI thesis holds</h2>
+  <ul>
+    <li><strong>Bimodal outcome, no comfortable middle.</strong> Either the current AI buildout proves a capital-destroying bubble or it drives sustained acceleration without modern precedent. Both outcomes remain plausible; a quiet, linear middle path looks thin.</li>
+    <li><strong>Frontier labs moving up the value chain — from tokens to tasks.</strong> At the iConnections TomorrowX Summit (November 2026), Stanley Druckenmiller argued that leading frontier labs will not remain in the low-margin pass-through business of selling base model access by the token; holding the world's strongest intelligence engines, they will move up the value chain to sell <strong>completed business tasks</strong> and verticalized services directly — pointing to cybersecurity (autonomous agent swarms defending networks and running investigations) and healthcare as prime targets <span class="lab">REPORTED</span> [1]. That economic logic directly backs vertical integration and high-value goods over raw API tolls — while simultaneously raising the stakes of vendor dependence.</li>
+    <li><strong>Operational embedment as moat.</strong> Palantir's architecture docs describe Forward Deployed Engineering as «the human equivalent of backpropagation» — tight feedback loops over real customer failure modes and business input–output patterns [2]. That depth explains both how value is captured and why deep foreign vendor embedment triggers sovereignty resistance.</li>
+    <li><strong>Distillation is a real leak.</strong> Frontier distillation depends on inspecting reasoning traces and intermediate outputs. Major labs have progressively curtailed trace visibility, accepting friction on adoption and developer ergonomics in order to defend model edge.</li>
+    <li><strong>Unsustainable IP exposure — sharpened by tokens-to-tasks.</strong> Neither enterprises nor individuals can indefinitely stream proprietary codebases, contracts, and operating decisions into third-party AI providers. Once frontier labs move up the value chain from neutral token utilities into direct task vendors competing in their customers' verticals [1], sending core operational context to a closed lab risks not only competitor leakage but training the provider into your strongest rival. Structural balkanization follows naturally.</li>
+    <li><strong>Rare earths are solvable.</strong> Unlike leading-edge lithography and foundry ecosystems, rare-earth supply chains are an industrial and permitting problem the US has shown credible willingness and capacity to neutralize over time.</li>
+  </ul>
+
+  <h2><span class="num">Part 02</span>Four places the closed-AI thesis breaks</h2>
+
+  <h3>A · Industrial multiplier, not US reshoring</h3>
+  <p>The closed-AI thesis assumes AI plus robotics cancels wage differentials and pulls manufacturing back to US soil. That misreads how multipliers work. AI amplifies existing industrial density and widens the gap between strongly and weakly industrialized economies. China — already climbing into vehicles, heavy equipment, robotics, and high-tech exports — uses abundant, widely diffused AI to compound its role as the world's industrial base rather than cede it.</p>
+  <p>US manufacturing weakness extends well past labour costs to decades of offshore supply chains and transport hubs, compounded by slow domestic datacenter and electrical-generation buildout relative to China's sustained infrastructure expansion. And neutralizing rare earths does not replicate <strong>TSMC</strong>: despite massive economic incentives over decades, leading-edge foundry dominance remains concentrated there. New bets such as Terafab are credible attempts, yet TSMC stays the unavoidable chokepoint.</p>
+
+  <h3>B · Decentralized software and silicon</h3>
+  <p>Assuming US GPUs and proprietary software stacks lock out open alternatives underestimates two shifts already underway:</p>
+  <ul>
+    <li><strong>AI erodes hardware lock-in.</strong> Modern AI can optimize, design, and operate workloads across heterogeneous silicon, opening a self-improving loop of bespoke, CUDA-like interfaces that chips away at Nvidia's software centrality.</li>
+    <li><strong>Open stacks attack oligopoly pricing directly.</strong> Ecosystems led by DeepSeek, Qwen, and Moonshot/Kimi prioritize efficiency, portability, open low-level optimization software, and credible paths onto non-Nvidia accelerators (including Huawei stacks). The strategic objective is not cheap API exports, but abundant domestic AI that compounds industrial advantage and removes US oligopoly pricing power.</li>
+    <li><strong>Compute historically percolates downward.</strong> From the ENIAC to the smartphone, every prior compute wave diffused from centralized vaults to local consumer and on-premise hardware. Closed AI is championed by incumbent frontier labs defending pricing power — often through safety and misuse regulation aligned with state institutions — a posture sustainable only under winner-take-all recursive self-improvement.</li>
+  </ul>
+
+  <h3>C · Demand skepticism and late-empire defense</h3>
+  <p>Projecting vast, smooth cognitive-wage capture assumes nearly infinite elasticity of demand for intelligence. Twenty years of machine learning and big data offer a more sober precedent: large incumbents spent heavily out of defensive fear of missing the wave, while genuine adoption concentrated at lean edges (startups and small teams). Domestically, that produced extreme equity concentration; geopolitically, a unipolar order shifted toward multipolarity. Seen through Ray Dalio's decaying-superpower lens, protectionism and trade disruption look less like an offensive grand strategy than late-empire defense delaying the Thucydides trap by avoiding open competition.</p>
+
+  <h3>D · The monetary contradiction</h3>
+  <p>Closed-AI debt exits collide with two monetary invariants:</p>
+  <ul>
+    <li><strong>Triffin's dilemma:</strong> maintaining global reserve-currency status requires running persistent trade deficits as a net importer of goods and services — directly colliding with export-led industrial reshoring.</li>
+    <li><strong>Deflationary technology inside an inflation-exporting regime:</strong> AI is structurally deflationary, whereas a heavily indebted reserve-currency issuer exports inflation to survive. Leading in AI deepens an internal contradiction that accelerates stress on the monetary regime itself.</li>
+  </ul>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>axis</th><th>closed-AI capture thesis</th><th>sovereign &amp; multipolar counter-thesis</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Strategic posture</strong></td><td>Offensive national capture of AI rents</td><td>Late-empire defense delaying open competition</td></tr>
+        <tr><td><strong>Industry &amp; power</strong></td><td>Robotics reshores manufacturing domestically</td><td>AI multiplies existing supply chains &amp; power buildout</td></tr>
+        <tr><td><strong>Hard chokepoint</strong></td><td>Rare earths (solvable) &amp; US GPU lock-in</td><td>TSMC unreplicated; CUDA challenged by AI-written kernels</td></tr>
+        <tr><td><strong>Open weights</strong></td><td>Commodity tier gated by chip controls</td><td>Efficient open models + non-US silicon → local/on-prem AI</td></tr>
+        <tr><td><strong>Demand &amp; adoption</strong></td><td>High elasticity, broad corporate capture</td><td>Defensive corporate FOMO vs lean-edge real adoption</td></tr>
+        <tr><td><strong>Debt &amp; currency</strong></td><td>AI rents + financial repression clear debt</td><td>Triffin's dilemma + AI deflation vs dollar inflation</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2><span class="num">Part 03</span>Sovereign AI in practice: one GPU, one compiled memory, one portable harness</h2>
+  <p>Sovereign AI is not only a geopolitical forecast. The structural question — <em>can open weights, local hardware, and owned knowledge hold their own without shipping private context to a centralized lab?</em> — is testable on a desk today. Over 2026, three public experiments explored that stack layer by layer:</p>
+
+  <figure class="fig">
+    <svg viewBox="0 0 700 218" role="img" aria-label="Three layers of sovereign AI practice: local inference and RAG on one GPU, compiled persistent local wiki memory, and a portable multi-family agent harness">
+      <g font-family="ui-monospace,Menlo,monospace" font-size="10" fill="#7d786f">
+        <text x="16" y="22" letter-spacing="1.4">THREE LAYERS OF SOVEREIGN AI · TESTED IN PUBLIC (2026)</text>
+      </g>
+      <rect x="16" y="38" width="668" height="50" rx="10" fill="#141416" stroke="#8f7524" stroke-width="1.5"/>
+      <text x="30" y="59" font-family="ui-monospace,Menlo,monospace" font-size="11" fill="#d4ad3a">LAYER 3 · PORTABLE HARNESS (ini)</text>
+      <text x="30" y="77" font-family="system-ui,sans-serif" font-size="12.5" fill="#ebe8e2">Plain files, typed contracts, 13 proven gates, multi-family routing — provider outages degrade work, never stop it.</text>
+
+      <rect x="16" y="98" width="668" height="50" rx="10" fill="#141416" stroke="#4fb3a9" stroke-width="1.4"/>
+      <text x="30" y="119" font-family="ui-monospace,Menlo,monospace" font-size="11" fill="#4fb3a9">LAYER 2 · COMPILED SOVEREIGN MEMORY (The Mirror / Uqbar architecture)</text>
+      <text x="30" y="137" font-family="system-ui,sans-serif" font-size="12.5" fill="#ebe8e2">Persistent local Markdown wiki over immutable raw sources — the moat is the owned material, not the cloud API.</text>
+
+      <rect x="16" y="158" width="668" height="50" rx="10" fill="#141416" stroke="#34343a" stroke-width="1.4"/>
+      <text x="30" y="179" font-family="ui-monospace,Menlo,monospace" font-size="11" fill="#8f9bd6">LAYER 1 · LOCAL INFERENCE &amp; RETRIEVAL (ragblog · 16 GB consumer GPU)</text>
+      <text x="30" y="197" font-family="system-ui,sans-serif" font-size="12.5" fill="#ebe8e2">Open weights (Qwen3 / gpt-oss) + local embeddings + ChromaDB — zero tokens leave the machine.</text>
+    </svg>
+    <figcaption>Each layer shifts ownership closer to the user: weights and inference local, memory compiled on disk, engineering rules portable across harnesses.</figcaption>
+  </figure>
+
+  <h3>Layer 1 · Local RAG on one consumer GPU (<code>ragblog</code> · Episode 0014)</h3>
+  <p>In March 2026 (<a href="https://www.youtube.com/watch?v=c_JMsMy0DSM">not the tao #0014</a>, <a href="https://github.com/adrianmatias/ml-sandbox/tree/master/ragblog">ragblog</a>), I indexed <strong>52 posts</strong> (<strong>904 chunks</strong>) from a fifteen-year personal blog archive into local ChromaDB using <code>qwen3-embedding:8b</code> and ran three local open-weight models via Ollama on a single <strong>16 GB consumer GPU</strong> (RTX 5060 Ti; quantized 27B occupying ≈13–14.5 GB VRAM) — with <strong>zero tokens sent to the cloud</strong> — then scored them with Ragas over 16 test cases and inspected them side by side against a cloud frontier thinking model (Grok 4.2) <span class="lab fact">FACT</span> [3][4]:</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>local model (same k=10 retrieval)</th><th>context precision</th><th>context recall</th><th>faithfulness</th><th>answer relevancy</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>qwen3.5:27bIQ2_M</strong> (Unsloth + parser)</td><td class="numcol">0.559</td><td class="numcol">0.729</td><td class="numcol"><strong>0.897</strong></td><td class="numcol">0.674</td></tr>
+        <tr><td><strong>qwen3.5:9b</strong> (native Ollama)</td><td class="numcol">0.568</td><td class="numcol">0.778</td><td class="numcol">0.851</td><td class="numcol">0.565</td></tr>
+        <tr><td><strong>gpt-oss:20b</strong></td><td class="numcol">0.515</td><td class="numcol">0.679</td><td class="numcol">0.560</td><td class="numcol"><strong>0.714</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>The qualitative lesson mattered as much as the Ragas table. On corpus-grounded queries, the local 27B model stayed strictly faithful to retrieved passages — including bridging a semantic query on <em>information as a non-rival good</em> to a Spanish essay titled <em>HiperNeolítico</em> (contrasting wood, which depletes when given, with information, which both giver and receiver keep) without a single keyword match [3]. The cloud frontier model won on cross-web breadth and voice mimicry, yet also inferred intent outside the source text. On a single consumer card, local open weights already beat centralized brute force whenever strict grounding and privacy are the objective.</p>
+
+  <h3>Layer 2 · Compiled sovereign memory (<code>The Mirror</code> &amp; Uqbar · Episode 0017)</h3>
+  <p>Flat chunk retrieval still forgets between sessions. In May 2026 (<a href="https://www.youtube.com/watch?v=zgjyRVkJTZc">not the tao #0017</a>, <a href="https://github.com/adrianmatias/the-mirror">The Mirror</a>), that local experiment evolved into an LLM-compiled Markdown wiki pattern inspired by Karpathy's wiki architecture [5][6]. Immutable raw sources live privately on disk (in a private personal vault, Uqbar); an agent incrementally compiles cross-linked concepts and syntheses into plain Markdown files that persist across sessions, while a stripped public repo (<a href="../../archive/github/the-mirror.html"><em>The Mirror</em></a>) shares the constitution and method without exposing private material.</p>
+
+  <blockquote>
+    «The mirror breathes out. Uqbar breathes in. [...] The moat is not the method. The moat is the material. What you've lived, thought, written, made, loved, failed at. That cannot be downloaded. That cannot be replicated. That is what makes your wiki sovereign.»
+    <footer>— <a href="https://github.com/adrianmatias/the-mirror">The Mirror README</a> &amp; <a href="https://www.youtube.com/watch?v=zgjyRVkJTZc">not the tao #0017</a>, May 2026 <span class="lab fact">FACT</span></footer>
+  </blockquote>
+
+  <p>That micro-level insight scales straight to enterprise sovereignty: once weights commoditize and run on premise, competitive advantage moves out of rented frontier APIs into the <strong>compiled, verified institutional memory</strong> kept inside an organization's own boundary.</p>
+
+  <h3>Layer 3 · Portable engineering harness (<code>ini</code>)</h3>
+  <p>The same sovereignty rule governs daily engineering in <a href="../../infog/ini/"><code>ini</code></a>: open-source first, local-first, plain Markdown skills under line budgets, typed wire schemas, and multi-family model rotation [7]. No proprietary plugin lock-in; no single lab sits on the critical path. An outage or policy shift at one provider degrades throughput — it never halts the work.</p>
+
+  <h2><span class="num">Part 04</span>Bridge to <em>Tsunami &amp; Printing Press</em></h2>
+  <div class="box sea">
+    <h4>The domestic tension meets the geopolitical layer</h4>
+    <p><a href="../../infog/tsunami-and-printing-press/"><em>Tsunami &amp; Printing Press</em></a> mapped the domestic squeeze as of October 2026: AI deflates what it sells (<strong>−13×/year</strong> in inference cost) while inflating what it buys (memory, power, debt-funded capex), against positive real yields (<strong>+2.91%</strong> US 10-year real yield) <span class="lab fact">FACT</span> [8]. Closed-AI national capture — moving up the value chain from tokens to tasks inside a protected oligopoly — is the only path that converts token deflation into rents large enough to outgrow sovereign debt. If open weights, non-US silicon, an unreplicated TSMC, slow domestic power buildout, and local sovereign stacks keep that wall porous, token deflation persists while capex stays heavy — sharpening the clash between deflationary technology and an inflation-exporting reserve currency, and pushing the policy balance closer to the printing press <span class="lab thesis">THESIS</span>.</p>
+  </div>
+
+  <section class="sources">
+    <h2>Sources &amp; public artifacts</h2>
+    <ol>
+      <li>Stanley Druckenmiller — interview with Iliana Bouzali at the <em>iConnections TomorrowX Summit</em> (frontier AI labs moving from selling tokens to selling completed tasks in verticals such as cybersecurity and healthcare; Nov 2026) <span class="lab">REPORTED</span></li>
+      <li>Palantir — <em>Foundry Architecture Center: Overview</em> (Forward Deployed Engineering as «the human equivalent of backpropagation»; <a href="https://www.palantir.com/docs/foundry/architecture-center/overview/">palantir.com/docs</a>, 2026) <span class="lab fact">FACT</span></li>
+      <li>Adrian Matias — <em>RagBlog: Local RAG over Personal Blog Archives</em> (52 posts, 904 chunks, RTX 5060 Ti 16 GB, Ragas 16-case scores, Grok 4.2 comparison; <a href="https://github.com/adrianmatias/ml-sandbox/tree/master/ragblog">github.com/adrianmatias/ml-sandbox/tree/master/ragblog</a> · <a href="../../archive/github/ragblog.html">archived README</a>, Mar 2026) <span class="lab fact">FACT</span></li>
+      <li>Adrian Matias — <em>not the tao #0014: rag on one gpu vs grok to clone my mind</em> (<a href="https://www.youtube.com/watch?v=c_JMsMy0DSM">YouTube</a> · <a href="../../archive/youtube/">archive index</a>, 26 Mar 2026) <span class="lab fact">FACT</span></li>
+      <li>Adrian Matias — <em>The Mirror</em> (public architecture of Uqbar; <a href="https://github.com/adrianmatias/the-mirror">github.com/adrianmatias/the-mirror</a> · <a href="../../archive/github/the-mirror.html">archived README</a>, May 2026) <span class="lab fact">FACT</span></li>
+      <li>Adrian Matias — <em>not the tao #0017: llm wiki as awareness for llms and The Mirror of Uqbar</em> (<a href="https://www.youtube.com/watch?v=zgjyRVkJTZc">YouTube</a> · <a href="../../archive/youtube/">archive index</a>, 30 May 2026) <span class="lab fact">FACT</span></li>
+      <li>Adrian Matias — <em>ini: Constraining the Generative</em> (sovereignty &amp; Taleb antifragility lens; <a href="../../infog/ini/">infog/ini</a> · <a href="https://github.com/adrianmatias/ini">github.com/adrianmatias/ini</a>, 23 Nov 2026) <span class="lab fact">FACT</span></li>
+      <li>Adrian Matias — <em>Tsunami &amp; Printing Press</em> (token deflation −13×/year, US 10-year real yield +2.91%, AI capex sink; <a href="../../infog/tsunami-and-printing-press/">infog/tsunami-and-printing-press</a>, 14 Oct 2026) <span class="lab fact">FACT</span></li>
+    </ol>
+  </section>
+
+  <div class="related">
+    <strong>Read next on pub</strong>
+    <a href="../../infog/tsunami-and-printing-press/">Tsunami &amp; Printing Press</a> (the macro &amp; monetary map) ·
+    <a href="../ambiguity-to-production/">From Ambiguity to a Trusted AI System</a> (the deployment playbook) ·
+    <a href="../../infog/ini/">ini: Constraining the Generative</a> (the portable harness) ·
+    <a href="../../archive/youtube/">not the tao archive</a> ·
+    <a href="../../">pub shelf</a>
+  </div>
+
+  <footer class="end">
+    Self-contained static HTML — no trackers, no cookies, no external fonts or scripts. Argument with sources, not financial or policy advice. Text <a href="../../LICENSE">CC BY 4.0</a> · source <a href="https://github.com/adrianmatias/pub">github.com/adrianmatias/pub</a>.
+  </footer>
+</main>
+</body>
+</html>
